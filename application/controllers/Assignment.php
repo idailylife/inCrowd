@@ -5,6 +5,7 @@
  * Date: 2015/4/21
  * Time: 19:04
  */
+define('DEBUG_MODE', false);
 
 class Assignment extends CI_Controller {
 
@@ -37,13 +38,13 @@ class Assignment extends CI_Controller {
     }
 
     function index_get(){
-        if(!$this->check_authority()){
+        if(!$this->check_authority() && !DEBUG_MODE){
             //Authentication failed
             header("Location: http://localhost/inCrowd");
             return;
         }
 
-        echo 'I\'m IN!';
+        $this->load->view('assignment');
     }
 
     function index_post(){

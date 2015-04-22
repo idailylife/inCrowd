@@ -1,0 +1,45 @@
+body {
+    min-width: 768px;
+    background: #f8f8f8;
+    line-height: 1.6;
+    margin: 0;
+}
+
+div{
+    display: block;
+}
+
+.div_center{
+    text-align: center;
+}
+
+.title{
+    font-weight: bolder;
+}
+
+#headers{
+    background: #44B78B;
+    width: auto;
+    height: 48px;
+    margin:0;
+    padding:0 4.1667%;
+}
+
+#logo{
+    font-size: 18pt;
+    display: block;
+    color:#fff;
+    padding: 1px 0 1px;
+    height: 48px;
+    font-family: "Roboto", Corbel, Avenir, "Lucida Grande", "Lucida Sans", sans-serif;
+}
+
+#container{
+    margin: 0 auto;
+    padding: 0 4.1667%;
+    max-width: 1400px;
+}
+
+#terms-div{
+    max-width: 1440px;
+}
