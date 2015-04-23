@@ -1,2 +1,2 @@
 # inCrowd
-Crowdsource experiment website for inLab
+A experimental crowdsourced design contest evaluation platform.
