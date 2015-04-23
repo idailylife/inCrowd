@@ -22,5 +22,5 @@ class Token_id_link extends CI_Model {
         $this->load->database();
     }
 
-    //TODO: implement of necessary interface
+    //TODO: implement necessary interface
 }

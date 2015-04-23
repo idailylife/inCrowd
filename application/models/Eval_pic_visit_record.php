@@ -20,5 +20,5 @@ class Eval_pic_visit_record extends CI_Model {
         $this->load->database();
     }
 
-    //TODO: implement of necessary interface
+    //TODO: implement necessary interface
 }
