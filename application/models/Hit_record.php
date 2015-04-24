@@ -6,7 +6,7 @@
  * Time: 11:23
  */
 require_once('Compare_record.php');
-require_once('public_defination.php');
+require_once('Model_helper.php');
 /**
  * Class Hit_record : 一次HIT任务的记录
  * id
@@ -19,22 +19,29 @@ require_once('public_defination.php');
  * expert_info: 预实验用的专业程度信息
  */
 class Hit_record extends CI_Model {
+    const TABLE_NAME = 'hit_record';
+
     public $id;
     public $start_time;
     public $end_time;
-    public $records;
+    public $records;         //存放Compare_record对象
+    public $record_id_array; //存放Compare_record对象的ID (从数据库存取需要json_encode/decode)
     public $progress_count;
     public $user_ip;
     public $payment_info;
     public $expert_info;
 
+    private $model_generated;
+
     public function __construct() {
         parent::__construct();
         $this->load->database();
+        $this->model_generated = false;
+        $this->progress_count = 0;
     }
 
     /**
-     * 初始化模型，初始化空的问题对
+     * 初始化模型，初始化【空】的问题对
      * @param $comparison_size  总的比较对的个数
      * @param $test_cmp_size    用户质量控制用比较对的个数
      */
@@ -55,6 +62,95 @@ class Hit_record extends CI_Model {
         shuffle($this->records);
     }
 
+    /**
+     * 填充HIT任务中具体的比较对数据
+     * 并且会更新$record_id_array
+     */
+    public function generate_comparison() {
+        $this->record_id_array = [];
+        foreach($this->records as $record) {
+            //遍历数组，填充数据
+            $record->generate_record();
+            $record_id = $record->push_to_db();
+            array_push($this->record_id_array, $record_id);
+        }
+        $this->model_generated = true;
+    }
+
+    /**
+     * 将当前时间记录为起始时间
+     * 【不会】更新数据库
+     * @param: $is_starttime true:起始时间，false:结束时间
+     */
+    public function mark_time($is_starttime) {
+        $timestamp = time();
+        if($is_starttime)
+            $this->start_time = $timestamp;
+        else
+            $this->end_time = $timestamp;
+    }
+
+    /**
+     * 将当前数据插入数据库（新增条目）
+     * @return int|void
+     */
+    public function push_to_db(){
+        if(!$this->model_generated){
+            //Model not generated yet.
+            show_error('Hit_record: Unable to insert db record, generate comparison models first.');
+            return;
+        }
+        $data = array(
+            'records' => json_encode($this->record_id_array)
+        );
+        if(isset($this->start_time))
+            $data['start_time'] = $this->start_time;
+        if(isset($this->user_ip))
+            $data['user_ip'] = $this->user_ip;
+
+        $this->db->insert(Hit_record::TABLE_NAME, $data);
+        //$db_helper = new Model_helper();
+        $count = $this->get_max_id();//$db_helper->get_auto_increment_value(Hit_record::TABLE_NAME);
+        return $count;
+    }
+
+    public function get_max_id(){
+        $maxid = 0;
+        $row = $this->db->query('SELECT MAX(id) AS `maxid` FROM `'. Hit_record::TABLE_NAME.'`')->row();
+        if ($row) {
+            $maxid = $row->maxid;
+        }
+        return $maxid;
+    }
+
+    public function update_db($key_array){
+        foreach($key_array as $item){
+            if($item == 'start_time')
+                $this->db->set('start_time', $this->start_time);
+            else if($item == 'end_time')
+                $this->db->set('end_time', $this->end_time);
+            else if($item == 'progress_count')
+                $this->db->set('progress_count', $this->progress_count);
+            else if($item == 'user_ip')
+                $this->db->set('user_ip', $this->user_ip);
+            else if($item == 'payment_info')
+                $this->db->set('payment_info', $this->payment_info);
+            else if($item == 'expert_info')
+                $this->db->set('expert_info', $this->expert_info);
+            else if($item == 'records')
+                $this->db->set('records', $this->record_id_array);
+            else
+                log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
+        }
+        return $this->db->insert(Hit_record::TABLE_NAME);
+    }
+
+
+    public function get_comparison_id($index=null){
+        if(is_null($index))
+            $index = $this->progress_count;
+        return $this->record_id_array[$index];
+    }
 
 
 }

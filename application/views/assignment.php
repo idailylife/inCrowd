@@ -26,7 +26,8 @@
         </div>
     </div>
     <div id="cmp_choices">
-        
+        <!-- Radio buttons here -->
+
     </div>
 </body>
 </html>
