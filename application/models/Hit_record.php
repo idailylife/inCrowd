@@ -152,5 +152,28 @@ class Hit_record extends CI_Model {
         return $this->record_id_array[$index];
     }
 
+    public function get_comparison_size(){
+        if(isset($this->record_id_array))
+            return count($this->record_id_array);
+        return 0;
+    }
 
+    public function get_by_id($id){
+        $this->db->where('id', $id);
+        $query = $this->db->get(Hit_record::TABLE_NAME);
+        if($query->num_rows() > 0){
+            $row = $query->row();
+            $this->id = $row->id;
+            $this->start_time = $row->start_time;
+            $this->end_time = $row->end_time;
+            $this->record_id_array = json_decode($row->records);
+            $this->progress_count = $row->progress_count;
+            $this->expert_info = $row->expert_info;
+            $this->user_ip = $row->user_ip;
+            $this->payment_info = $row->payment_info;
+            return $this;
+        }
+        else
+            return null;
+    }
 }

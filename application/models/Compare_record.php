@@ -28,7 +28,7 @@ class Compare_record extends CI_Model {
     public $comp_id1;
     public $comp_id2;
     public $comp_type;
-    public $answer;
+    public $answer;     //Array of answers
     public $duration;
 
     private $model_generated;

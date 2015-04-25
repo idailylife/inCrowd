@@ -9,7 +9,8 @@
 
 define('CMP_TYPE_GENERAL', 0);
 define('CMP_TYPE_USERTEST', 1);
-define('IMAGE_BASE_URL', '');       //Base url of comparison images
+define('IMAGE_BASE_URL', '../');       //Base url of comparison images
+define('PATH_TO_RESOURCES', 'd:/wamp/www/'); //Base path of resources
 
 class Model_helper extends CI_Model {
 
