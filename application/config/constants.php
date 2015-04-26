@@ -84,3 +84,13 @@ define('EXIT_USER_INPUT', 7); // invalid user input
 define('EXIT_DATABASE', 8); // database error
 define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+/*
+ * Customized constants
+ */
+define('CMP_TYPE_GENERAL', 0);
+define('CMP_TYPE_USERTEST', 1);
+define('IMAGE_BASE_URL', '../');       //Base url of comparison images
+define('PATH_TO_RESOURCES', 'd:/wamp/www/'); //Base path of resources
+define('COMPARISON_SIZE', 5); //每个用户需要比较的总图片·对·数
+define('TEST_CMP_SIZE', 1); //其中每个用户的用户能力测试用的图片·对·数

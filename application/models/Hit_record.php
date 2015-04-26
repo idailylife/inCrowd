@@ -142,7 +142,8 @@ class Hit_record extends CI_Model {
             else
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }
-        return $this->db->insert(Hit_record::TABLE_NAME);
+        $this->db->where('id', $this->id);
+        return $this->db->update(Hit_record::TABLE_NAME);
     }
 
 

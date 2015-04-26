@@ -13,6 +13,12 @@
  * comp_id2
  * comp_type
  * answer:比较结果
+ * ============================
+ * A获胜记1，B获胜记0
+ * 可用性：最右位
+ * 创新性：第二位
+ * 例：创新性：A>B，实用性B>A =>10(bin) = 2(dec)
+ * ============================
  * duration:完成比较的时间
  *
  */
@@ -28,7 +34,7 @@ class Compare_record extends CI_Model {
     public $comp_id1;
     public $comp_id2;
     public $comp_type;
-    public $answer;     //Array of answers
+    public $answer;     //answer_value:详见表格
     public $duration;
 
     private $model_generated;
@@ -125,7 +131,8 @@ class Compare_record extends CI_Model {
             else
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }
-        return $this->db->insert(Compare_record::TABLE_NAME);
+        $this->db->where('id', $this->id);
+        return $this->db->update(Compare_record::TABLE_NAME);
     }
 
     public function get_by_id($id){
