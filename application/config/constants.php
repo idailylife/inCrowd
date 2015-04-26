@@ -88,6 +88,7 @@ define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 /*
  * Customized constants
  */
+define('DEBUG_MODE', false);
 define('CMP_TYPE_GENERAL', 0);
 define('CMP_TYPE_USERTEST', 1);
 define('IMAGE_BASE_URL', '../');       //Base url of comparison images

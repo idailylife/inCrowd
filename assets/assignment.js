@@ -40,13 +40,16 @@ function foo(){
 function post_callback(data, ret_status){
     console.log('post_callback:' + ret_status);
     console.log(data);
+    if(ret_status != 'success'){
+        console.log('post_callback: Connection failed.');
+    }
     var jsonval = jQuery.parseJSON(data);
     switch (jsonval.status){
         case 2:
             alert('err type 2');
             break;
         case 1:
-            alert('status 1');
+            window.location.href='finish';
             break;
         case 0:
             $('#img_a_a').attr('href', jsonval.img_src1);

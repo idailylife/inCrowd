@@ -32,6 +32,8 @@ class Finish extends CI_Controller {
     }
 
     function check_authority(){
+        if(DEBUG_MODE)
+            return true;
         if(!isset($_SESSION['pass']))
             return false;
         if($_SESSION['pass'] == '1' |
@@ -53,6 +55,7 @@ class Finish extends CI_Controller {
     }
 
     private function index_post() {
+        //TODO: Remove hit id
 
     }
 
@@ -66,8 +69,11 @@ class Finish extends CI_Controller {
         $hit_record = new Hit_record();
         $hit_record->get_by_id($hit_id);
         if($hit_record->progress_count < COMPARISON_SIZE){
-            //Another error
-
+            //Another error, unfinished assignment
+            header("Location: /assignment");
+            return;
         }
+        $_SESSION['pass'] = 2;
+        $this->load->view('finish');
     }
 }

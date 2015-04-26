@@ -10,7 +10,7 @@ require_once(APPPATH . 'models/Compare_record.php');
 require_once(APPPATH . '/models/General_eval_pic.php');
 require_once(APPPATH . '/models/User_eval_pic.php');
 
-define('DEBUG_MODE', false);
+
 
 class Assignment extends CI_Controller {
 //    const COMPARISON_SIZE = 5;     //每个用户需要比较的总图片·对·数
@@ -23,6 +23,12 @@ class Assignment extends CI_Controller {
         }
 
         $this->load->library('session'); //Load session library
+        if(!$this->check_authority() && !DEBUG_MODE){
+            //Authentication failed
+            header("Location: http://localhost/inCrowd");
+            return;
+        }
+
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $this->index_post();
@@ -142,11 +148,7 @@ class Assignment extends CI_Controller {
     }
 
     private function index_get(){
-        if(!$this->check_authority() && !DEBUG_MODE){
-            //Authentication failed
-            header("Location: http://localhost/inCrowd");
-            return;
-        }
+
         //See if we have an unfinished HIT assignment..
         //If so, load the old job. (status stored in cookie)
         //TODO: implementation
@@ -185,11 +187,7 @@ class Assignment extends CI_Controller {
      *
      */
     private function index_post(){
-        if(!$this->check_authority() && !DEBUG_MODE){
-            //Authentication failed
-            header("Location: /");
-            return;
-        }
+
         $ret_data = array();
         $hit_id = $this->get_current_hit_id();
         if(-1 == $hit_id){
