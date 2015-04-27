@@ -15,7 +15,7 @@ require_once(APPPATH . '/models/User_eval_pic.php');
 class Assignment extends CI_Controller {
 //    const COMPARISON_SIZE = 5;     //每个用户需要比较的总图片·对·数
 //    const TEST_CMP_SIZE = 1;        //其中每个用户的用户能力测试用的图片·对·数
-    const KEY_HIT_RECORD = 'current_hit_record';
+//    const KEY_HIT_RECORD = 'current_hit_record';
 
     public function index(){
         if(!isset($_SERVER['REQUEST_METHOD'])){
@@ -25,7 +25,7 @@ class Assignment extends CI_Controller {
         $this->load->library('session'); //Load session library
         if(!$this->check_authority() && !DEBUG_MODE){
             //Authentication failed
-            header("Location: http://localhost/inCrowd");
+            header("Location: ". base_url('inCrowd'));
             return;
         }
 
@@ -44,23 +44,23 @@ class Assignment extends CI_Controller {
      * 返回值 true / false
      */
     function check_authority(){
-        if(!isset($_SESSION['pass']))
+        if(!isset($_SESSION[KEY_PASS]))
             return false;
-        if($_SESSION['pass'] == '1')
+        if($_SESSION[KEY_PASS] == '1')
             return true;
         return false;
     }
 
 
     function have_unfinished_hit(){
-        return isset($_SESSION[Assignment::KEY_HIT_RECORD]);
+        return isset($_SESSION[KEY_HIT_RECORD]);
         //TODO: 检查cookie
     }
 
     function get_current_hit_id(){
         if(!$this->have_unfinished_hit())
             return -1;
-        return $_SESSION[Assignment::KEY_HIT_RECORD];
+        return $_SESSION[KEY_HIT_RECORD];
     }
 
     function get_image_thumb_path($origin_file_path){
@@ -147,6 +147,21 @@ class Assignment extends CI_Controller {
         return $data;
     }
 
+    /**
+     * Get IP address of client
+     * ref: http://stackoverflow.com/questions/3003145/how-to-get-the-client-ip-address-in-php
+     */
+    private function get_client_ip(){
+        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
+
     private function index_get(){
 
         //See if we have an unfinished HIT assignment..
@@ -155,20 +170,27 @@ class Assignment extends CI_Controller {
         //////////////////////////////////////
         $hit_record = new Hit_record();
         if($this->have_unfinished_hit()){
-            $hit_id = $_SESSION[Assignment::KEY_HIT_RECORD];
+            $hit_id = $_SESSION[KEY_HIT_RECORD];
             $hit_record->get_by_id($hit_id);
         } else {
             //Create a new HITRecord
-
             $hit_record->init(COMPARISON_SIZE,
                 TEST_CMP_SIZE);
             //Generate comparisons for current user
             $hit_record->generate_comparison();
+            $hit_record->mark_time(true);
+            $hit_record->user_ip = $this->get_client_ip();
+
             $hit_id = $hit_record->push_to_db();
             //Write to session
-            $_SESSION[Assignment::KEY_HIT_RECORD] = $hit_id;
+            $_SESSION[KEY_HIT_RECORD] = $hit_id;
         }
 
+        //If this hit is already finished, jump to /finish
+        if($hit_record->progress_count == COMPARISON_SIZE){
+            header("Location: ". base_url("finish"));
+            return;
+        }
 
         //Get next comparison id
         $next_cmp_id = $hit_record->get_comparison_id();

@@ -1,5 +1,15 @@
 #verify_info{
     display: none;
     color: orangered;
+    font-weight: bold;
 }
 
+#submit_info{
+    display: none;
+    color: red;
+    font-weight: bold;
+}
+
+#info_result{
+    display: none;
+}

@@ -18,7 +18,7 @@ class Finish extends CI_Controller {
         $this->load->library('session'); //Load session library
 
         if(!$this->check_authority()){
-            header("Location: /");
+            header("Location: ". base_url());
             return;
         }
 
@@ -34,10 +34,10 @@ class Finish extends CI_Controller {
     function check_authority(){
         if(DEBUG_MODE)
             return true;
-        if(!isset($_SESSION['pass']))
+        if(!isset($_SESSION[KEY_PASS]))
             return false;
-        if($_SESSION['pass'] == '1' |
-            $_SESSION['pass'] == '2') {
+        if($_SESSION[KEY_PASS] == '1' |
+            $_SESSION[KEY_PASS] == '2') {
             return true;
         }
         return false;
@@ -56,7 +56,38 @@ class Finish extends CI_Controller {
 
     private function index_post() {
         //TODO: Remove hit id
+        //Fetch post data
+        $ret_data = array();
+        $hit_id = $this->get_current_hit_id();
+        if(-1 == $hit_id){
+            $ret_data['status'] = 1;
+            $ret_data['message'] = 'Illegal request. Hit_id not found';
+        } elseif(!isset($_POST['payment_info']) ||
+            !isset($_POST['expert_info'])){
+            $ret_data['status'] = 1;
+            $ret_data['message'] = 'Illegal request. POST variable not set';
+        } else {
+            $hit_record = new Hit_record();
+            $hit_record->get_by_id($hit_id);
+            $hit_record->mark_time(false);
+            $hit_record->payment_info = $_POST['payment_info'];
+            $hit_record->expert_info = $_POST['expert_info'];
+            $key_array = array('end_time','payment_info',
+                'expert_info');
+            $db_ret = $hit_record->update_db($key_array);
 
+            if($db_ret){
+                $ret_data['status'] = 0;
+                $ret_data['message'] = 'Succeed';
+                //Clear hit information in session
+                unset($_SESSION[KEY_HIT_RECORD]);
+                unset($_SESSION[KEY_PASS]);
+            } else {
+                $ret_data['status'] = 2;
+                $ret_data['message'] = 'Unable to update database';
+            }
+        }
+        echo json_encode($ret_data);
     }
 
     private function index_get() {
@@ -70,10 +101,10 @@ class Finish extends CI_Controller {
         $hit_record->get_by_id($hit_id);
         if($hit_record->progress_count < COMPARISON_SIZE){
             //Another error, unfinished assignment
-            header("Location: /assignment");
+            header("Location: ". base_url("assignment"));
             return;
         }
-        $_SESSION['pass'] = 2;
+        $_SESSION[KEY_PASS] = 2;
         $this->load->view('finish');
     }
 }
