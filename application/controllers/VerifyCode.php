@@ -74,12 +74,13 @@ class VerifyCode extends CI_Controller {
         $image = imagecreate($img_width, $img_height);
         $black = imagecolorallocate($image, 0, 0, 0);
         $gray = imagecolorallocate($image, 200, 200, 200);
+        $background = imagecolorallocate($image, 248, 248, 248); //#f8f8f8
 
 
         //Fill background to gray
-        imagefill($image, 0, 0, $gray);
+        imagefill($image, 0, 0, $background);
         //Frame
-        imagerectangle($image, 0, 0, $img_width-1, $img_height-1, $black);
+        imagerectangle($image, 0, 0, $img_width-1, $img_height-1, $gray);
 
         //随机绘制两条虚线，起干扰作用
         $style = array($black, $black, $black, $black, $black,

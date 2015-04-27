@@ -6,7 +6,7 @@
  * Time: 20:02
  */
 ?>
-<html lang="zh" xmlns="http://www.w3.org/1999/html">
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Information Gathering | Crowd Crowd Crowd</title>
@@ -68,7 +68,7 @@
 <body>
     <h1>Holy crap, you made it!</h1>
     <div id="info_input">
-        <p>向您支付的报酬有一个最低标准且参照您先前答题的能力向上浮动,与您的专业背景无关.</p>
+        <p>向您支付的报酬有一个最低标准且参照您先前答题的能力向上浮动.</p>
         <p>麻烦提供您的支付宝账号(邮箱或手机号)
             <input type="text" id="payment" name="payment"/>
         </p>
@@ -77,7 +77,7 @@
         </p>
         <p id="verify_info">:(两次输入的内容不一致.</p>
         <p>
-            请问您是否从事设计相关工作，或为设计相关专业在读学生？
+            请问您是否从事设计相关工作, 或设计相关专业在读学生?(此项仅用于算法验证)
             <input type="radio" name="expertise" value="1">是
             <input type="radio" name="expertise" value="0">否
         </p>

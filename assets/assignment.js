@@ -58,6 +58,8 @@ function post_callback(data, ret_status){
             $('#img_b').attr('src', jsonval.img_thumb2);
             $('#curr_index').text(jsonval.prog_current);
             $('#total_index').text(jsonval.prog_total);
+            var progress = jsonval.prog_current/jsonval.prog_total*100 + "%";
+            $('#meter_span').css('width', progress);
             //Clear radio button
             $(".radio").each(function(){
                 $(this).prop('checked', false);
@@ -69,3 +71,12 @@ function post_callback(data, ret_status){
 
 }
 
+//检查表单填写完整性
+function check_validity(){
+    var val_c = $("input[name='creativity']:checked").val();
+    var val_u = $("input[name='usability']:checked").val();
+    if(val_c == undefined || val_u == undefined){
+        return false;
+    }
+    return true;
+}

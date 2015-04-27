@@ -7,13 +7,13 @@
  */
 ?>
 
-<html lang="zh" xmlns="http://www.w3.org/1999/html">
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Crowd Crowd Crowd | Test website</title>
     <script type="text/javascript" src="<?php echo base_url();?>assets/jquery-1.11.2.min.js"></script>
-    <link rel="stylesheet" href="<?php echo base_url()?>assets/jquery-ui.css">
-    <script type="text/javascript" src="<?php echo base_url()?>assets/jquery-ui.min.js"></script>
+<!--    <link rel="stylesheet" href="--><?php //echo base_url()?><!--assets/jquery-ui.css">-->
+<!--    <script type="text/javascript" src="--><?php //echo base_url()?><!--assets/jquery-ui.min.js"></script>-->
     <link rel="stylesheet" href="<?php echo base_url()?>assets/main.css">
     <script type="text/javascript">
         function reset_captcha(){
@@ -25,12 +25,10 @@
                 reset_captcha();
             });
             $('#get_in')
-                .button()
                 .click(function(){
                 var code_num = $('#veri_code').val();
                 $.post("/inCrowd/verifycode", {captcha:code_num}, function(msg){
                     if(msg == '1'){
-                        alert('DONE');
                         window.location.href= '/inCrowd/assignment';
                     } else {
                         alert('FAIL');
@@ -39,6 +37,15 @@
                     }
                 });
             });
+            $('#continue').click(function(){
+                window.location.href= '/inCrowd/assignment';
+            });
+            <?php if($cont_flag):?>
+            $('#verification').css('display', 'none');
+            $('#get_in').css('display', 'none');
+            <?php else:?>
+            $('#continue').css('display', 'none');
+            <?php endif;?>
         });
 
     </script>
@@ -56,20 +63,35 @@
     <div id="container">
         <div id="terms_div" class="div_center">
             <!--Terms and declaration here-->
-            <p class="title">条款及须知</p>
-            <p>此山是我开，此树是我栽。要想过此路，留下买路财。</p>
+            <p class="title">XXXXX问卷</p>
+            <div id="terms_detail">
+                该说点什么好呢。
+            </div>
+
         </div>
+
         <div id="verification" class="div_center">
             <!--Verification form-->
-            <p>麻烦输入验证码</p>
-
+            验证码
             <input type="text" id="veri_code">
+            <div id="captcha_info">
+                验证码错误，请重试:(
+            </div>
             <div id="verify">
                 <p>
                     <img id="captcha_img" src="/inCrowd/verifycode?rnd=<?php echo rand(0,1000) ?>">
                 </p>
-                <button id="get_in">Get in!</button>
+                <div id="cookie_div">
+                    将答题状态存储在本地，以便下次打开时能恢复
+                    <input type="checkbox" id="keep_cookie" name="keep_cookie" value="1">
+                </div>
+
             </div>
+        </div>
+
+        <div id="submit_div" class="div_center">
+                <div class="submit_btn" id="continue">继续先前任务</div>
+                <div class="submit_btn" id="get_in">开始</div>
         </div>
     </div>
 

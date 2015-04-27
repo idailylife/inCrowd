@@ -25,7 +25,7 @@ class Assignment extends CI_Controller {
         $this->load->library('session'); //Load session library
         if(!$this->check_authority() && !DEBUG_MODE){
             //Authentication failed
-            header("Location: ". base_url('inCrowd'));
+            header("Location: ". base_url());
             return;
         }
 

@@ -9,9 +9,11 @@
 class Main extends CI_Controller {
 
     public function index(){
+
         if(!isset($_SERVER['REQUEST_METHOD'])){
             show_error("REQUEST_METHOD not set.");
         }
+        $this->load->library('session'); //Load session library
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             show_404();
         } else if($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -23,6 +25,13 @@ class Main extends CI_Controller {
     }
 
     function index_get() {
-        $this->load->view('main');
+        $continue_flag = false;
+        if(isset($_SESSION['pass'])){
+            $continue_flag = true;
+        }
+        $data = array(
+            'cont_flag' => $continue_flag
+        );
+        $this->load->view('main', $data);
     }
 }

@@ -15,6 +15,8 @@ div{
 
 .title{
     font-weight: bolder;
+    font-size: 24px;
+    font-family: "微软雅黑 Light", "微软雅黑", "黑体";
 }
 
 #headers{
@@ -42,4 +44,58 @@ div{
 
 #terms-div{
     max-width: 1440px;
+}
+
+#veri_code{
+    width: 60px;
+    border-radius: 3px;
+    border: 2px solid #cfe3dc;
+}
+
+#terms_detail{
+    min-height: 300px;
+    max-width: 700px;
+    margin: 5px auto;
+    font-family: "微软雅黑 Light", "Simsun";
+}
+
+#cookie_div{
+    margin: 5px auto;
+    background: #DEF7EB;
+    max-width: 400px;
+    border-radius: 5px;
+    border: none;
+    font-family: "微软雅黑 Light", "Simsun";
+    font-size: 14px;
+    display: none;
+}
+
+#verification{
+    font-family: "微软雅黑 Light", "Simsun";
+}
+
+.submit_btn{
+    max-width: 400px;
+    margin: 10px auto;
+    background: #44B78B;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    font-family: "微软雅黑 Light", "微软雅黑", "黑体";
+    -webkit-font-smoothing: subpixel-antialiased;
+    padding:0.5em 0;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.submit_btn:hover{
+    background: #51B195;
+}
+
+#captcha_info{
+    display: none;
+
 }

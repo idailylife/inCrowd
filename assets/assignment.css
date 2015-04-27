@@ -1,7 +1,109 @@
 body{
     background: #f8f8f8;
+    margin: 0;
+    line-height: 1.6;
+    font-family: "微软雅黑 Light", "微软雅黑", "黑体";
+    padding-top: 20px;
 }
 
-.comp_image_container {
-    float: left;
+div{
+    display: block;
+}
+
+.container{
+    padding:0 4.1667%;
+    max-width: 1440px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.comp_image{
+    width: 360px;
+    height: 360px;
+}
+
+.comp_image:hover{
+    opacity:0.8;
+    filter:alpha(opacity=80);/*<=IE8*/
+}
+
+.comp_image_container{
+    display: inline-block;
+    width: 360px;
+    height: 360px;
+    border: solid 3px white;
+    border-radius: 5px;
+    overflow: hidden;
+    background: white;
+    margin: 10px 10px 10px 10px;
+}
+
+.meter{
+    max-width: 720px;
+    height: 20px;
+    position: relative;
+    background: #555;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    border-radius: 25px;
+    padding: 5px;
+    box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+}
+
+.meter>span {
+    display: block;
+    height: 100%;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background: rgb(43,194,83);
+    background-image: linear-gradient(
+            center bottom,
+            rgb(43,194,83) 37%,
+            rgb(84,240,84) 59%
+    );
+    position: relative;
+    overflow: hidden;
+}
+
+.meter > span:after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background-image: linear-gradient(
+            -45deg,
+            rgba(255, 255, 255, .2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, .2) 50%,
+            rgba(255, 255, 255, .2) 75%,
+            transparent 75%,
+            transparent
+    );
+    z-index: 1;
+    background-size: 50px 50px;
+    animation: move 2s linear infinite;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    overflow: hidden;
+}
+
+#progress{
+    font-size: 14px;
+}
+
+#div_next{
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    height: auto;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#div_next:hover{
+    background: #888;
 }
