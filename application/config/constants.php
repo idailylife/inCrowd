@@ -96,4 +96,5 @@ define('PATH_TO_RESOURCES', 'd:/wamp/www/'); //Base path of resources
 define('COMPARISON_SIZE', 5); //每个用户需要比较的总图片·对·数
 define('TEST_CMP_SIZE', 1); //其中每个用户的用户能力测试用的图片·对·数
 define('KEY_HIT_RECORD', 'current_hit_record');  //Session中的键
+define('KEY_HIT_COOKIE', 'hit_token');           //Cookie中的键
 define('KEY_PASS', 'pass');

@@ -44,8 +44,21 @@ class Finish extends CI_Controller {
     }
 
     function have_unfinished_hit(){
-        return isset($_SESSION[Finish::KEY_HIT_RECORD]);
-        //TODO: 检查cookie
+        if (isset($_SESSION[KEY_HIT_RECORD])){
+            return true;
+        } elseif (isset($_COOKIE[KEY_HIT_COOKIE])){
+            $this->load->helper('cookie');
+            $hit_record = new Hit_record();
+            $hit_id = $hit_record->get_id_by_token(get_cookie(KEY_HIT_COOKIE, true));
+            if(-1 != $hit_id){
+                $_SESSION[KEY_HIT_RECORD] = $hit_id;
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     function get_current_hit_id(){
@@ -70,8 +83,8 @@ class Finish extends CI_Controller {
             $hit_record = new Hit_record();
             $hit_record->get_by_id($hit_id);
             $hit_record->mark_time(false);
-            $hit_record->payment_info = $_POST['payment_info'];
-            $hit_record->expert_info = $_POST['expert_info'];
+            $hit_record->payment_info = $this->input->post('payment_info', true);//$_POST['payment_info'];
+            $hit_record->expert_info = $this->input->post('expert_info', true);//$_POST['expert_info'];
             $key_array = array('end_time','payment_info',
                 'expert_info');
             $db_ret = $hit_record->update_db($key_array);
@@ -79,9 +92,10 @@ class Finish extends CI_Controller {
             if($db_ret){
                 $ret_data['status'] = 0;
                 $ret_data['message'] = 'Succeed';
-                //Clear hit information in session
+                //Clear hit information in session & cookie
                 unset($_SESSION[KEY_HIT_RECORD]);
                 unset($_SESSION[KEY_PASS]);
+                unset($_COOKIE[KEY_HIT_COOKIE]);
             } else {
                 $ret_data['status'] = 2;
                 $ret_data['message'] = 'Unable to update database';

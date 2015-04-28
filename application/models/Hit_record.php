@@ -30,6 +30,7 @@ class Hit_record extends CI_Model {
     public $user_ip;
     public $payment_info;
     public $expert_info;
+    public $token;           //对应cookie的内容
 
     private $model_generated;
 
@@ -107,6 +108,9 @@ class Hit_record extends CI_Model {
             $data['start_time'] = $this->start_time;
         if(isset($this->user_ip))
             $data['user_ip'] = $this->user_ip;
+        if(isset($this->token)){
+            $data['token'] = $this->token;
+        }
 
         $this->db->insert(Hit_record::TABLE_NAME, $data);
         //$db_helper = new Model_helper();
@@ -127,18 +131,20 @@ class Hit_record extends CI_Model {
         foreach($key_array as $item){
             if($item == 'start_time')
                 $this->db->set('start_time', $this->start_time);
-            else if($item == 'end_time')
+            elseif($item == 'end_time')
                 $this->db->set('end_time', $this->end_time);
-            else if($item == 'progress_count')
+            elseif($item == 'progress_count')
                 $this->db->set('progress_count', $this->progress_count);
-            else if($item == 'user_ip')
+            elseif($item == 'user_ip')
                 $this->db->set('user_ip', $this->user_ip);
-            else if($item == 'payment_info')
+            elseif($item == 'payment_info')
                 $this->db->set('payment_info', $this->payment_info);
-            else if($item == 'expert_info')
+            elseif($item == 'expert_info')
                 $this->db->set('expert_info', $this->expert_info);
-            else if($item == 'records')
+            elseif($item == 'records')
                 $this->db->set('records', $this->record_id_array);
+            elseif($item == 'token')
+                $this->db->set('token', $this->token);
             else
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }
@@ -176,5 +182,20 @@ class Hit_record extends CI_Model {
         }
         else
             return null;
+    }
+
+    /**
+     * 根据token返回id，无法查找则返回-1
+     * @param $token
+     * @return int
+     */
+    public function get_id_by_token($token){
+        $this->db->where('token', $token);
+        $query = $this->db->get(Hit_record::TABLE_NAME);
+        if($query->num_rows() >0) {
+            $row = $query->row();
+            return $row->id;
+        }
+        return -1;
     }
 }

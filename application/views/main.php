@@ -29,11 +29,15 @@
                 var code_num = $('#veri_code').val();
                 $.post("/inCrowd/verifycode", {captcha:code_num}, function(msg){
                     if(msg == '1'){
-                        window.location.href= '/inCrowd/assignment';
+                        var url = '/inCrowd/assignment';
+                        if($('#keep_cookie').prop('checked')){
+                            url = url + '?keep_cookie=1';
+                        }
+                        window.location.href= url;
                     } else {
-                        alert('FAIL');
                         reset_captcha();
                         $('#veri_code').val("");
+                        $('#get_in').text('重试');
                     }
                 });
             });
@@ -56,9 +60,6 @@
     <div id="headers">
         <!--Logo and headers-->
         <p id="logo">Crowd? Crowd. Crowd!</p>
-        <div role="navigation">
-            <!--Leave for further use-->
-        </div>
     </div>
     <div id="container">
         <div id="terms_div" class="div_center">
@@ -82,7 +83,7 @@
                     <img id="captcha_img" src="/inCrowd/verifycode?rnd=<?php echo rand(0,1000) ?>">
                 </p>
                 <div id="cookie_div">
-                    将答题状态存储在本地，以便下次打开时能恢复
+                    <label for="keep_cookie">存储答题状态，以便下次打开时能恢复</label>
                     <input type="checkbox" id="keep_cookie" name="keep_cookie" value="1">
                 </div>
 

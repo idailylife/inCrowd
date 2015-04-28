@@ -53,8 +53,21 @@ class Assignment extends CI_Controller {
 
 
     function have_unfinished_hit(){
-        return isset($_SESSION[KEY_HIT_RECORD]);
-        //TODO: 检查cookie
+        if (isset($_SESSION[KEY_HIT_RECORD])){
+            return true;
+        } elseif (isset($_COOKIE[KEY_HIT_COOKIE])){
+            $this->load->helper('cookie');
+            $hit_record = new Hit_record();
+            $hit_id = $hit_record->get_id_by_token(get_cookie(KEY_HIT_COOKIE, true));
+            if(-1 != $hit_id){
+                $_SESSION[KEY_HIT_RECORD] = $hit_id;
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     function get_current_hit_id(){
@@ -163,12 +176,8 @@ class Assignment extends CI_Controller {
     }
 
     private function index_get(){
-
-        //See if we have an unfinished HIT assignment..
-        //If so, load the old job. (status stored in cookie)
-        //TODO: implementation
-        //////////////////////////////////////
         $hit_record = new Hit_record();
+        //See if we have an unfinished HIT assignment..
         if($this->have_unfinished_hit()){
             $hit_id = $_SESSION[KEY_HIT_RECORD];
             $hit_record->get_by_id($hit_id);
@@ -180,6 +189,19 @@ class Assignment extends CI_Controller {
             $hit_record->generate_comparison();
             $hit_record->mark_time(true);
             $hit_record->user_ip = $this->get_client_ip();
+            //If the user allow cookie storage, create a token
+            if(isset($_GET['keep_cookie']) &&
+                $_GET['keep_cookie'] == '1') {
+                $token = md5(''+time());
+                $this->load->helper('cookie');
+                $cookie = array(
+                    'name'  => KEY_HIT_COOKIE,
+                    'value' => $token,
+                    'expire'=> '173000' //one day
+                );
+                $this->input->set_cookie($cookie);
+                $hit_record->token = $token;
+            }
 
             $hit_id = $hit_record->push_to_db();
             //Write to session
@@ -205,6 +227,7 @@ class Assignment extends CI_Controller {
      * 使用POST方法提交当前比较对的结果:
      *  creativity
      *  usability
+     *  duration
      * 并获取下一个比较对的数据（JSON）
      *
      */
@@ -226,6 +249,7 @@ class Assignment extends CI_Controller {
             $current_comp_id = $hit_record->record_id_array[$progress];
             $cmp_record = new Compare_record();
             $cmp_record->get_by_id($current_comp_id);
+
             $answer = 0;
             if(strcmp($_POST['creativity'],'A') == 0)
                 $answer = 1;
@@ -233,7 +257,13 @@ class Assignment extends CI_Controller {
             if(strcmp($_POST['usability'], 'A') == 0)
                 $answer = $answer | 1;
             $cmp_record->answer = $answer;
+
             $key = array('answer');
+            if(isset($_POST['duration'])){
+                $cmp_record->duration = $this->input->post('duration', true);
+                array_push($key, 'duration');
+            }
+
             //Update database
             $cmp_record->update_db($key);
 

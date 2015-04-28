@@ -15,13 +15,17 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $('#btn_submit').click(function(){
-                var validity = check_payment_info();
+                var validity = check_payment_info()
+                    && check_payment_blank();
                 if(validity){
                     $.post("finish", {
                         'payment_info': $('#payment').val(),
                         'expert_info': $("input[name='expertise']:checked").val()
                     }, submit_callback);
                 }
+            });
+            $('#payment_re').blur(function(){
+                check_payment_info();
             });
         });
         function show_submit_failure(){
@@ -57,35 +61,53 @@
             var info1= $('#payment_re').val();
             if(info == info1){
                 $('#verify_info').css('display', 'none');
+                $('#payment_re').css('border', '2px solid #cfe3dc');
+                $('#payment').css('border', '2px solid #cfe3dc');
                 return true;
             } else {
                 $('#verify_info').css('display', 'inline');
+                $('#payment_re').css('border', '2px solid #E34B57');
+                $('#payment').css('border', '2px solid #E34B57');
                 return false;
+            }
+        }
+
+        function check_payment_blank(){
+            var info = $('#payment').val();
+            if(info == ""){
+                return false;
+            } else {
+                return true;
             }
         }
     </script>
 </head>
 <body>
-    <h1>Holy crap, you made it!</h1>
-    <div id="info_input">
-        <p>向您支付的报酬有一个最低标准且参照您先前答题的能力向上浮动.</p>
-        <p>麻烦提供您的支付宝账号(邮箱或手机号)
-            <input type="text" id="payment" name="payment"/>
-        </p>
-        <p>烦请再输入一遍以确认
-            <input type="text" id="payment_re" name="payment_re"/>
-        </p>
+    <div id="title">
+        <h1>You made it!</h1>
+    </div>
+    <div id="info_input" class="container">
+        <p>恭喜，任务已完成.</p>
+        <p>您的支付宝账号(邮箱或手机号)</p>
+        <input type="text" id="payment" name="payment"/>
+
+        <p>烦请再输入一遍以确认</p>
+        <input type="text" id="payment_re" name="payment_re"/>
+        <br/>
         <p id="verify_info">:(两次输入的内容不一致.</p>
         <p>
-            请问您是否从事设计相关工作, 或设计相关专业在读学生?(此项仅用于算法验证)
-            <input type="radio" name="expertise" value="1">是
-            <input type="radio" name="expertise" value="0">否
+            请问您是否从事设计相关工作, 或设计相关专业在读学生?
         </p>
-        <input type="button" id="btn_submit" value="提交"/>
+        <input type="radio" name="expertise" value="1" id="rad_exp1">
+        <label for="rad_exp1"><span><span></span></span>是</label>
+        <input type="radio" name="expertise" value="0" id="rad_exp2">
+        <label for="rad_exp2"><span><span></span></span>否</label>
+
+        <div id="btn_submit">提交</div>
         <p id="submit_info">熬~连接失败，烦请再试一次。</p>
     </div>
     <div id="info_result">
-        <h4>提交成功.</h4>
+        <h4>提交成功!</h4>
     </div>
 </body>
 </html>

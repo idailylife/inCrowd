@@ -21,10 +21,9 @@ div{
 
 #headers{
     background: #44B78B;
-    width: auto;
     height: 48px;
-    margin:0;
-    padding:0 4.1667%;
+    margin:0 auto;
+    text-align: center;
 }
 
 #logo{
@@ -67,7 +66,6 @@ div{
     border: none;
     font-family: "微软雅黑 Light", "Simsun";
     font-size: 14px;
-    display: none;
 }
 
 #verification{
@@ -97,5 +95,8 @@ div{
 
 #captcha_info{
     display: none;
+}
 
+#captcha_img{
+    cursor: pointer;
 }

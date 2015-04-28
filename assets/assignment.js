@@ -1,6 +1,8 @@
 /**
  * Created by bowei on 2015/4/25.
  */
+
+
 function resize_image(load_count) {
     if(load_count < 2) {
         return false;
@@ -33,10 +35,6 @@ function resize_image(load_count) {
     return true;
 }
 
-function foo(){
-    console.log('blabla');
-}
-
 function post_callback(data, ret_status){
     console.log('post_callback:' + ret_status);
     console.log(data);
@@ -64,6 +62,7 @@ function post_callback(data, ret_status){
             $(".radio").each(function(){
                 $(this).prop('checked', false);
             });
+            start_time = new Date().getTime();
             break;
         default :
             alert('wtf');
@@ -80,3 +79,5 @@ function check_validity(){
     }
     return true;
 }
+
+
