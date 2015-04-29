@@ -16,12 +16,15 @@
         $(document).ready(function(){
             $('#btn_submit').click(function(){
                 var validity = check_payment_info()
-                    && check_payment_blank();
+                    && check_form_blank();
                 if(validity){
                     $.post("finish", {
                         'payment_info': $('#payment').val(),
-                        'expert_info': $("input[name='expertise']:checked").val()
+                        'expert_info': $("input[name='expertise']:checked").val(),
+                        'advice': $('#advice').val()
                     }, submit_callback);
+                } else {
+                    $('#btn_submit').text('请填写完整后重试');
                 }
             });
             $('#payment_re').blur(function(){
@@ -72,42 +75,52 @@
             }
         }
 
-        function check_payment_blank(){
+        function check_form_blank(){
             var info = $('#payment').val();
             if(info == ""){
                 return false;
             } else {
-                return true;
+                if($("input[name='expertise']:checked").val() == undefined){
+                    console.log('undefined value detected');
+                    return false;
+                } else {
+                    return true;
+                }
             }
+
         }
     </script>
 </head>
 <body>
     <div id="title">
-        <h1>You made it!</h1>
+        <h1>YOU MADE IT!</h1>
     </div>
     <div id="info_input" class="container">
         <p>恭喜，任务已完成.</p>
-        <p>您的支付宝账号(邮箱或手机号)</p>
-        <input type="text" id="payment" name="payment"/>
-
-        <p>烦请再输入一遍以确认</p>
-        <input type="text" id="payment_re" name="payment_re"/>
-        <br/>
+        <p>您的支付宝账号(邮箱或手机号)<br/>
+            <input type="text" id="payment" name="payment"/>
+        </p>
+        <p>烦请再输入一遍以确认<br/>
+            <input type="text" id="payment_re" name="payment_re"/>
+        </p>
         <p id="verify_info">:(两次输入的内容不一致.</p>
         <p>
             请问您是否从事设计相关工作, 或设计相关专业在读学生?
-        </p>
+        <br/>
         <input type="radio" name="expertise" value="1" id="rad_exp1">
         <label for="rad_exp1"><span><span></span></span>是</label>
         <input type="radio" name="expertise" value="0" id="rad_exp2">
         <label for="rad_exp2"><span><span></span></span>否</label>
-
+        </p>
+        <p>(可选)烦请留下宝贵意见
+            <br/>
+            <textarea id="advice" rows="3" placeholder=""></textarea>
+        </p>
         <div id="btn_submit">提交</div>
         <p id="submit_info">熬~连接失败，烦请再试一次。</p>
     </div>
-    <div id="info_result">
-        <h4>提交成功!</h4>
+    <div id="info_result" class="container">
+        <h4>提交成功！再次感谢您的参与！</h4>
     </div>
 </body>
 </html>

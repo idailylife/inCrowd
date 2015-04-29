@@ -87,6 +87,13 @@ class Finish extends CI_Controller {
             $hit_record->expert_info = $this->input->post('expert_info', true);//$_POST['expert_info'];
             $key_array = array('end_time','payment_info',
                 'expert_info');
+
+            if(!empty($_POST['advice'])){
+                array_push($key_array, 'advice');
+                $advice = substr($this->input->post('advice', true), 0, 400); //最大400个字
+                $hit_record->advice = $advice;
+            }
+
             $db_ret = $hit_record->update_db($key_array);
 
             if($db_ret){
@@ -95,7 +102,9 @@ class Finish extends CI_Controller {
                 //Clear hit information in session & cookie
                 unset($_SESSION[KEY_HIT_RECORD]);
                 unset($_SESSION[KEY_PASS]);
-                unset($_COOKIE[KEY_HIT_COOKIE]);
+                //unset($_COOKIE[KEY_HIT_COOKIE]);
+                $this->load->helper('cookie');
+                delete_cookie(KEY_HIT_COOKIE);
             } else {
                 $ret_data['status'] = 2;
                 $ret_data['message'] = 'Unable to update database';

@@ -31,6 +31,7 @@ class Hit_record extends CI_Model {
     public $payment_info;
     public $expert_info;
     public $token;           //对应cookie的内容
+    public $advice;          //用户意见建议
 
     private $model_generated;
 
@@ -145,6 +146,8 @@ class Hit_record extends CI_Model {
                 $this->db->set('records', $this->record_id_array);
             elseif($item == 'token')
                 $this->db->set('token', $this->token);
+            elseif($item == 'advice')
+                $this->db->set('advice', $this->advice);
             else
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }

@@ -54,6 +54,27 @@ class User_eval_pic extends CI_Model {
     }
 
     /**
+     * 随机选择一张图，但不属于某一category
+     * @param $category 获奖等级（gold,silver,bronze,...）
+     * @return $this|null 找不到则返回null
+     */
+    public function get_random_except($category){
+        $this->db->where('category !=', $category);
+        $query = $this->db->get(User_eval_pic::TABLE_NAME);
+        if($query->num_rows() > 0){
+            $ary_result = $query->result();
+            shuffle($ary_result);
+            $row = $query->row();
+            $this->id = $row->id;
+            $this->src = $row->src;
+            $this->category = $row->category;
+            return $this;
+        }
+        show_error('Error on User_eval_pic->get_random_except(): Empty result case #1');
+        return null;
+    }
+
+    /**
      * 从数据库中查询某id的model
      * @param $id
      * @return $this|null 返回$this或null

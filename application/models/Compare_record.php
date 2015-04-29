@@ -59,19 +59,19 @@ class Compare_record extends CI_Model {
         $cmp_obj2 = null;
         switch($this->comp_type){
             case CMP_TYPE_GENERAL:
-                //TODO: UNIT TEST
+                //For general comparisons
                 $cmp_obj1 = new General_eval_pic();
                 $cmp_obj1->get_random();
                 $cmp_obj2 = new General_eval_pic();
                 $cmp_obj2->get_random($cmp_obj1->id);
                 break;
             case CMP_TYPE_USERTEST:
-                //TODO: UNIT TEST
+                //For user quality test comparisons
                 $cmp_obj1 = new User_eval_pic();
                 $cmp_obj1->get_random();
                 $cmp_obj2 = new User_eval_pic();
-                $cmp_obj2->get_random($cmp_obj1->id);
-
+                //$cmp_obj2->get_random($cmp_obj1->id);
+                $cmp_obj2->get_random_except($cmp_obj1->category);
                 break;
             default:
                 show_error('Failed to generate comparison: unknown type.');

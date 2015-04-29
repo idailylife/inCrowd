@@ -32,7 +32,7 @@ div{
     color:#fff;
     padding: 1px 0 1px;
     height: 48px;
-    font-family: "Roboto", Corbel, Avenir, "Lucida Grande", "Lucida Sans", sans-serif;
+    font-family: "微软雅黑 Light", "微软雅黑", "黑体";
 }
 
 #container{
@@ -55,7 +55,8 @@ div{
     min-height: 300px;
     max-width: 700px;
     margin: 5px auto;
-    font-family: "微软雅黑 Light", "Simsun";
+    font-family: "Simsun";
+    text-align: left;
 }
 
 #cookie_div{

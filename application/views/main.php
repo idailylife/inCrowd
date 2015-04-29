@@ -59,14 +59,22 @@
 <body>
     <div id="headers">
         <!--Logo and headers-->
-        <p id="logo">Crowd? Crowd. Crowd!</p>
+        <p id="logo">基于众包的设计竞赛评价研究</p>
     </div>
     <div id="container">
         <div id="terms_div" class="div_center">
             <!--Terms and declaration here-->
-            <p class="title">XXXXX问卷</p>
+            <p class="title">各位亲</p>
             <div id="terms_detail">
-                该说点什么好呢。
+                <p>即将开始的实验类似于调查问卷,我们将会列出一些设计竞赛的作品(图),<b>您需要</b>对作品进行两两比较,
+                分别评价出在创新性、可用性上较为优秀的一个. 大部分问题的答案我们自己也不明确,所以尽力选择就好. </p>
+                <p>实验<b>时间</b>约5-15分钟,题目的<b>难易</b>程度由系统分配. 我们会记录您的答题信息(包括您的点击信息及操作时间等数据),
+                所有评价任务结束后将会向您索取支付方法, 以便将报酬支付给您. </p>
+                <p style="color: deeppink">实验中出现的设计作品, 其版权归原作者所有, 请勿非法下载或挪作商用. <br/>
+                    请勿使用自动化方法执行实验任务,一经发现将取消支付报酬,谢谢合作. <br/>
+                    <b>您在实验过程中填写的一切信息将完全保密,仅供研究使用.</b>
+                </p>
+                <p>真诚地感想您的参与！如有问题请联系@#$%^&</p>
             </div>
 
         </div>
@@ -83,7 +91,7 @@
                     <img id="captcha_img" src="/inCrowd/verifycode?rnd=<?php echo rand(0,1000) ?>">
                 </p>
                 <div id="cookie_div">
-                    <label for="keep_cookie">存储答题状态，以便下次打开时能恢复</label>
+                    <label for="keep_cookie">存储答题状态，以便意外关闭时能恢复</label>
                     <input type="checkbox" id="keep_cookie" name="keep_cookie" value="1">
                 </div>
 

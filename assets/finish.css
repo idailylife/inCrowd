@@ -13,13 +13,18 @@ input[type=text]{
     border: 2px solid #cfe3dc;
 }
 
+textarea{
+    border-radius: 3px;
+    border: 2px solid #cfe3dc;
+    width: 200px;
+}
+
 input[type=text]:hover{
     border: 2px solid #44b78b;
 }
 
 .container{
     text-align: center;
-
 }
 
 input[type=radio]:not(old) {
@@ -96,6 +101,7 @@ input[type=radio]:not(old):checked + label > span > span{
 }
 
 #info_result{
+    font-family: "微软雅黑 Light", "微软雅黑", "黑体";
     display: none;
 }
 

@@ -79,27 +79,29 @@
             <img id="img_b" class="comp_image" src="<?php echo $img_thumb2 ?>">
         </a>
     </div>
+    </br>
+    <span id="hint_p">点击图片可放大</span>
 </div>
 
 <div id="cmp_choices" class="container">
     <!-- Radio buttons here -->
     <p>您认为两幅作品中，
-        <a class="tooltips" href="#">
+        <a class="tooltips" href="#" data-tooltip="创新是指以现有的思维模式提出有别于常规或常人思路的见解为导向，利用现有的知识和物质，
+                在特定的环境中，本着理想化需要或为满足社会需求，而改进或创造新的事物、方法、元素、路径、
+                环境，并能获得一定有益效果的行为。">
             创新性
-            <span>创新性是指...</span>
         </a>
-        较好的是？
+        较强的是？
     </p>
     <input type="radio" name="creativity" class="radio" value="A" id="cr_a">
     <label for="cr_a"><span><span></span></span><b>左图</b></label>
     <input type="radio" name="creativity" class="radio" value="B" id="cr_b">
     <label for="cr_b"><span><span></span></span><b>右图</b></label>
     <p>您认为两幅作品中，
-        <a class="tooltips" href="#">
+        <a class="tooltips" href="#" data-tooltip="该产品能够制造或者使用，并且能够产生积极效果。">
             实用性
-            <span>实用性是指...</span>
         </a>
-        较好的是？
+        较强的是？
     </p>
     <input type="radio" name="usability" class="radio" value="A" id="us_a">
     <label for="us_a"><span><span></span></span><b>左图</b></label>

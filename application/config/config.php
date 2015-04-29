@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://192.168.31.205/inCrowd';
+$config['base_url'] = ''; //http://192.168.31.205/inCrowd
 
 /*
 |--------------------------------------------------------------------------
