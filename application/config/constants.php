@@ -93,7 +93,7 @@ define('CMP_TYPE_GENERAL', 0);
 define('CMP_TYPE_USERTEST', 1);
 define('IMAGE_BASE_URL', '../');       //Base url of comparison images
 define('PATH_TO_RESOURCES', 'd:/wamp/www/'); //Base path of resources
-define('COMPARISON_SIZE', 20); //每个用户需要比较的总图片·对·数
+define('COMPARISON_SIZE', 10); //每个用户需要比较的总图片·对·数
 define('TEST_CMP_SIZE', 3); //其中每个用户的用户能力测试用的图片·对·数
 define('KEY_HIT_RECORD', 'current_hit_record');  //Session中的键
 define('KEY_HIT_COOKIE', 'hit_token');           //Cookie中的键

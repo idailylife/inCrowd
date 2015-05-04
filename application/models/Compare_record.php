@@ -13,12 +13,7 @@
  * comp_id2
  * comp_type
  * answer:比较结果
- * ============================
- * A获胜记1，B获胜记0
- * 可用性：最右位
- * 创新性：第二位
- * 例：创新性：A>B，实用性B>A =>10(bin) = 2(dec)
- * ============================
+ * q_type:提问种类 0-创新性，1-实用性
  * duration:完成比较的时间
  *
  */
@@ -29,12 +24,15 @@ require_once('User_eval_pic.php');
 
 class Compare_record extends CI_Model {
     const TABLE_NAME = 'compare_record';
+    const QTYPE_CREATIVITY = 0;
+    const QTYPE_USABILITY  = 1;
 
     public $id;
     public $comp_id1;
     public $comp_id2;
     public $comp_type;
-    public $answer;     //answer_value:详见表格
+    public $q_type;
+    public $answer;
     public $duration;
 
     private $model_generated;
@@ -79,6 +77,8 @@ class Compare_record extends CI_Model {
         }
         $this->comp_id1 = $cmp_obj1->id;
         $this->comp_id2 = $cmp_obj2->id;
+        $this->q_type = rand(0,1);      //随机选择一种需要提问的XX性
+        //TODO: 可能需要采用聪明点儿的算法
         $this->model_generated = true;
         return $this;
     }
@@ -95,7 +95,8 @@ class Compare_record extends CI_Model {
         $data = array(
             'comp_id1' => $this->comp_id1,
             'comp_id2' => $this->comp_id2,
-            'comp_type'=> $this->comp_type
+            'comp_type'=> $this->comp_type,
+            'q_type' => $this->q_type
         );
         $this->db->insert(Compare_record::TABLE_NAME, $data);
         //$db_helper = new Model_helper();
@@ -128,6 +129,8 @@ class Compare_record extends CI_Model {
                 $this->db->set('answer', $this->answer);
             elseif ($item == 'duration')
                 $this->db->set('duration', $this->duration);
+            elseif ($item == 'q_type')
+                $this->db->set('q_type', $this->q_type);
             else
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }
@@ -145,6 +148,7 @@ class Compare_record extends CI_Model {
         $this->comp_id2 = $row->comp_id2;
         $this->comp_type = $row->comp_type;
         $this->duration = $row->duration;
+        $this->q_type = $row->q_type;
         return $this;
     }
 

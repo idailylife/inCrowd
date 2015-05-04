@@ -83,6 +83,7 @@ class Assignment extends CI_Controller {
     }
 
     function get_image_thumb_url($origin_url){
+        $origin_url = str_replace("\r", "", $origin_url);
         return $this->get_image_thumb_path($origin_url);
     }
 
@@ -92,6 +93,7 @@ class Assignment extends CI_Controller {
      */
     function create_thumbnail($origin_file_path){
         //If image exists, there is no need to regenerate one
+        $origin_file_path = str_replace("\r", "", $origin_file_path); //Remove unwanted control character
         $thumb_path = $this->get_image_thumb_path($origin_file_path);
         if(file_exists($thumb_path))
             return $thumb_path;
@@ -101,8 +103,8 @@ class Assignment extends CI_Controller {
         $config['source_image'] = $origin_file_path;
         $config['create_thumb'] = TRUE;
         $config['maintain_ratio'] = TRUE;
-        $config['width']         = 360;
-        $config['height']       = 360;
+        $config['width']         = 720;
+        $config['height']       = 720;
 
         $this->load->library('image_lib', $config);
         $this->image_lib->resize();
@@ -110,8 +112,9 @@ class Assignment extends CI_Controller {
     }
 
     /**
-     * @param $comp_id
-     * @param $hit_record
+     * 得到比较数据，用于view呈现
+     * @param $comp_id 比较记录，用来找到各种要问的东西
+     * @param $hit_record HIT记录，用来获取当前进度
      * @return array
      */
     private function get_comp_data($comp_id, $hit_record){
@@ -122,41 +125,42 @@ class Assignment extends CI_Controller {
             'img_src1'      => IMAGE_BASE_URL,
             'img_src2'      => IMAGE_BASE_URL,
             'prog_current'  => $hit_record->progress_count + 1,
-            'prog_total'    => $hit_record->get_comparison_size()
-        );
+            'prog_total'    => $hit_record->get_comparison_size(),
+            'q_type'        => $cmp_record->q_type
+        );  //Array for view variables
         $temp_path = array(
             'img1' => PATH_TO_RESOURCES,
             'img2' => PATH_TO_RESOURCES
-        );
+        );  //Array for resource image path on the disk
         switch($cmp_record->comp_type){
             case CMP_TYPE_GENERAL:
                 $gen_eval_model = new General_eval_pic();
                 $gen_eval_model->get_by_id($cmp_record->comp_id1);
                 $data['img_src1'] .= $gen_eval_model->src;
-                $temp_path['img1'] .= $gen_eval_model->src;
+                //$temp_path['img1'] .= $gen_eval_model->src;
                 $gen_eval_model->get_by_id($cmp_record->comp_id2);
                 $data['img_src2'] .= $gen_eval_model->src;
-                $temp_path['img2'] .= $gen_eval_model->src;
+                //$temp_path['img2'] .= $gen_eval_model->src;
                 break;
             case CMP_TYPE_USERTEST:
                 $user_eval_model = new User_eval_pic();
                 $user_eval_model->get_by_id($cmp_record->comp_id1);
                 $data['img_src1'] .= $user_eval_model->src;
-                $temp_path['img1'] .= $user_eval_model->src;
+                //$temp_path['img1'] .= $user_eval_model->src;
                 $user_eval_model->get_by_id($cmp_record->comp_id2);
                 $data['img_src2'] .= $user_eval_model->src;
-                $temp_path['img2'] .= $user_eval_model->src;
+                //$temp_path['img2'] .= $user_eval_model->src;
                 break;
         }
         //Generate image thumbnail
-        $i = 1;
-        foreach($temp_path as $key => $value){
-            $this->create_thumbnail($value);
-            $data['img_thumb'.$i] = $this->get_image_thumb_url(
-                $data['img_src'.$i]
-            );
-            $i++;
-        }
+//        $i = 1;
+//        foreach($temp_path as $key => $value){
+//            $this->create_thumbnail($value);    //Create image thumbnail if needed
+//            $data['img_thumb'.$i] = $this->get_image_thumb_url(
+//                $data['img_src'.$i]
+//            );  //Set image thumbnail url(Not local path)
+//            $i++;
+//        }
         return $data;
     }
 
@@ -239,7 +243,7 @@ class Assignment extends CI_Controller {
             $ret_data['status'] = 2; //Error
             $ret_data['reason'] = 'HIT record not in the session';
         } elseif(!isset($_POST['creativity'])
-            || !isset($_POST['usability'])){
+            && !isset($_POST['usability'])){
             $ret_data['status'] = 2; //Error
             $ret_data['reason'] = 'POST data incomplete';
         } else {
@@ -251,11 +255,13 @@ class Assignment extends CI_Controller {
             $cmp_record->get_by_id($current_comp_id);
 
             $answer = 0;
-            if(strcmp($_POST['creativity'],'A') == 0)
-                $answer = 1;
-            $answer = $answer << 1;
-            if(strcmp($_POST['usability'], 'A') == 0)
-                $answer = $answer | 1;
+            if($cmp_record->q_type == Compare_record::QTYPE_CREATIVITY){ //Question for creativity
+                if(strcmp($_POST['creativity'],'A') == 0)
+                    $answer = 1;
+            } elseif($cmp_record->q_type == Compare_record::QTYPE_USABILITY){
+                if(strcmp($_POST['usability'], 'A') == 0)
+                    $answer = 1;
+            }
             $cmp_record->answer = $answer;
 
             $key = array('answer');

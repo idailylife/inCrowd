@@ -50,10 +50,13 @@ function post_callback(data, ret_status){
             window.location.href='finish';
             break;
         case 0:
-            $('#img_a_a').attr('href', jsonval.img_src1);
-            $('#img_a').attr('src', jsonval.img_thumb1);
-            $('#img_b_a').attr('href', jsonval.img_src2);
-            $('#img_b').attr('src', jsonval.img_thumb2);
+            //$('#img_a_a').attr('data-zoom-image', jsonval.img_src1);
+            //$('#img_a').attr('src', jsonval.img_src1);
+            //$('#img_b').attr('data-zoom-image', jsonval.img_src2);
+            //$('#img_b').attr('src', jsonval.img_src2);
+            refreshZoomImage($('#img_a'), 1, jsonval.img_src1);
+            refreshZoomImage($('#img_b'), 11, jsonval.img_src2);
+
             $('#curr_index').text(jsonval.prog_current);
             $('#total_index').text(jsonval.prog_total);
             var progress = jsonval.prog_current/jsonval.prog_total*100 + "%";
@@ -74,10 +77,64 @@ function post_callback(data, ret_status){
 function check_validity(){
     var val_c = $("input[name='creativity']:checked").val();
     var val_u = $("input[name='usability']:checked").val();
-    if(val_c == undefined || val_u == undefined){
+    if(val_c == undefined && val_u == undefined){
         return false;
     }
     return true;
 }
 
+function refreshZoomImage(img_obj, zoompos, img_src){
+    var zoomConfig = {
+        scrollZoom : true,
+        zoomWindowPosition: zoompos,
+        zoomWindowWidth: 512,
+        zoomWindowHeight: 512
+    };
+    $('.zoomContainer').remove();
+    img_obj.removeData('elevateZoom');
+    img_obj.attr('src', img_src);
+    img_obj.data('zoom-image', img_src);
+    img_obj.elevateZoom(zoomConfig);
+}
 
+function init_zoom(){
+    var zoomConfig = {
+        scrollZoom : true,
+        zoomWindowPosition: 1,
+        zoomWindowWidth: 512,
+        zoomWindowHeight: 512
+    };
+    $('#img_a').elevateZoom(zoomConfig);
+    zoomConfig['zoomWindowPosition']=11;
+    $('#img_b').elevateZoom(zoomConfig);
+}
+
+//function elevateZoomPic(refresh){
+//    if(refresh){
+//        // Remove old instance od EZ
+//        $('.zoomContainer').remove();
+//        $('#img_a').removeData('elevateZoom');
+//        $('#img_b').removeData('elevateZoom');
+//    }
+//    var zoomConfig = {
+//        scrollZoom : true,
+//        zoomWindowPosition: 1,
+//        zoomWindowWidth: 512,
+//        zoomWindowHeight: 512
+//    };
+//    $('#img_a').elevateZoom(zoomConfig);
+//    zoomConfig['zoomWindowPosition']=11;
+//    $('#img_b').elevateZoom(zoomConfig);
+//}
+
+function switchLoadImg(index, value){
+    //更改“加载中”图片的显示true/隐藏false
+    //index='a'/'b'
+    if(value == true){
+        $('#load_img_'+index).show();
+        $('#img_'+index).hide();
+    } else {
+        $('#load_img_'+index).hide();
+        $('#img_'+index).show();
+    }
+}
