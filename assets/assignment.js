@@ -55,7 +55,24 @@ function post_callback(data, ret_status){
             //$('#img_b').attr('data-zoom-image', jsonval.img_src2);
             //$('#img_b').attr('src', jsonval.img_src2);
             refreshZoomImage($('#img_a'), 1, jsonval.img_src1);
+            //$('#img_a').on('load',function () {
+               switchLoadImg('a', false);
+            //}); //Reset onload function
             refreshZoomImage($('#img_b'), 11, jsonval.img_src2);
+            //$('#img_b').on('load',function () {
+                switchLoadImg('b', false);
+            //
+
+            var q_type = jsonval.q_type;
+            if(q_type == 0){
+                $('#cmp_usability').css('display', 'none');
+                $('#cmp_creativity').css('display', 'inline');
+            }else if(q_type == 1){
+                $('#cmp_usability').css('display', 'inline');
+                $('#cmp_creativity').css('display', 'none');
+            }else{
+                alert('qtype error');
+            }
 
             $('#curr_index').text(jsonval.prog_current);
             $('#total_index').text(jsonval.prog_total);

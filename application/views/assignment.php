@@ -40,14 +40,15 @@
                 var val_c = $("input[name='creativity']:checked").val();
                 var val_u = $("input[name='usability']:checked").val();
                 var duration = new Date().getTime() - start_time;
-
+                var postData = {
+                    'creativity': val_c,
+                    'usability': val_u,
+                    'duration' : duration
+                };
+                window.console.log(postData);
                 switchLoadImg('a', true);
                 switchLoadImg('b', true);
-                $.post("assignment", {
-                        'creativity': val_c,
-                        'usability': val_u,
-                        'duration' : duration
-                    },
+                $.post("assignment", postData,
                     post_callback
                 );
             });
@@ -112,9 +113,9 @@
             </a>
             较强的是？
         <input type="radio" name="creativity" class="radio" value="A" id="cr_a">
-        <label for="cr_a"><span><span></span></span><b>左图</b></label>
+        <label for="cr_a" class="cmp_label"><span><span></span></span><b>左图</b></label>
         <input type="radio" name="creativity" class="radio" value="B" id="cr_b">
-        <label for="cr_b"><span><span></span></span><b>右图</b></label>
+        <label for="cr_b" class="cmp_label"><span><span></span></span><b>右图</b></label>
     </div>
     <div id="cmp_usability" class="cmp_container">
         两幅作品中，
@@ -123,9 +124,9 @@
             </a>
             较强的是？
         <input type="radio" name="usability" class="radio" value="A" id="us_a">
-        <label for="us_a"><span><span></span></span><b>左图</b></label>
+        <label for="us_a" class="cmp_label"><span><span></span></span><b>左图</b></label>
         <input type="radio" name="usability" class="radio" value="B" id="us_b">
-        <label for="us_b"><span><span></span></span><b>右图</b></label>
+        <label for="us_b" class="cmp_label"><span><span></span></span><b>右图</b></label>
     </div>
 </div>
 

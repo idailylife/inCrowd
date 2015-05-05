@@ -3,7 +3,7 @@ body{
     margin: 0;
     line-height: 1.6;
     font-family: "微软雅黑 Light", "微软雅黑", "黑体";
-    padding-top: 20px;
+    padding-top: 5px;
 }
 
 div{
@@ -73,7 +73,7 @@ input[type=radio]:not(old):checked + label > span > span{
 .comp_image{
     height: 100%;
     width: auto;
-    max-width: 45%;
+    max-width: 100%;
 }
 
 .comp_image_container{
@@ -156,10 +156,11 @@ a.tooltips {
 
 #progress{
     font-size: 14px;
-    margin-top: -1.7em;
+    margin-top: -1.8em;
     color: white;
     padding: 0 auto 0 auto;
     z-index: 2;
+    text-shadow: 0px 0px 3px #555;
 }
 
 #div_next{
@@ -253,6 +254,7 @@ a.tooltips {
 
 #cmp_choices{
     padding-top: 10px;
+    line-height: 2em;
 }
 
 .spinner {
@@ -294,4 +296,8 @@ a.tooltips {
           transform: scale(1.0);
           -webkit-transform: scale(1.0);
       }
+}
+
+.cmp_label:hover{
+    color: #222;
 }
