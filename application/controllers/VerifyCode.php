@@ -10,12 +10,17 @@
  * Class VerifyCode
  * Handles verify code in the main page
  */
-class VerifyCode extends CI_Controller {
+class Verifycode extends CI_Controller {
     public $font;
 
     public function __construct(){
         parent::__construct();
-        $this->font = dirname(__FILE__).'../../fonts/courbd.ttf';
+        $this->font = FONT_PATH;//dirname(__FILE__).'/../../fonts/courbd.ttf';
+    }
+
+    public function test_dir(){
+        echo FONT_PATH;
+        //echo dirname(__FILE__).'/../../fonts/courbd.ttf';
     }
 
     public function index(){
@@ -58,7 +63,22 @@ class VerifyCode extends CI_Controller {
         }
     }
 
+    public function test(){
+        header("Content-type:image/png");
+        $img_width = 100;
+        $img_height = 36;
+        $image = imagecreate($img_width, $img_height);
+        $background = imagecolorallocate($image, 248, 248, 248); //#f8f8f8
+        imagefill($image, 0, 0, $background);
+        imagepng($image);
+    }
+
     public function index_get() {
+        if(!file_exists(FONT_PATH)){
+            show_error('Error generating verifycode: font file does not exist');
+            return;
+        }
+
         //Session过期问题?
 
         $img_width = 100;

@@ -50,10 +50,6 @@ function post_callback(data, ret_status){
             window.location.href='finish';
             break;
         case 0:
-            //$('#img_a_a').attr('data-zoom-image', jsonval.img_src1);
-            //$('#img_a').attr('src', jsonval.img_src1);
-            //$('#img_b').attr('data-zoom-image', jsonval.img_src2);
-            //$('#img_b').attr('src', jsonval.img_src2);
             refreshZoomImage($('#img_a'), 1, jsonval.img_src1);
             //$('#img_a').on('load',function () {
                switchLoadImg('a', false);

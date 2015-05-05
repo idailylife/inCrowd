@@ -19,8 +19,6 @@
 <!--    <script type="text/javascript" src="--><?php //echo base_url(); ?><!--assets/jquery.fancybox.pack.js"></script>-->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/assignment.js"></script>
     <script type="text/javascript">
-        switchLoadImg('a', true);
-        switchLoadImg('b', true);
         var start_time = null;
         var progress = '<?php echo $prog_current/$prog_total*100 ?>%';
         $(document).ready(function () {
