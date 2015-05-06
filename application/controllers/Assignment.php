@@ -88,7 +88,7 @@ class Assignment extends CI_Controller {
     }
 
     /**
-     * @param $origin_file_path Must be the server path, NOT a URL
+     * @param $origin_file_path Must be the server path, NOT a url
      * @return string $thumb_path
      */
     function create_thumbnail($origin_file_path){

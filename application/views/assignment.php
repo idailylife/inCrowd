@@ -20,6 +20,7 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/assignment.js"></script>
     <script type="text/javascript">
         var start_time = null;
+        var timer = null;
         var progress = '<?php echo $prog_current/$prog_total*100 ?>%';
         $(document).ready(function () {
             $('#img_a').on('load', function(){
@@ -63,12 +64,19 @@
             alert('WTF');
             <?php endif;?>
             init_zoom();
+            //Set timer
+            resetTimer();
+            timer = setInterval("tick_and_show();", 1000);
         });
 
     </script>
 </head>
 
 <body>
+<div id="timer">
+    <span id="time"></span>
+    <!--Show time here-->
+</div>
 <div class="meter container">
     <!--Progress bar here-->
     <span id="meter_span" style="width: 25%"></span>

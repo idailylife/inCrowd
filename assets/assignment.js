@@ -122,24 +122,6 @@ function init_zoom(){
     $('#img_b').elevateZoom(zoomConfig);
 }
 
-//function elevateZoomPic(refresh){
-//    if(refresh){
-//        // Remove old instance od EZ
-//        $('.zoomContainer').remove();
-//        $('#img_a').removeData('elevateZoom');
-//        $('#img_b').removeData('elevateZoom');
-//    }
-//    var zoomConfig = {
-//        scrollZoom : true,
-//        zoomWindowPosition: 1,
-//        zoomWindowWidth: 512,
-//        zoomWindowHeight: 512
-//    };
-//    $('#img_a').elevateZoom(zoomConfig);
-//    zoomConfig['zoomWindowPosition']=11;
-//    $('#img_b').elevateZoom(zoomConfig);
-//}
-
 function switchLoadImg(index, value){
     //更改“加载中”图片的显示true/隐藏false
     //index='a'/'b'
@@ -150,4 +132,14 @@ function switchLoadImg(index, value){
         $('#load_img_'+index).hide();
         $('#img_'+index).show();
     }
+}
+
+function resetTimer(){
+    $('#time').text('0');
+}
+
+function tick_and_show(){
+    var time_passed = new Date().getTime() - start_time;
+    time_passed = new Number(time_passed / 1000).toFixed(0);
+    $('#time').text(time_passed);
 }

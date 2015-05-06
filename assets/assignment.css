@@ -71,9 +71,10 @@ input[type=radio]:not(old):checked + label > span > span{
 }
 
 .comp_image{
-    height: 100%;
+    height: auto;
     width: auto;
     max-width: 100%;
+    max-height: 100%;
 }
 
 .comp_image_container{
@@ -154,13 +155,27 @@ a.tooltips {
     padding-left: 5px;
 }
 
+#timer{
+    float: left;
+    margin-left: 4.5%;
+}
+
+#time{
+    font-weight: 600;
+    font-family: Consolas, Monaco, Courier New, Courier, monospace;
+    font-size: 15px;
+    color: orangered;
+}
+
+
 #progress{
     font-size: 14px;
     margin-top: -1.8em;
     color: white;
-    padding: 0 auto 0 auto;
     z-index: 2;
     text-shadow: 0px 0px 3px #555;
+    float: left;
+    width: 100%;
 }
 
 #div_next{
@@ -248,6 +263,7 @@ a.tooltips {
 }
 
 #img_framework{
+    min-width: 960px;
     height: 80%;
     margin-bottom: 10px;
 }
@@ -256,6 +272,8 @@ a.tooltips {
     padding-top: 10px;
     line-height: 2em;
 }
+
+
 
 .spinner {
     width: 60px;
