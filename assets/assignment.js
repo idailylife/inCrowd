@@ -3,38 +3,6 @@
  */
 
 
-function resize_image(load_count) {
-    if(load_count < 2) {
-        return false;
-    }
-    $('.comp_image').each(function () {
-        var maxWidth = 480;
-        var maxHeight = 480;
-        var ratio = 0; //缩放比例
-        var width = $(this).width();
-        var height = $(this).height();
-
-        //检查图片是否超宽
-        if (width > maxWidth) {
-            ratio = maxWidth / width;
-            $(this).css('width', maxWidth);
-            height = height * ratio;
-            $(this).css('height', height);
-            width = maxWidth;
-        }
-
-        if (height > maxHeight) {
-            ratio = maxHeight / height;
-            $(this).css('height', maxHeight);
-            width = width * ratio;
-            $(this).css('width', width);
-            height = maxHeight;
-        }
-        console.log('w,h=['+ width + ',' + height + ']');
-    });
-    return true;
-}
-
 function post_callback(data, ret_status){
     console.log('post_callback:' + ret_status);
     console.log(data);
@@ -52,12 +20,13 @@ function post_callback(data, ret_status){
         case 0:
             refreshZoomImage($('#img_a'), 1, jsonval.img_src1);
             //$('#img_a').on('load',function () {
-               switchLoadImg('a', false);
+            switchLoadImg('a', false);
             //}); //Reset onload function
             refreshZoomImage($('#img_b'), 11, jsonval.img_src2);
             //$('#img_b').on('load',function () {
-                switchLoadImg('b', false);
+            switchLoadImg('b', false);
             //
+            set_image_margin();
 
             var q_type = jsonval.q_type;
             if(q_type == 0){
@@ -142,4 +111,11 @@ function tick_and_show(){
     var time_passed = new Date().getTime() - start_time;
     time_passed = new Number(time_passed / 1000).toFixed(0);
     $('#time').text(time_passed);
+}
+
+function set_image_margin(){
+    var container_h = $('.comp_image_container').height();
+    $('.comp_image').each(function(){
+        $(this).css('margin-top', (container_h - $(this).height())/2 + "px");
+    });
 }

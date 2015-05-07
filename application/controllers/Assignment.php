@@ -187,10 +187,12 @@ class Assignment extends CI_Controller {
             $hit_record->get_by_id($hit_id);
         } else {
             //Create a new HITRecord
-            $hit_record->init(COMPARISON_SIZE,
-                TEST_CMP_SIZE);
+            //$hit_record->init(COMPARISON_SIZE,
+            //    TEST_CMP_SIZE);
             //Generate comparisons for current user
-            $hit_record->generate_comparison();
+            //$hit_record->generate_comparison();
+            $hit_record->create_comparison();
+
             $hit_record->mark_time(true);
             $hit_record->user_ip = $this->get_client_ip();
             //If the user allow cookie storage, create a token

@@ -67,8 +67,11 @@
             //Set timer
             resetTimer();
             timer = setInterval("tick_and_show();", 1000);
-        });
 
+            //set_image_margin();
+        });
+        $(window).on('resize', set_image_margin);
+        $(window).on('load', set_image_margin);
     </script>
 </head>
 

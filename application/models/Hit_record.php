@@ -24,7 +24,7 @@ class Hit_record extends CI_Model {
     public $id;
     public $start_time;
     public $end_time;
-    public $records;         //存放Compare_record对象
+    //public $records;         //存放Compare_record对象
     public $record_id_array; //存放Compare_record对象的ID (从数据库存取需要json_encode/decode)
     public $progress_count;
     public $user_ip;
@@ -43,41 +43,69 @@ class Hit_record extends CI_Model {
     }
 
     /**
+     * TODO: 1.分离生成Compare_record对象的函数，支持从start_index开始增加size个的新记录
+     *         更新init()函数
+     *       2.重写generate_comparison()函数，支持从start_index开始生成size个的id（数据库初始化）
+     *       3.更新update_db()函数，支持比较队列的更新
+     *       4.新写expand()函数，支持扩展比较队列的长度。当达到上限的时候返回错误值
+     *       5.新写get_cmp_size()函数，查询当前比较的长度
+     *       6.新写can_expand()函数，查询是否可以继续增长（是否达到了最大限度）
+     */
+
+
+    public function create_comparison(){
+        if(is_null($this->record_id_array)){
+            //Initialize array of record id when not yet set.
+            $this->record_id_array = [];
+        }
+        $record_ary_size = count($this->record_id_array);
+        $tmp_ary = [[],[]];
+        for($i=$record_ary_size; $i<$record_ary_size + COMPARISON_SIZE; $i++){
+            $cmp = new Compare_record();
+            $cmp->comp_type = ($i - $record_ary_size) < TEST_CMP_SIZE ? CMP_TYPE_USERTEST : CMP_TYPE_GENERAL;
+            $q_type = ($i - $record_ary_size) < COMPARISON_SIZE/2 ? 0:1;
+            $cmp->generate_record($q_type);
+            $cmp_id = $cmp->push_to_db();
+            array_push($tmp_ary[$q_type], $cmp_id);
+        }
+        shuffle($tmp_ary[0]);
+        shuffle($tmp_ary[1]);
+        $this->record_id_array = array_merge($this->record_id_array,
+            $tmp_ary[0], $tmp_ary[1]);
+        $this->model_generated = true;
+    }
+
+    /**
      * 初始化模型，初始化【空】的问题对
      * @param $comparison_size  总的比较对的个数
      * @param $test_cmp_size    用户质量控制用比较对的个数
      */
-    public function init($comparison_size, $test_cmp_size) {
-        $this->records = [];
-        for($i=0; $i<$comparison_size; $i++) {
-            $cmp = new Compare_record(); //需要用Load方法加载已有的图片
-
-            if($i < $test_cmp_size) {
-                //设定为用户测试对
-                $cmp->comp_type = CMP_TYPE_USERTEST;
-            } else {
-                $cmp->comp_type = CMP_TYPE_GENERAL;
-            }
-            array_push($this->records, $cmp);
-        }
-        //两类问题随机一下
-        shuffle($this->records);
-    }
+//    public function init($comparison_size, $test_cmp_size) {
+//        $this->records = [];
+//        for($i=0; $i<$comparison_size; $i++) {
+//            $cmp = new Compare_record();
+//
+//            $cmp->comp_type = $i < $test_cmp_size ? CMP_TYPE_USERTEST : CMP_TYPE_GENERAL;
+//            array_push($this->records, $cmp);
+//        }
+//        //两类问题随机一下
+//        shuffle($this->records);
+//    }
 
     /**
      * 填充HIT任务中具体的比较对数据
      * 并且会更新$record_id_array
      */
-    public function generate_comparison() {
-        $this->record_id_array = [];
-        foreach($this->records as $record) {
-            //遍历数组，填充数据
-            $record->generate_record();
-            $record_id = $record->push_to_db();
-            array_push($this->record_id_array, $record_id);
-        }
-        $this->model_generated = true;
-    }
+//    public function generate_comparison() {
+//        $this->record_id_array = [];
+//        foreach($this->records as $record) {
+//            //遍历数组，填充数据
+//            $record->generate_record(rand(0,1));
+//            $record_id = $record->push_to_db();
+//            array_push($this->record_id_array, $record_id);
+//        }
+//        $this->model_generated = true;
+//    }
 
     /**
      * 将当前时间记录为起始时间
@@ -200,5 +228,15 @@ class Hit_record extends CI_Model {
             return $row->id;
         }
         return -1;
+    }
+
+    /**
+     * 得到比较对的总长度（总问题数量）
+     */
+    public function getCmpLength(){
+        if(is_null($this->record_id_array)){
+            return -1;
+        }
+        return count($this->record_id_array);
     }
 }

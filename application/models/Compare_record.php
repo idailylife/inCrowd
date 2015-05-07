@@ -45,10 +45,11 @@ class Compare_record extends CI_Model {
 
     /**
      * 从图片库中随机选择图片作为比较对
-     * @return $this|null
+     * @param $q_type
+     * @return $this|null 返回值：是否生成成功
      * 返回值：是否生成成功
      */
-    public function generate_record() {
+    public function generate_record($q_type) {
         if(!isset($this->comp_type)) {
             show_error('Failed to generate comparison: type not set.');
             return null;
@@ -77,7 +78,7 @@ class Compare_record extends CI_Model {
         }
         $this->comp_id1 = $cmp_obj1->id;
         $this->comp_id2 = $cmp_obj2->id;
-        $this->q_type = rand(0,1);      //随机选择一种需要提问的XX性
+        $this->q_type = $q_type;//rand(0,1);
         //TODO: 可能需要采用聪明点儿的算法
         $this->model_generated = true;
         return $this;
@@ -152,6 +153,4 @@ class Compare_record extends CI_Model {
         return $this;
     }
 
-
-    //TODO: implement necessary interface
 }
