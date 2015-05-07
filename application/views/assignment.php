@@ -22,7 +22,11 @@
         var start_time = null;
         var timer = null;
         var progress = '<?php echo $prog_current/$prog_total*100 ?>%';
+        var last_q_type = <?php echo $q_type;?>;
+        var resize_timer_id;
+
         $(document).ready(function () {
+            $('#hint_mask').hide();
             $('#img_a').on('load', function(){
                 switchLoadImg('a', false);
             });
@@ -30,26 +34,16 @@
                 switchLoadImg('b', false);
             });
             $('#div_next').click(function () {
-                if(!check_validity()){
-                    $('#div_next').text('请填写完整后重试');
-                    return;
-                } else {
-                    $('#div_next').text('继续');
-                }
-                var val_c = $("input[name='creativity']:checked").val();
-                var val_u = $("input[name='usability']:checked").val();
-                var duration = new Date().getTime() - start_time;
-                var postData = {
-                    'creativity': val_c,
-                    'usability': val_u,
-                    'duration' : duration
-                };
-                window.console.log(postData);
-                switchLoadImg('a', true);
-                switchLoadImg('b', true);
-                $.post("assignment", postData,
-                    post_callback
-                );
+                post_to_server('#div_next', false);
+            });
+            $('#div_next_1').click(function () {
+                post_to_server('#div_next_1', false);
+            });
+            $('#div_next_2').click(function () {
+                post_to_server('#div_next_2', true);
+            });
+            $('#hint_button').click(function(){
+                $('#hint_mask').hide();
             });
             //Set progress bar
             $('#meter_span').css('width', progress);
@@ -68,19 +62,34 @@
             resetTimer();
             timer = setInterval("tick_and_show();", 1000);
 
-            //set_image_margin();
         });
-        $(window).on('resize', set_image_margin);
+        $(window).on('resize', function(){
+            //Skip quick movement and wait till resize settles
+            clearTimeout(resize_timer_id);
+            resize_timer_id = setTimeout(set_image_margin, 500);
+        });
         $(window).on('load', set_image_margin);
     </script>
 </head>
 
 <body>
+<div id="hint_mask">
+    <div id="hint_container" >
+        <p>即将开始针对<span id="q_type_span">实用性</span>的评价</p>
+
+        <div id="hint_button">
+            朕知道了
+        </div>
+    </div>
+    <div id="finish_hint_container">
+        <p></p>
+    </div>
+</div>
 <div id="timer">
     <span id="time"></span>
     <!--Show time here-->
 </div>
-<div class="meter container">
+<div id="meter_top" class="meter container">
     <!--Progress bar here-->
     <span id="meter_span" style="width: 25%"></span>
 </div>
@@ -115,7 +124,7 @@
     <!-- Radio buttons here -->
     <div id="cmp_creativity" class="cmp_container">
         两幅作品中，
-            <a class="tooltips" href="#" data-tooltip="创新是指以现有的思维模式提出有别于常规或常人思路的见解为导向，利用现有的知识和物质，
+            <a class="tooltips" href="#" data-tooltip="以现有的思维模式提出有别于常规或常人思路的见解为导向，利用现有的知识和物质，
                 在特定的环境中，本着理想化需要或为满足社会需求，而改进或创造新的事物、方法、元素、路径、
                 环境，并能获得一定有益效果的行为。">
                 创新性
@@ -141,6 +150,10 @@
 
 <div id="div_next" class="container meter">
     继续
+</div>
+<div id="button_set" class="container">
+    <div id="div_next_1" class="meter double_btn">完成</div>
+    <div id="div_next_2" class="meter double_btn">再来一组</div>
 </div>
 
 </body>

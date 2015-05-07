@@ -171,7 +171,7 @@ class Hit_record extends CI_Model {
             elseif($item == 'expert_info')
                 $this->db->set('expert_info', $this->expert_info);
             elseif($item == 'records')
-                $this->db->set('records', $this->record_id_array);
+                $this->db->set('records', json_encode($this->record_id_array));
             elseif($item == 'token')
                 $this->db->set('token', $this->token);
             elseif($item == 'advice')
@@ -238,5 +238,9 @@ class Hit_record extends CI_Model {
             return -1;
         }
         return count($this->record_id_array);
+    }
+
+    public function can_expand(){
+        return $this->getCmpLength() < MAX_COMPARISON_SIZE;
     }
 }

@@ -30,6 +30,10 @@
             $('#payment_re').blur(function(){
                 check_payment_info();
             });
+            $('#payment').blur(function(){
+                if($('#payment').val() != '')
+                    check_payment_info();
+            });
         });
         function show_submit_failure(){
             $('#submit_info').css('display', 'inline');

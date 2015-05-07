@@ -3,7 +3,6 @@ body{
     margin: 0;
     line-height: 1.6;
     font-family: "微软雅黑 Light", "微软雅黑", "黑体";
-    padding-top: 5px;
 }
 
 div{
@@ -68,6 +67,7 @@ input[type=radio]:not(old):checked + label > span > span{
 .container{
     margin: 0 auto;
     text-align: center;
+    min-width: 540px;
 }
 
 .comp_image{
@@ -88,6 +88,13 @@ input[type=radio]:not(old):checked + label > span > span{
     overflow: hidden;
     background: white;
     margin: 10px 10px 10px 10px;
+}
+
+#meter_top{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .meter{
@@ -142,6 +149,35 @@ input[type=radio]:not(old):checked + label > span > span{
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
     overflow: hidden;
+}
+
+.double_btn{
+    width: 48%;
+    z-index: 0;
+    border-radius: 1.6em;
+    height: 1.6em;
+    color: whitesmoke;
+    font-weight: 600;
+    cursor: pointer;
+
+}
+
+.double_btn:hover{
+    background: #888;
+}
+
+#button_set{
+    max-width: 720px;
+    min-width: 540px;
+    display: none;
+}
+
+#div_next_1{
+    float: left;
+}
+
+#div_next_2{
+    float: right;
 }
 
 a.tooltips {
@@ -318,4 +354,41 @@ a.tooltips {
 
 .cmp_label:hover{
     color: #222;
+}
+
+#hint_mask{
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    text-align: center;
+    position: absolute;
+    background-color: whitesmoke;
+}
+
+#hint_container{
+    font-weight: 700;
+    background-color: orangered;
+    padding: 5px 5px 20px 5px;
+    z-index: 4;
+    color: #ffffff;
+    vertical-align: middle;
+    margin: 20% auto;
+    width: 75%;
+    min-width: 720px;
+}
+
+#hint_button{
+    background-color: #eee;
+    width: 25%;
+    min-width: 60px;
+    margin: 0px auto;
+    height: 2em;
+    color: orangered;
+    font-size: 18px;
+    padding-top: 0.5em;
+    cursor: pointer;
+}
+
+#hint_button:hover{
+    background-color: #fff;
 }

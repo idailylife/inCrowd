@@ -126,7 +126,8 @@ class Assignment extends CI_Controller {
             'img_src2'      => IMAGE_BASE_URL,
             'prog_current'  => $hit_record->progress_count + 1,
             'prog_total'    => $hit_record->get_comparison_size(),
-            'q_type'        => $cmp_record->q_type
+            'q_type'        => $cmp_record->q_type,
+            'max_size'      => MAX_COMPARISON_SIZE
         );  //Array for view variables
         $temp_path = array(
             'img1' => PATH_TO_RESOURCES,
@@ -187,10 +188,6 @@ class Assignment extends CI_Controller {
             $hit_record->get_by_id($hit_id);
         } else {
             //Create a new HITRecord
-            //$hit_record->init(COMPARISON_SIZE,
-            //    TEST_CMP_SIZE);
-            //Generate comparisons for current user
-            //$hit_record->generate_comparison();
             $hit_record->create_comparison();
 
             $hit_record->mark_time(true);
@@ -215,7 +212,7 @@ class Assignment extends CI_Controller {
         }
 
         //If this hit is already finished, jump to /finish
-        if($hit_record->progress_count == COMPARISON_SIZE){
+        if($hit_record->progress_count >= $hit_record->getCmpLength()){
             header("Location: ". base_url("finish"));
             return;
         }
@@ -279,7 +276,20 @@ class Assignment extends CI_Controller {
             $hit_record->progress_count = ++$progress;
             $hit_record->update_db(array('progress_count'));
 
-            if($hit_record->progress_count < COMPARISON_SIZE){
+            if(isset($_POST['expand'])){
+                //Expand comparison array if possible
+                if($hit_record->can_expand()){
+                    $hit_record->create_comparison();
+                    $hit_record->update_db(array('records'));
+                }else{
+                    $ret_data['status'] = 2;
+                    $ret_data['reason'] = 'Cannot expand comparison array: limitation reached.';
+                    echo json_encode($ret_data);
+                    return;
+                }
+            }
+
+            if($hit_record->progress_count < $hit_record->getCmpLength()){
                 $current_comp_id = $hit_record->record_id_array[$progress];
                 $ret_data = $this->get_comp_data($current_comp_id, $hit_record);
                 //Return json array

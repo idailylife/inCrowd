@@ -26,8 +26,6 @@ function post_callback(data, ret_status){
             //$('#img_b').on('load',function () {
             switchLoadImg('b', false);
             //
-            set_image_margin();
-
             var q_type = jsonval.q_type;
             if(q_type == 0){
                 $('#cmp_usability').css('display', 'none');
@@ -38,6 +36,12 @@ function post_callback(data, ret_status){
             }else{
                 alert('qtype error');
             }
+            if(q_type != last_q_type){
+                //Show hint when q_type changes
+                console.log('q_type changed.');
+                show_hint(q_type);
+            }
+            last_q_type = q_type;
 
             $('#curr_index').text(jsonval.prog_current);
             $('#total_index').text(jsonval.prog_total);
@@ -48,11 +52,31 @@ function post_callback(data, ret_status){
                 $(this).prop('checked', false);
             });
             start_time = new Date().getTime();
+
+            //Set button status
+            var max_cmp_size = jsonval.max_size;
+            if((jsonval.prog_current == jsonval.prog_total)
+                && (jsonval.prog_total < max_cmp_size)){
+                switch_double_button(true);
+            } else {
+                switch_double_button(false);
+            }
+
+            set_image_margin();
             break;
         default :
             alert('wtf');
     }
 
+}
+
+function show_hint(q_type){
+    if(q_type == 0){
+        $('#q_type_span').text("创新性");
+    } else {
+        $('#q_type_span').text("实用性");
+    }
+    $('#hint_mask').show();
 }
 
 //检查表单填写完整性
@@ -114,8 +138,45 @@ function tick_and_show(){
 }
 
 function set_image_margin(){
+    //such stupid solution...
     var container_h = $('.comp_image_container').height();
     $('.comp_image').each(function(){
         $(this).css('margin-top', (container_h - $(this).height())/2 + "px");
     });
+}
+
+function switch_double_button(on){
+    if(on){
+        $('#button_set').show();
+        $('#div_next').hide();
+    } else {
+        $('#button_set').hide();
+        $('#div_next').show();
+    }
+}
+
+function post_to_server(id, expand){
+    if(!check_validity()){
+        $(id).text('请填写完整后重试');
+        return;
+    } else {
+        $(id).text('继续');
+    }
+    var val_c = $("input[name='creativity']:checked").val();
+    var val_u = $("input[name='usability']:checked").val();
+    var duration = new Date().getTime() - start_time;
+    var postData = {
+        'creativity': val_c,
+        'usability': val_u,
+        'duration' : duration
+    };
+    if(expand){
+        postData['expand'] = true;
+    }
+    window.console.log(postData);
+    switchLoadImg('a', true);
+    switchLoadImg('b', true);
+    $.post("assignment", postData,
+        post_callback
+    );
 }
