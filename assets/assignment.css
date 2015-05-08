@@ -193,14 +193,26 @@ a.tooltips {
 
 #timer{
     float: left;
-    margin-left: 4.5%;
+    margin-left: 4.16%;
+    min-width: 5em;
+    max-width: 80px;
+    height: 20px;
+    position: relative;
+    background: orangered;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 5px;
+    box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+    z-index: -1;
+    text-align: center;
+    line-height: 20px;
 }
 
 #time{
-    font-weight: 600;
+    font-weight: 500;
     font-family: Consolas, Monaco, Courier New, Courier, monospace;
-    font-size: 15px;
-    color: orangered;
+    color: #ffffff;
+    font-size: 16px;
 }
 
 

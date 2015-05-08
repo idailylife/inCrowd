@@ -13,9 +13,6 @@ require_once(APPPATH . '/models/User_eval_pic.php');
 
 
 class Assignment extends CI_Controller {
-//    const COMPARISON_SIZE = 5;     //每个用户需要比较的总图片·对·数
-//    const TEST_CMP_SIZE = 1;        //其中每个用户的用户能力测试用的图片·对·数
-//    const KEY_HIT_RECORD = 'current_hit_record';
 
     public function index(){
         if(!isset($_SERVER['REQUEST_METHOD'])){
@@ -113,13 +110,13 @@ class Assignment extends CI_Controller {
 
     /**
      * 得到比较数据，用于view呈现
-     * @param $comp_id 比较记录，用来找到各种要问的东西
+     *
      * @param $hit_record HIT记录，用来获取当前进度
      * @return array
      */
-    private function get_comp_data($comp_id, $hit_record){
+    private function get_comp_data($hit_record){
         $cmp_record = new Compare_record();
-        $cmp_record->get_by_id($comp_id);
+        $cmp_record->get_by_id($hit_record->get_comparison_id());
         //Get image info
         $data = array(
             'img_src1'      => IMAGE_BASE_URL,
@@ -127,32 +124,56 @@ class Assignment extends CI_Controller {
             'prog_current'  => $hit_record->progress_count + 1,
             'prog_total'    => $hit_record->get_comparison_size(),
             'q_type'        => $cmp_record->q_type,
-            'max_size'      => MAX_COMPARISON_SIZE
+            'max_size'      => MAX_COMPARISON_SIZE,
+            'next_img_src1' => IMAGE_BASE_URL,
+            'next_img_src2' => IMAGE_BASE_URL
         );  //Array for view variables
-        $temp_path = array(
-            'img1' => PATH_TO_RESOURCES,
-            'img2' => PATH_TO_RESOURCES
-        );  //Array for resource image path on the disk
+//        $temp_path = array(
+//            'img1' => PATH_TO_RESOURCES,
+//            'img2' => PATH_TO_RESOURCES
+//        );  //Array for resource image path on the disk
         switch($cmp_record->comp_type){
             case CMP_TYPE_GENERAL:
-                $gen_eval_model = new General_eval_pic();
-                $gen_eval_model->get_by_id($cmp_record->comp_id1);
-                $data['img_src1'] .= $gen_eval_model->src;
-                //$temp_path['img1'] .= $gen_eval_model->src;
-                $gen_eval_model->get_by_id($cmp_record->comp_id2);
-                $data['img_src2'] .= $gen_eval_model->src;
-                //$temp_path['img2'] .= $gen_eval_model->src;
+                $model = new General_eval_pic();
                 break;
             case CMP_TYPE_USERTEST:
-                $user_eval_model = new User_eval_pic();
-                $user_eval_model->get_by_id($cmp_record->comp_id1);
-                $data['img_src1'] .= $user_eval_model->src;
-                //$temp_path['img1'] .= $user_eval_model->src;
-                $user_eval_model->get_by_id($cmp_record->comp_id2);
-                $data['img_src2'] .= $user_eval_model->src;
-                //$temp_path['img2'] .= $user_eval_model->src;
+                $model = new User_eval_pic();
+//                $user_eval_model->get_by_id($cmp_record->comp_id1);
+//                $data['img_src1'] .= $user_eval_model->src;
+//                //$temp_path['img1'] .= $user_eval_model->src;
+//                $user_eval_model->get_by_id($cmp_record->comp_id2);
+//                $data['img_src2'] .= $user_eval_model->src;
+//                //$temp_path['img2'] .= $user_eval_model->src;
                 break;
         }
+        $model->get_by_id($cmp_record->comp_id1);
+        $data['img_src1'] .= $model->src;
+        $model->get_by_id($cmp_record->comp_id2);
+        $data['img_src2'] .= $model->src;
+
+        //Fetch next image urls
+        if($hit_record->progress_count <
+            $hit_record->getCmpLength() -1 ){
+            $next_cmp_id = $hit_record->get_comparison_id($hit_record->progress_count+1);
+            $cmp_record->get_by_id($next_cmp_id);
+            switch($cmp_record->comp_type){
+                case CMP_TYPE_GENERAL:
+                    $model = new General_eval_pic();
+                    break;
+                case CMP_TYPE_USERTEST:
+                    $model = new User_eval_pic();
+                    break;
+            }
+            $model->get_by_id($cmp_record->comp_id1);
+            $data['next_img_src1'] .= $model->src;
+            $model->get_by_id($cmp_record->comp_id2);
+            $data['next_img_src1'] .= $model->src;
+        } else {
+            $data['next_img_src1'] = null;
+            $data['next_img_src2'] = null;
+        }
+
+
         //Generate image thumbnail
 //        $i = 1;
 //        foreach($temp_path as $key => $value){
@@ -218,8 +239,8 @@ class Assignment extends CI_Controller {
         }
 
         //Get next comparison id
-        $next_cmp_id = $hit_record->get_comparison_id();
-        $data = $this->get_comp_data($next_cmp_id, $hit_record);
+        //$next_cmp_id = $hit_record->get_comparison_id();
+        $data = $this->get_comp_data($hit_record);
         //Things need to be load:
         //2 image sources
         //
@@ -257,9 +278,13 @@ class Assignment extends CI_Controller {
             if($cmp_record->q_type == Compare_record::QTYPE_CREATIVITY){ //Question for creativity
                 if(strcmp($_POST['creativity'],'A') == 0)
                     $answer = 1;
+                elseif(strcmp($_POST['creativity'], 'X') == 0)
+                    $answer = 2;
             } elseif($cmp_record->q_type == Compare_record::QTYPE_USABILITY){
                 if(strcmp($_POST['usability'], 'A') == 0)
                     $answer = 1;
+                elseif(strcmp($_POST['usability'], 'X'))
+                    $answer = 2;
             }
             $cmp_record->answer = $answer;
 
@@ -290,8 +315,8 @@ class Assignment extends CI_Controller {
             }
 
             if($hit_record->progress_count < $hit_record->getCmpLength()){
-                $current_comp_id = $hit_record->record_id_array[$progress];
-                $ret_data = $this->get_comp_data($current_comp_id, $hit_record);
+                //$current_comp_id = $hit_record->record_id_array[$progress];
+                $ret_data = $this->get_comp_data($hit_record);
                 //Return json array
                 $ret_data['status'] = 0;
             } else {

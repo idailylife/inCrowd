@@ -12,11 +12,8 @@
     <meta charset="utf-8">
     <title>Assignment | Crowd Crowd Crowd | Test website</title>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/assignment.css">
-<!--    <link rel="stylesheet" href="--><?php //echo base_url(); ?><!--assets/jquery.fancybox.css">-->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery.elevateZoom-3.0.8.min.js"></script>
-<!--    <script type="text/javascript" src="--><?php //echo base_url(); ?><!--assets/jquery.mousewheel-3.0.6.pack.js"></script>-->
-<!--    <script type="text/javascript" src="--><?php //echo base_url(); ?><!--assets/jquery.fancybox.pack.js"></script>-->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/assignment.js"></script>
     <script type="text/javascript">
         var start_time = null;
@@ -43,6 +40,7 @@
                 post_to_server('#div_next_2', true);
             });
             $('#hint_button').click(function(){
+                start_time = new Date().getTime();
                 $('#hint_mask').hide();
             });
             //Set progress bar
@@ -61,7 +59,11 @@
             //Set timer
             resetTimer();
             timer = setInterval("tick_and_show();", 1000);
-
+            //Set button style
+            <?php if(($prog_current == $prog_total)
+                && ($prog_total < $max_size)):?>
+            switch_double_button(true);
+            <?php endif;?>
         });
         $(window).on('resize', function(){
             //Skip quick movement and wait till resize settles
@@ -85,7 +87,7 @@
         <p></p>
     </div>
 </div>
-<div id="timer">
+<div id="timer" >
     <span id="time"></span>
     <!--Show time here-->
 </div>
@@ -134,6 +136,8 @@
         <label for="cr_a" class="cmp_label"><span><span></span></span><b>左图</b></label>
         <input type="radio" name="creativity" class="radio" value="B" id="cr_b">
         <label for="cr_b" class="cmp_label"><span><span></span></span><b>右图</b></label>
+        <input type="radio" name="creativity" class="radio" value="X" id="cr_x">
+        <label for="cr_x" class="cmp_label"><span><span></span></span>难以判断</label>
     </div>
     <div id="cmp_usability" class="cmp_container">
         两幅作品中，
@@ -145,6 +149,8 @@
         <label for="us_a" class="cmp_label"><span><span></span></span><b>左图</b></label>
         <input type="radio" name="usability" class="radio" value="B" id="us_b">
         <label for="us_b" class="cmp_label"><span><span></span></span><b>右图</b></label>
+        <input type="radio" name="usability" class="radio" value="X" id="us_x">
+        <label for="us_x" class="cmp_label"><span><span></span></span>难以判断</label>
     </div>
 </div>
 
