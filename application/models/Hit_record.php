@@ -20,11 +20,16 @@ require_once('Model_helper.php');
  */
 class Hit_record extends CI_Model {
     const TABLE_NAME = 'hit_record';
+    //Payment status
+    const PS_FAILED = -2;
+    const PS_UNFINISHED = -1;
+    const PS_PAID = 2;
+    const PS_PENDING = 1;
+    const PS_FINISHED = 0;
 
     public $id;
     public $start_time;
     public $end_time;
-    //public $records;         //存放Compare_record对象
     public $record_id_array; //存放Compare_record对象的ID (从数据库存取需要json_encode/decode)
     public $progress_count;
     public $user_ip;
@@ -32,6 +37,8 @@ class Hit_record extends CI_Model {
     public $expert_info;
     public $token;           //对应cookie的内容
     public $advice;          //用户意见建议
+    public $pay_status;     //报酬支付状态： 0 任务完成,审核中；1 待支付；2 已支付；-1 任务尚未完成； -2 审核失败
+    public $pay_amount;     //报酬支付金额
 
     private $model_generated;
 
@@ -40,6 +47,7 @@ class Hit_record extends CI_Model {
         $this->load->database();
         $this->model_generated = false;
         $this->progress_count = 0;
+        $this->pay_status = -1;
     }
 
     /**
@@ -131,7 +139,8 @@ class Hit_record extends CI_Model {
             return;
         }
         $data = array(
-            'records' => json_encode($this->record_id_array)
+            'records'    => json_encode($this->record_id_array),
+            'pay_status' => $this->pay_status
         );
         if(isset($this->start_time))
             $data['start_time'] = $this->start_time;
@@ -242,5 +251,25 @@ class Hit_record extends CI_Model {
 
     public function can_expand(){
         return $this->getCmpLength() < MAX_COMPARISON_SIZE;
+    }
+
+    /**
+     * 用支付方式查询支付信息
+     * @param $p_info
+     * @return array 结果array[[info1],[info2],...];
+     *                  info = [start_time, pay_status, pay_amount];
+     */
+    public function getPayStatusByPayInfo($p_info){
+        $this->db->where('payment_info', $p_info);
+        $result_ary = [];
+        $query = $this->db->get(Hit_record::TABLE_NAME);
+        foreach($query->result() as $row){
+            $ary = [];
+            $ary[0] = $row->start_time;
+            $ary[1] = $row->pay_status;
+            $ary[2] = $row->pay_amount;
+            array_push($result_ary, $ary);
+        }
+        return $result_ary;
     }
 }

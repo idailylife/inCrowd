@@ -44,6 +44,9 @@
             $('#continue').click(function(){
                 window.location.href= '/inCrowd/assignment';
             });
+            $('#chk_payment').click(function(){
+                window.open('/inCrowd/chkpayment', '_blank');
+            });
             <?php if($cont_flag):?>
             $('#verification').css('display', 'none');
             $('#get_in').css('display', 'none');
@@ -67,14 +70,14 @@
             <p class="title">各位亲</p>
             <div id="terms_detail">
                 <p>即将开始的实验类似于调查问卷,我们将会列出一些设计竞赛的作品(图),<b>您需要</b>对作品进行两两比较,
-                分别评价出在创新性、可用性上较为优秀的一个. 大部分问题的答案我们自己也不明确,所以尽力选择就好. </p>
-                <p>实验<b>时间</b>约5-15分钟,题目的<b>难易</b>程度由系统分配. 我们会记录您的答题信息(包括您的点击信息及操作时间等数据),
+                评价出在创新性或可用性上较为优秀的一个. 大部分问题的答案我们自己也不明确,所以尽力选择就好. </p>
+                <p><b>实验时间</b>约5-15分钟/组，一组实验结束后可以“再来一组”。题目的难易程度由系统分配. 我们会记录您的答题信息(包括您的点击信息及操作时间等数据),
                 所有评价任务结束后将会向您索取支付方法, 以便将报酬支付给您. </p>
                 <p style="color: deeppink">实验中出现的设计作品, 其版权归原作者所有, 请勿非法下载或挪作商用. <br/>
-                    请勿使用自动化方法执行实验任务,一经发现将取消支付报酬,谢谢合作. <br/>
+                    请勿使用自动化方法或随意点击完成实验,一经发现将取消支付报酬,谢谢合作. <br/>
                     <b>您在实验过程中填写的一切信息将完全保密,仅供研究使用.</b>
                 </p>
-                <p>真诚地感想您的参与！如有问题请联系@#$%^&</p>
+                <p>真诚地感想您的参与！如有问题请邮件联系boweihe[at]zju.edu.cn</p>
             </div>
 
         </div>
@@ -101,6 +104,9 @@
         <div id="submit_div" class="div_center">
                 <div class="submit_btn" id="continue">继续先前任务</div>
                 <div class="submit_btn" id="get_in">开始</div>
+        </div>
+        <div class="div_center">
+            <div class="submit_btn" id="chk_payment">报酬支付查询</div>
         </div>
     </div>
 

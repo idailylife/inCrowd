@@ -40,7 +40,7 @@ class Verifycode extends CI_Controller {
     }
 
     /**
-     * 判断验证码是否正确，如果正确则存储在session中一个变量，并返回1
+     * 判断验证码是否正确，如果正确则存储在session中一个变量'pass'，并返回1
      * 否则返回0, 并且删除session中的'captcha'项，使之需要强制刷新
      */
     public function index_post(){

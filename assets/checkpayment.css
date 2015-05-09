@@ -3,10 +3,16 @@ body {
     background: #f8f8f8;
     line-height: 1.6;
     margin: 0;
+    font-family: "微软雅黑 Light", "微软雅黑", "Simsun";
 }
 
 div{
     display: block;
+}
+
+input[type=text]{
+    border-radius: 3px;
+    border: 2px solid #cfe3dc;
 }
 
 .div_center{
@@ -41,32 +47,8 @@ div{
     max-width: 1400px;
 }
 
-#terms-div{
-    max-width: 1440px;
-}
-
 #veri_code{
     width: 60px;
-    border-radius: 3px;
-    border: 2px solid #cfe3dc;
-}
-
-#terms_detail{
-    min-height: 300px;
-    max-width: 700px;
-    margin: 5px auto;
-    font-family: "Simsun";
-    text-align: left;
-}
-
-#cookie_div{
-    margin: 5px auto;
-    background: #DEF7EB;
-    max-width: 400px;
-    border-radius: 5px;
-    border: none;
-    font-family: "微软雅黑 Light", "Simsun";
-    font-size: 14px;
 }
 
 #verification{
@@ -103,5 +85,5 @@ div{
 }
 
 #pm_title{
-    font-weight: 600;
+    font-weight: bold;
 }
