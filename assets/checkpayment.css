@@ -15,6 +15,22 @@ input[type=text]{
     border: 2px solid #cfe3dc;
 }
 
+table{
+    margin: auto;
+}
+
+th{
+    padding: 0 15px;
+    text-align: center;
+    background-color: antiquewhite;
+    font-weight: 700;
+}
+
+td{
+    padding: 0 15px;
+    text-align: center;
+}
+
 .div_center{
     text-align: center;
 }
@@ -66,7 +82,7 @@ input[type=text]{
     font-weight: 700;
     font-family: "微软雅黑 Light", "微软雅黑", "黑体";
     -webkit-font-smoothing: subpixel-antialiased;
-    padding:0.5em 0;
+    padding:0.1em 0;
     text-align: center;
     text-decoration: none;
     font-size: 18px;

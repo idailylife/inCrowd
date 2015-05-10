@@ -3,6 +3,7 @@ body {
     background: #f8f8f8;
     line-height: 1.6;
     margin: 0;
+    color: #0C3C26;
 }
 
 div{
@@ -84,14 +85,14 @@ div{
     font-weight: 700;
     font-family: "微软雅黑 Light", "微软雅黑", "黑体";
     -webkit-font-smoothing: subpixel-antialiased;
-    padding:0.5em 0;
+    padding:0.1em 0;
     text-align: center;
     text-decoration: none;
     font-size: 18px;
 }
 
 .submit_btn:hover{
-    background: #51B195;
+    background: #2B8C67;
 }
 
 #captcha_info{

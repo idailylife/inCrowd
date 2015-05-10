@@ -105,7 +105,7 @@ input[type=radio]:not(old):checked + label > span > span{
     display: none;
 }
 
-#btn_submit{
+.button{
     max-width: 400px;
     margin: 10px auto;
     background: #44B78B;
@@ -119,6 +119,6 @@ input[type=radio]:not(old):checked + label > span > span{
     font-size: 18px;
 }
 
-#btn_submit:hover{
+.button:hover{
     background: #51B195;
 }

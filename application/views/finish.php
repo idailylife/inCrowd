@@ -34,6 +34,9 @@
                 if($('#payment').val() != '')
                     check_payment_info();
             });
+            $('#btn_back').click(function () {
+                window.location.href = '/inCrowd';
+            })
         });
         function show_submit_failure(){
             $('#submit_info').css('display', 'inline');
@@ -120,11 +123,14 @@
             <br/>
             <textarea id="advice" rows="3" placeholder=""></textarea>
         </p>
-        <div id="btn_submit">提交</div>
+        <div id="btn_submit" class="button">提交</div>
         <p id="submit_info">熬~连接失败，烦请再试一次。</p>
     </div>
     <div id="info_result" class="container">
-        <h4>提交成功！再次感谢您的参与！</h4>
+        <p>
+            <h4>提交成功！再次感谢您的参与！</h4>
+        </p>
+        <div id="btn_back" class="button">返回主页</div>
     </div>
 </body>
 </html>
