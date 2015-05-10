@@ -39,7 +39,7 @@ class General_eval_pic extends CI_Model {
     public function get_random($except = null){
         //取表中的所有项目出来
         //$this->db->select('id');
-        $query = $this->db->get(General_eval_pic::TABLE_NAME);  // SELECT id FROM general_eval_pic
+        $query = $this->db->get($this->db->dbprefix(General_eval_pic::TABLE_NAME));  // SELECT id FROM general_eval_pic
         $ary_result = $query->result(); //Query results as array
         if(empty($ary_result)){
             show_error('Error on General_eval_pic->get_random(): Empty result case #0');
@@ -64,7 +64,7 @@ class General_eval_pic extends CI_Model {
      * @return $this|null 返回$this或null
      */
     public function get_by_id($id){
-        $query = $this->db->get_where(General_eval_pic::TABLE_NAME,
+        $query = $this->db->get_where($this->db->dbprefix(General_eval_pic::TABLE_NAME),
             array('id' => $id));
         if($query->num_rows() < 1){
             return null;

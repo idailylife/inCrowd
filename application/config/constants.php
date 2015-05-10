@@ -99,4 +99,4 @@ define('TEST_CMP_SIZE', 5); //其中每个用户的用户能力测试用的图�
 define('KEY_HIT_RECORD', 'current_hit_record');  //Session中的键
 define('KEY_HIT_COOKIE', 'hit_token');           //Cookie中的键
 define('KEY_PASS', 'pass');
-define('FONT_PATH', 'd:/wamp/www/incrowd/application/fonts/courbd.ttf');
+define('FONT_PATH', dirname(__FILE__).'/../fonts/courbd.ttf');

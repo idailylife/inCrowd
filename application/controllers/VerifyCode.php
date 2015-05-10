@@ -75,7 +75,7 @@ class Verifycode extends CI_Controller {
 
     public function index_get() {
         if(!file_exists(FONT_PATH)){
-            show_error('Error generating verifycode: font file does not exist');
+            show_error('Error generating verifycode: font file does not exist\n'. FONT_PATH);
             return;
         }
 

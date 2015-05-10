@@ -99,7 +99,7 @@ class Compare_record extends CI_Model {
             'comp_type'=> $this->comp_type,
             'q_type' => $this->q_type
         );
-        $this->db->insert(Compare_record::TABLE_NAME, $data);
+        $this->db->insert($this->db->dbprefix(Compare_record::TABLE_NAME), $data);
         //$db_helper = new Model_helper();
         $count = $this->get_max_id();//$db_helper->get_auto_increment_value(Compare_record::TABLE_NAME);
         return $count;
@@ -107,7 +107,7 @@ class Compare_record extends CI_Model {
 
     public function get_max_id(){
         $maxid = 0;
-        $row = $this->db->query('SELECT MAX(id) AS `maxid` FROM `'. Compare_record::TABLE_NAME.'`')->row();
+        $row = $this->db->query('SELECT MAX(id) AS `maxid` FROM `'. $this->db->dbprefix(Compare_record::TABLE_NAME).'`')->row();
         if ($row) {
             $maxid = $row->maxid;
         }
@@ -136,11 +136,11 @@ class Compare_record extends CI_Model {
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }
         $this->db->where('id', $this->id);
-        return $this->db->update(Compare_record::TABLE_NAME);
+        return $this->db->update($this->db->dbprefix(Compare_record::TABLE_NAME));
     }
 
     public function get_by_id($id){
-        $query = $this->db->get_where(Compare_record::TABLE_NAME,
+        $query = $this->db->get_where($this->db->dbprefix(Compare_record::TABLE_NAME),
             array('id'=>$id));
         $row = $query->row();
         $this->id = $row->id;

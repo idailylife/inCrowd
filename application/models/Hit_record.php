@@ -150,7 +150,7 @@ class Hit_record extends CI_Model {
             $data['token'] = $this->token;
         }
 
-        $this->db->insert(Hit_record::TABLE_NAME, $data);
+        $this->db->insert($this->db->dbprefix(Hit_record::TABLE_NAME), $data);
         //$db_helper = new Model_helper();
         $count = $this->get_max_id();//$db_helper->get_auto_increment_value(Hit_record::TABLE_NAME);
         return $count;
@@ -158,7 +158,8 @@ class Hit_record extends CI_Model {
 
     public function get_max_id(){
         $maxid = 0;
-        $row = $this->db->query('SELECT MAX(id) AS `maxid` FROM `'. Hit_record::TABLE_NAME.'`')->row();
+        $row = $this->db->query('SELECT MAX(id) AS `maxid` FROM `'.
+            $this->db->dbprefix(Hit_record::TABLE_NAME).'`')->row();
         if ($row) {
             $maxid = $row->maxid;
         }
@@ -189,7 +190,7 @@ class Hit_record extends CI_Model {
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }
         $this->db->where('id', $this->id);
-        return $this->db->update(Hit_record::TABLE_NAME);
+        return $this->db->update($this->db->dbprefix(Hit_record::TABLE_NAME));
     }
 
 
@@ -207,7 +208,7 @@ class Hit_record extends CI_Model {
 
     public function get_by_id($id){
         $this->db->where('id', $id);
-        $query = $this->db->get(Hit_record::TABLE_NAME);
+        $query = $this->db->get($this->db->dbprefix(Hit_record::TABLE_NAME));
         if($query->num_rows() > 0){
             $row = $query->row();
             $this->id = $row->id;
@@ -231,7 +232,7 @@ class Hit_record extends CI_Model {
      */
     public function get_id_by_token($token){
         $this->db->where('token', $token);
-        $query = $this->db->get(Hit_record::TABLE_NAME);
+        $query = $this->db->get($this->db->dbprefix(Hit_record::TABLE_NAME));
         if($query->num_rows() >0) {
             $row = $query->row();
             return $row->id;
@@ -262,7 +263,7 @@ class Hit_record extends CI_Model {
     public function getPayStatusByPayInfo($p_info){
         $this->db->where('payment_info', $p_info);
         $result_ary = [];
-        $query = $this->db->get(Hit_record::TABLE_NAME);
+        $query = $this->db->get($this->db->dbprefix(Hit_record::TABLE_NAME));
         foreach($query->result() as $row){
             $ary = [];
             $ary[0] = $row->start_time;
