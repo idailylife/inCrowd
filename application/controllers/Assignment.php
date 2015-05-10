@@ -167,7 +167,7 @@ class Assignment extends CI_Controller {
             $model->get_by_id($cmp_record->comp_id1);
             $data['next_img_src1'] .= $model->src;
             $model->get_by_id($cmp_record->comp_id2);
-            $data['next_img_src1'] .= $model->src;
+            $data['next_img_src2'] .= $model->src;
         } else {
             $data['next_img_src1'] = null;
             $data['next_img_src2'] = null;
