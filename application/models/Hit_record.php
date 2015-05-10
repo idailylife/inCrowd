@@ -67,10 +67,21 @@ class Hit_record extends CI_Model {
             $this->record_id_array = [];
         }
         $record_ary_size = count($this->record_id_array);
+        //Build CMP_TYPE array
+        $cmp_type_ary = [];
+        for($i=0; $i<COMPARISON_SIZE; $i++){
+            if($i < TEST_CMP_SIZE)
+                array_push($cmp_type_ary, CMP_TYPE_USERTEST);
+            else
+                array_push($cmp_type_ary, CMP_TYPE_GENERAL);
+        }
+        shuffle($cmp_type_ary);
+
         $tmp_ary = [[],[]];
         for($i=$record_ary_size; $i<$record_ary_size + COMPARISON_SIZE; $i++){
             $cmp = new Compare_record();
-            $cmp->comp_type = ($i - $record_ary_size) < TEST_CMP_SIZE ? CMP_TYPE_USERTEST : CMP_TYPE_GENERAL;
+            $cmp->comp_type = $cmp_type_ary[$i - $record_ary_size];
+            //($i - $record_ary_size) < TEST_CMP_SIZE ? CMP_TYPE_USERTEST : CMP_TYPE_GENERAL;
             $q_type = ($i - $record_ary_size) < COMPARISON_SIZE/2 ? 0:1;
             $cmp->generate_record($q_type);
             $cmp_id = $cmp->push_to_db();
@@ -186,6 +197,10 @@ class Hit_record extends CI_Model {
                 $this->db->set('token', $this->token);
             elseif($item == 'advice')
                 $this->db->set('advice', $this->advice);
+            elseif($item == 'pay_status')
+                $this->db->set('pay_status', $this->pay_status);
+            elseif($item == 'pay_amount')
+                $this->db->set('pay_amount', $this->pay_amount);
             else
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }

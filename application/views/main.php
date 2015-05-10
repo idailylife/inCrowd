@@ -12,8 +12,6 @@
     <meta charset="utf-8">
     <title>Crowd Crowd Crowd | Test website</title>
     <script type="text/javascript" src="<?php echo base_url();?>assets/jquery-1.11.2.min.js"></script>
-<!--    <link rel="stylesheet" href="--><?php //echo base_url()?><!--assets/jquery-ui.css">-->
-<!--    <script type="text/javascript" src="--><?php //echo base_url()?><!--assets/jquery-ui.min.js"></script>-->
     <link rel="stylesheet" href="<?php echo base_url()?>assets/main.css">
     <script type="text/javascript">
         function reset_captcha(){

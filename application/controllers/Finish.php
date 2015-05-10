@@ -85,8 +85,9 @@ class Finish extends CI_Controller {
             $hit_record->mark_time(false);
             $hit_record->payment_info = $this->input->post('payment_info', true);//$_POST['payment_info'];
             $hit_record->expert_info = $this->input->post('expert_info', true);//$_POST['expert_info'];
+            $hit_record->pay_status = Hit_record::PS_FINISHED;
             $key_array = array('end_time','payment_info',
-                'expert_info');
+                'expert_info', 'pay_status');
 
             if(!empty($_POST['advice'])){
                 array_push($key_array, 'advice');

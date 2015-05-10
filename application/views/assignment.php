@@ -21,6 +21,7 @@
         var progress = '<?php echo $prog_current/$prog_total*100 ?>%';
         var last_q_type = <?php echo $q_type;?>;
         var resize_timer_id;
+        var preload_counter = 0;
 
         $(document).ready(function () {
             $('#hint_mask').hide();
@@ -50,8 +51,10 @@
             //Hide unavailable thing
             <?php if($q_type == 0):?>
             $('#cmp_usability').css('display', 'none');
+            show_hint(0);
             <?php elseif($q_type == 1): ?>
             $('#cmp_creativity').css('display', 'none');
+            show_hint(1);
             <?php else:?>
             alert('WTF');
             <?php endif;?>
@@ -77,8 +80,8 @@
 <body>
 <div id="hint_mask">
     <div id="hint_container" >
-        <p>即将开始针对<span id="q_type_span">实用性</span>的评价</p>
-
+        <p style="font-size: 18px">即将开始对<span id="q_type_span">`创新性`</span>的评价</p>
+        <p style="font-size: 12px; color: #d3d3d3">Tips: 鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>
         <div id="hint_button">
             朕知道了
         </div>
