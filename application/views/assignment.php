@@ -165,5 +165,6 @@
     <div id="div_next_2" class="meter double_btn">再来一组</div>
 </div>
 
+<script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
 </body>
 </html>

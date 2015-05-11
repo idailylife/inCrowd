@@ -10,6 +10,9 @@ div{
 }
 
 /* Radio button css style from: http://code.stephenmorley.org/html-and-css/styling-checkboxes-and-radio-buttons */
+[title=站长统计]{
+    display: none;
+}
 
 input[type=radio]:not(old){
     width     : 2em;

@@ -41,11 +41,13 @@ function post_callback(data, ret_status){
                 preload_counter++;
                 if(preload_counter < 2)
                     return;
-                console.log('perload started.');
-                pre_load_image([
-                    jsonval.next_img_src1,
-                    jsonval.next_img_src2
-                ]);
+                on_img_load();
+                //start_time = new Date().getTime();
+                //console.log('perload started.');
+                //pre_load_image([
+                //    jsonval.next_img_src1,
+                //    jsonval.next_img_src2
+                //]);
             }).each(function() {
                 if(this.complete) $(this).load();
             });
@@ -58,11 +60,13 @@ function post_callback(data, ret_status){
                 preload_counter++;
                 if(preload_counter < 2)
                     return;
-                console.log('perload started.');
-                pre_load_image([
-                    jsonval.next_img_src1,
-                    jsonval.next_img_src2
-                ]);
+                on_img_load();
+                //start_time = new Date().getTime();
+                //console.log('perload started.');
+                //pre_load_image([
+                //    jsonval.next_img_src1,
+                //    jsonval.next_img_src2
+                //]);
             }).each(function() {
                 if(this.complete) $(this).load();
             });
@@ -111,6 +115,15 @@ function post_callback(data, ret_status){
             alert('wtf');
     }
 
+}
+
+function on_img_load(){
+    start_time = new Date().getTime();
+    console.log('perload started.');
+    pre_load_image([
+        jsonval.next_img_src1,
+        jsonval.next_img_src2
+    ]);
 }
 
 function pre_load_image(arrayOfImages){

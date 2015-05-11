@@ -93,7 +93,7 @@
                 </p>
                 <div id="cookie_div">
                     <label for="keep_cookie">存储答题状态，以便意外关闭时能恢复</label>
-                    <input type="checkbox" id="keep_cookie" name="keep_cookie" value="1">
+                    <input type="checkbox" id="keep_cookie" name="keep_cookie" value="1" checked="checked">
                 </div>
 
             </div>
@@ -107,6 +107,6 @@
             <div class="submit_btn" id="chk_payment">报酬支付查询</div>
         </div>
     </div>
-
+    <script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
 </body>
 </html>

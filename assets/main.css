@@ -10,6 +10,10 @@ div{
     display: block;
 }
 
+[title=站长统计]{
+    display: none;
+}
+
 .div_center{
     text-align: center;
 }
