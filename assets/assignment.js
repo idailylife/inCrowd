@@ -17,18 +17,6 @@ function post_callback(data, ret_status){
             window.location.href='finish';
             break;
         case 0:
-            //$('#img_a').on('load',function () {
-            //    switchLoadImg('a', false);
-            //    set_image_margin();
-            //    setZoomImage($(this), 1);
-            //}); //Reset onload function
-            //
-            //$('#img_b').on('load',function () {
-            //    switchLoadImg('b', false);
-            //    set_image_margin();
-            //    setZoomImage($(this), 11);
-            //});
-            //Preload image
             refreshZoomImage($('#img_a'), jsonval.img_src1);
             refreshZoomImage($('#img_b'), jsonval.img_src2);
 
@@ -41,7 +29,7 @@ function post_callback(data, ret_status){
                 preload_counter++;
                 if(preload_counter < 2)
                     return;
-                on_img_load();
+                on_img_load(jsonval.next_img_src1, jsonval.next_img_src2);
                 //start_time = new Date().getTime();
                 //console.log('perload started.');
                 //pre_load_image([
@@ -60,7 +48,7 @@ function post_callback(data, ret_status){
                 preload_counter++;
                 if(preload_counter < 2)
                     return;
-                on_img_load();
+                on_img_load(jsonval.next_img_src1, jsonval.next_img_src2);
                 //start_time = new Date().getTime();
                 //console.log('perload started.');
                 //pre_load_image([
@@ -70,9 +58,6 @@ function post_callback(data, ret_status){
             }).each(function() {
                 if(this.complete) $(this).load();
             });
-
-
-
 
             var q_type = jsonval.q_type;
             if(q_type == 0){
@@ -96,9 +81,11 @@ function post_callback(data, ret_status){
             var progress = jsonval.prog_current/jsonval.prog_total*100 + "%";
             $('#meter_span').css('width', progress);
             //Clear radio button
-            $(".radio").each(function(){
-                $(this).prop('checked', false);
-            });
+            //$(".radio").each(function(){
+            //    $(this).prop('checked', false);
+            //});
+            $('input').iCheck('uncheck');
+            
             start_time = new Date().getTime();
 
             //Set button status
@@ -117,12 +104,12 @@ function post_callback(data, ret_status){
 
 }
 
-function on_img_load(){
+function on_img_load(img1, img2){
     start_time = new Date().getTime();
     console.log('perload started.');
     pre_load_image([
-        jsonval.next_img_src1,
-        jsonval.next_img_src2
+        img1,
+        img2
     ]);
 }
 

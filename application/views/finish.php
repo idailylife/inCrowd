@@ -11,9 +11,18 @@
     <meta charset="utf-8">
     <title>Information Gathering | Crowd Crowd Crowd</title>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/finish.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/square/green.css">              <!--Radio button-->
     <script type="text/javascript" src="<?php echo base_url();?>assets/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/icheck.min.js"></script> <!--Radio button-->
     <script type="text/javascript">
+        var first_fill = true;
         $(document).ready(function(){
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+                increaseArea: '10%' // optional
+            });
+
             $('#btn_submit').click(function(){
                 var validity = check_payment_info()
                     && check_form_blank();
@@ -29,9 +38,11 @@
             });
             $('#payment_re').blur(function(){
                 check_payment_info();
+                first_fill = false;
             });
             $('#payment').blur(function(){
-                if($('#payment').val() != '')
+                if($('#payment').val() != ''
+                    && !first_fill)
                     check_payment_info();
             });
             $('#btn_back').click(function () {

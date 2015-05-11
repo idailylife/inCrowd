@@ -11,10 +11,13 @@
 <head>
     <meta charset="utf-8">
     <title>Assignment | Crowd Crowd Crowd | Test website</title>
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/assignment.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/assignment.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/square/green.css">              <!--Radio button-->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery.elevateZoom-3.0.8.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/assignment.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/icheck.min.js"></script> <!--Radio button-->
+
     <script type="text/javascript">
         var start_time = null;
         var timer = null;
@@ -24,6 +27,13 @@
         var preload_counter = 0;
 
         $(document).ready(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+                increaseArea: '10%' // optional
+            });
+
+
             $('#hint_mask').hide();
             $('#img_a').on('load', function(){
                 switchLoadImg('a', false);
@@ -67,6 +77,34 @@
                 && ($prog_total < $max_size)):?>
             switch_double_button(true);
             <?php endif;?>
+
+            $('#img_a').one('load', function(){
+                console.log('img1 loaded.');
+                switchLoadImg('a', false);
+                set_image_margin();
+                setZoomImage($(this), 1);
+                preload_counter++;
+                if(preload_counter < 2)
+                    return;
+                on_img_load(<?php echo '"'.$next_img_src1 . '","'. $next_img_src2 . '"'?>);
+
+            }).each(function() {
+                if(this.complete) $(this).load();
+            });
+
+            $('#img_b').one('load', function(){
+                console.log('img2 loaded.');
+                switchLoadImg('b', false);
+                set_image_margin();
+                setZoomImage($(this), 11);
+                preload_counter++;
+                if(preload_counter < 2)
+                    return;
+                on_img_load(<?php echo '"'.$next_img_src1 . '","'. $next_img_src2 . '"'?>);
+
+            }).each(function() {
+                if(this.complete) $(this).load();
+            });
         });
         $(window).on('resize', function(){
             //Skip quick movement and wait till resize settles
@@ -83,7 +121,7 @@
         <p style="font-size: 18px">即将开始对<span id="q_type_span">`创新性`</span>的评价</p>
         <p style="font-size: 12px; color: #d3d3d3">Tips: 鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>
         <div id="hint_button">
-            朕知道了
+            好的
         </div>
     </div>
     <div id="finish_hint_container">
@@ -136,11 +174,11 @@
             </a>
             较强的是？
         <input type="radio" name="creativity" class="radio" value="A" id="cr_a">
-        <label for="cr_a" class="cmp_label"><span><span></span></span><b>左图</b></label>
+        <label for="cr_a" class="cmp_label"><b>左图</b></label>
         <input type="radio" name="creativity" class="radio" value="B" id="cr_b">
-        <label for="cr_b" class="cmp_label"><span><span></span></span><b>右图</b></label>
+        <label for="cr_b" class="cmp_label"><b>右图</b></label>
         <input type="radio" name="creativity" class="radio" value="X" id="cr_x">
-        <label for="cr_x" class="cmp_label"><span><span></span></span>难以判断</label>
+        <label for="cr_x" class="cmp_label">难以判断</label>
     </div>
     <div id="cmp_usability" class="cmp_container">
         两幅作品中，
@@ -149,11 +187,11 @@
             </a>
             较强的是？
         <input type="radio" name="usability" class="radio" value="A" id="us_a">
-        <label for="us_a" class="cmp_label"><span><span></span></span><b>左图</b></label>
+        <label for="us_a" class="cmp_label"><b>左图</b></label>
         <input type="radio" name="usability" class="radio" value="B" id="us_b">
-        <label for="us_b" class="cmp_label"><span><span></span></span><b>右图</b></label>
+        <label for="us_b" class="cmp_label"><b>右图</b></label>
         <input type="radio" name="usability" class="radio" value="X" id="us_x">
-        <label for="us_x" class="cmp_label"><span><span></span></span>难以判断</label>
+        <label for="us_x" class="cmp_label">难以判断</label>
     </div>
 </div>
 
