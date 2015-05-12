@@ -43,7 +43,7 @@ class Assignment extends CI_Controller {
     function check_authority(){
         if(!isset($_SESSION[KEY_PASS]))
             return false;
-        if($_SESSION[KEY_PASS] > 1)
+        if($_SESSION[KEY_PASS] >= 1)
             return true;
         return false;
     }
