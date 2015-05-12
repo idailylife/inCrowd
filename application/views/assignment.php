@@ -74,7 +74,7 @@
             timer = setInterval("tick_and_show();", 1000);
             //Set button style
             <?php if(($prog_current == $prog_total)
-                && ($prog_total < $max_size)):?>
+                && ($can_expand)):?>
             switch_double_button(true);
             <?php endif;?>
 

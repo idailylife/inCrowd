@@ -11,19 +11,23 @@
  * 用于评估用户质量的单张图片
  * id
  * src:存储位置
- * category: 所属分类（IDEA_GOLD、REDDOT_BOFB这种）
+ * category: 所属分类
+ * trap_id ：见父类
  */
-class User_eval_pic extends CI_Model {
+require_once('General_eval_pic.php');
+
+class User_eval_pic extends General_eval_pic {
     const TABLE_NAME = 'user_eval_pic';
-    public $id;
-    public $src;
-    //public $real_answer;
+//    public $id;
+//    public $src;
+//The properties above are inherited from father class
     public $category;
 
-    public function __construct() {
-        parent::__construct();
-        $this->load->database();
-    }
+//    public function __construct() {
+//        parent::__construct();
+//        $this->load->database();
+//    }
+//
 
     /**
      * 随机选择一张图，更新对象，返回$this
@@ -92,5 +96,4 @@ class User_eval_pic extends CI_Model {
         return $this;
     }
 
-    //TODO: implement necessary interface
 }

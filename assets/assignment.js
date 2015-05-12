@@ -29,13 +29,9 @@ function post_callback(data, ret_status){
                 preload_counter++;
                 if(preload_counter < 2)
                     return;
+
                 on_img_load(jsonval.next_img_src1, jsonval.next_img_src2);
-                //start_time = new Date().getTime();
-                //console.log('perload started.');
-                //pre_load_image([
-                //    jsonval.next_img_src1,
-                //    jsonval.next_img_src2
-                //]);
+
             }).each(function() {
                 if(this.complete) $(this).load();
             });
@@ -49,12 +45,7 @@ function post_callback(data, ret_status){
                 if(preload_counter < 2)
                     return;
                 on_img_load(jsonval.next_img_src1, jsonval.next_img_src2);
-                //start_time = new Date().getTime();
-                //console.log('perload started.');
-                //pre_load_image([
-                //    jsonval.next_img_src1,
-                //    jsonval.next_img_src2
-                //]);
+
             }).each(function() {
                 if(this.complete) $(this).load();
             });
@@ -91,7 +82,7 @@ function post_callback(data, ret_status){
             //Set button status
             var max_cmp_size = jsonval.max_size;
             if((jsonval.prog_current == jsonval.prog_total)
-                && (jsonval.prog_total < max_cmp_size)){
+                && jsonval.can_expand){
                 switch_double_button(true);
             } else {
                 switch_double_button(false);
@@ -105,6 +96,10 @@ function post_callback(data, ret_status){
 }
 
 function on_img_load(img1, img2){
+    if(!img1 ||
+        !img2){
+        return;
+    }
     start_time = new Date().getTime();
     console.log('perload started.');
     pre_load_image([

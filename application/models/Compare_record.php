@@ -15,7 +15,7 @@
  * answer:比较结果
  * q_type:提问种类 0-创新性，1-实用性
  * duration:完成比较的时间
- *
+ * trap_id: 如果这个题目是陷阱题，此项填写原题的id号，否则为-1
  */
 require_once(APPPATH . '../'. SYSDIR. '/core/Model.php');
 require_once('Model_helper.php');
@@ -34,6 +34,7 @@ class Compare_record extends CI_Model {
     public $q_type;
     public $answer;
     public $duration;
+    public $trap_id;
 
     private $model_generated;
 
@@ -41,6 +42,11 @@ class Compare_record extends CI_Model {
         parent::__construct();
         $this->load->database();
         $this->model_generated = false;
+        $this->trap_id = -1;
+    }
+
+    public function set_model_generated(){
+        $this->model_generated = true;
     }
 
     /**
@@ -97,11 +103,12 @@ class Compare_record extends CI_Model {
             'comp_id1' => $this->comp_id1,
             'comp_id2' => $this->comp_id2,
             'comp_type'=> $this->comp_type,
-            'q_type' => $this->q_type
+            'q_type' => $this->q_type,
+            'trap_id' => $this->trap_id
         );
         $this->db->insert($this->db->dbprefix(Compare_record::TABLE_NAME), $data);
-        //$db_helper = new Model_helper();
-        $count = $this->get_max_id();//$db_helper->get_auto_increment_value(Compare_record::TABLE_NAME);
+
+        $count = $this->get_max_id();
         return $count;
     }
 
@@ -132,6 +139,8 @@ class Compare_record extends CI_Model {
                 $this->db->set('duration', $this->duration);
             elseif ($item == 'q_type')
                 $this->db->set('q_type', $this->q_type);
+            elseif ($item == 'trap_id')
+                $this->db->set('trap_id', $this->trap_id);
             else
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }
@@ -150,6 +159,7 @@ class Compare_record extends CI_Model {
         $this->comp_type = $row->comp_type;
         $this->duration = $row->duration;
         $this->q_type = $row->q_type;
+        $this->trap_id = $row->trap_id;
         return $this;
     }
 

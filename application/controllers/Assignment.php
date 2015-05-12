@@ -124,7 +124,8 @@ class Assignment extends CI_Controller {
             'prog_current'  => $hit_record->progress_count + 1,
             'prog_total'    => $hit_record->get_comparison_size(),
             'q_type'        => $cmp_record->q_type,
-            'max_size'      => MAX_COMPARISON_SIZE,
+            'can_expand'    => false,
+            //'max_size'      => MAX_COMPARISON_SIZE,
             'next_img_src1' => IMAGE_BASE_URL,
             'next_img_src2' => IMAGE_BASE_URL
         );  //Array for view variables
@@ -138,12 +139,6 @@ class Assignment extends CI_Controller {
                 break;
             case CMP_TYPE_USERTEST:
                 $model = new User_eval_pic();
-//                $user_eval_model->get_by_id($cmp_record->comp_id1);
-//                $data['img_src1'] .= $user_eval_model->src;
-//                //$temp_path['img1'] .= $user_eval_model->src;
-//                $user_eval_model->get_by_id($cmp_record->comp_id2);
-//                $data['img_src2'] .= $user_eval_model->src;
-//                //$temp_path['img2'] .= $user_eval_model->src;
                 break;
         }
         $model->get_by_id($cmp_record->comp_id1);
@@ -171,6 +166,7 @@ class Assignment extends CI_Controller {
         } else {
             $data['next_img_src1'] = null;
             $data['next_img_src2'] = null;
+            $data['can_expand']    = $hit_record->can_expand();
         }
 
 
@@ -304,7 +300,7 @@ class Assignment extends CI_Controller {
             if(isset($_POST['expand'])){
                 //Expand comparison array if possible
                 if($hit_record->can_expand()){
-                    $hit_record->create_comparison();
+                    $hit_record->create_comparison(10, 1); //TODO: Set to a proper value
                     $hit_record->update_db(array('records'));
                 }else{
                     $ret_data['status'] = 2;

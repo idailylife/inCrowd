@@ -10,6 +10,7 @@
  * Class General_eval_pic 需要评价的单张图片
  *   id
  *   src
+ *
  */
 class General_eval_pic extends CI_Model {
     const TABLE_NAME = 'general_eval_pic';
@@ -75,6 +76,4 @@ class General_eval_pic extends CI_Model {
         return $this;
     }
 
-
-    //TODO: implement necessary interface
 }
