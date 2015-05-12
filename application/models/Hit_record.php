@@ -62,6 +62,7 @@ class Hit_record extends CI_Model {
 
 
     public function create_comparison(){
+        //TODO: 安插陷阱题
         if(is_null($this->record_id_array)){
             //Initialize array of record id when not yet set.
             $this->record_id_array = [];
