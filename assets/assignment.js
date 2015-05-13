@@ -14,7 +14,8 @@ function post_callback(data, ret_status){
             alert('err type 2');
             break;
         case 1:
-            window.location.href='finish';
+            //window.location.href='finish';
+            get_expand_status(jsonval.can_expand);
             break;
         case 0:
             refreshZoomImage($('#img_a'), jsonval.img_src1);
@@ -80,13 +81,13 @@ function post_callback(data, ret_status){
             start_time = new Date().getTime();
 
             //Set button status
-            var max_cmp_size = jsonval.max_size;
-            if((jsonval.prog_current == jsonval.prog_total)
-                && jsonval.can_expand){
-                switch_double_button(true);
-            } else {
+            //var max_cmp_size = jsonval.max_size;
+            //if((jsonval.prog_current == jsonval.prog_total)
+            //    && jsonval.can_expand){
+            //    switch_double_button(true);
+            //} else {
                 switch_double_button(false);
-            }
+            //}
 
             break;
         default :
@@ -120,6 +121,8 @@ function show_hint(q_type){
     } else {
         $('#q_type_span').text("实用性");
     }
+    $('#hint_container').show();
+    $('#finish_hint_container').hide();
     $('#hint_mask').show();
 }
 
@@ -203,7 +206,7 @@ function switch_double_button(on){
     }
 }
 
-function post_to_server(id, expand){
+function post_to_server(id){
     if(!check_validity()){
         $(id).text('请填写完整后重试');
         return;
@@ -218,13 +221,68 @@ function post_to_server(id, expand){
         'usability': val_u,
         'duration' : duration
     };
-    if(expand){
-        postData['expand'] = true;
-    }
+
     window.console.log(postData);
     switchLoadImg('a', true);
     switchLoadImg('b', true);
     $.post("assignment", postData,
         post_callback
     );
+}
+
+function get_expand_status(can_expand){
+    //到最后一题时，点击“继续”按钮将先检查答题状态
+    $('#hint_container').hide();
+    $('#finish_hint_container').show();
+    $('#hint_mask').show();
+    if(can_expand){
+        $('#finish_hint').text('选择[再来一组]继续任务，或点击[完成]以填写支付信息.');
+        $('#div_next_1').show();
+        $('#div_next_2').show();
+    } else {
+        $('#finish_hint').text('请点击[完成]以填写支付信息.');
+        $('#div_next_1').show();
+        $('#div_next_2').hide();
+    }
+
+    //if(!check_validity()){
+    //    $('#div_next').text('请填写完整后重试');
+    //    return;
+    //} else {
+    //    $('#div_next').text('继续');
+    //}
+    //$('#hint_container').hide();
+    //$('#finish_hint_container').show();
+    //$('#hint_mask').show();
+    //$('#finish_hint').text('请稍候...');
+    ////Get expand status from server
+    //$('#div_next_1').hide();
+    //$('#div_next_2').hide();
+    //$.get("assignment/can_expand", function(data, status){
+    //    console.log(data);
+    //    if(status != 'success'){
+    //        alert('连接失败，请刷新页面重试. -' + status);
+    //        return;
+    //    }
+    //    var jsonval = jQuery.parseJSON(data);
+    //    switch (jsonval.status){
+    //        case -2:
+    //        case -1:
+    //            alert(jsonval.msg);
+    //            break;
+    //        case 0:
+    //            //Cannot expand
+    //            $('#div_next_1').show();
+    //            $('#div_next_2').hide();
+    //            $('#finish_hint').text('请点击[完成]以填写支付信息.');
+    //            break;
+    //        case 1:
+    //            //Can expand
+    //            $('#div_next_1').show();
+    //            $('#div_next_2').show();
+    //            $('#finish_hint').text('选择[再来一组]继续任务，或点击[完成]以填写支付信息.');
+    //            break;
+    //        default : alert('wtf');
+    //    }
+    //});
 }

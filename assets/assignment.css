@@ -124,14 +124,6 @@ div{
     display: none;
 }
 
-#div_next_1{
-    float: left;
-}
-
-#div_next_2{
-    float: right;
-}
-
 a.tooltips {
     position: relative;
     display: inline;
@@ -334,7 +326,7 @@ a.tooltips {
     background-color: whitesmoke;
 }
 
-#hint_container{
+.hint_container{
     font-weight: 700;
     background-color: orangered;
     padding: 5px 5px 20px 5px;
@@ -346,11 +338,11 @@ a.tooltips {
     min-width: 720px;
 }
 
-#hint_button{
+.hint_button{
     background-color: #eee;
     width: 25%;
     min-width: 60px;
-    margin: 0px auto;
+    margin: 5px auto;
     height: 2em;
     color: orangered;
     font-size: 18px;
@@ -358,6 +350,14 @@ a.tooltips {
     cursor: pointer;
 }
 
-#hint_button:hover{
+.hint_button:hover{
     background-color: #fff;
+}
+
+#finish_hint{
+    font-size: 18px;
+}
+
+#finish_hint_container{
+    display: none;
 }
