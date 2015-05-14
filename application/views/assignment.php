@@ -1,13 +1,5 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: bowei
- * Date: 2015/4/22
- * Time: 16:59
- */
-?>
-
 <html lang="zh" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8">
     <title>Assignment | Crowd Crowd Crowd | Test website</title>
@@ -27,12 +19,12 @@
         var preload_counter = 0;
 
         $(document).ready(function () {
+
             $('input').iCheck({
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
                 increaseArea: '10%' // optional
             });
-
 
             $('#hint_mask').hide();
             $('#img_a').on('load', function(){
@@ -41,14 +33,23 @@
             $('#img_b').on('load', function(){
                 switchLoadImg('b', false);
             });
-            $('#div_next').click(function () {
-                post_to_server('#div_next', false);
+
+            $('#div_next').click(function(){
+                post_to_server('#div_next');
             });
+
             $('#div_next_1').click(function () {
-                post_to_server('#div_next_1', false);
+                //post_to_server('#div_next_1', false);
+                window.location.href='finish'
             });
             $('#div_next_2').click(function () {
-                post_to_server('#div_next_2', true);
+//                post_to_server('#div_next_2', true);
+                var postData = {
+                    'expand': 1
+                };
+                $.post("assignment", postData,
+                    post_callback
+                );
             });
             $('#hint_button').click(function(){
                 start_time = new Date().getTime();
@@ -72,11 +73,7 @@
             //Set timer
             resetTimer();
             timer = setInterval("tick_and_show();", 1000);
-            //Set button style
-            <?php if(($prog_current == $prog_total)
-                && ($prog_total < $max_size)):?>
-            switch_double_button(true);
-            <?php endif;?>
+
 
             $('#img_a').one('load', function(){
                 console.log('img1 loaded.');
@@ -117,15 +114,19 @@
 
 <body>
 <div id="hint_mask">
-    <div id="hint_container" >
-        <p style="font-size: 18px">即将开始对<span id="q_type_span">`创新性`</span>的评价</p>
-        <p style="font-size: 12px; color: #d3d3d3">Tips: 鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>
-        <div id="hint_button">
+    <div id="hint_container" class="hint_container">
+        <p style="font-size: 18px">即将开始对<span id="q_type_span">创新性</span>的评价</p>
+        <p id="q_type_desc"></p>
+        <p style="font-size: 14px; color: palegreen">鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>
+        <div id="hint_button" class="hint_button">
             好的
         </div>
     </div>
-    <div id="finish_hint_container">
-        <p></p>
+    <div id="finish_hint_container" class="hint_container">
+        <p id="finish_hint">请稍候...</p>
+        <div id="div_next_1" class="hint_button">完成</div>
+        <div id="div_next_2" class="hint_button">再来一组</div>
+
     </div>
 </div>
 <div id="timer" >
@@ -167,9 +168,9 @@
     <!-- Radio buttons here -->
     <div id="cmp_creativity" class="cmp_container">
         两幅作品中，
-            <a class="tooltips" href="#" data-tooltip="以现有的思维模式提出有别于常规或常人思路的见解为导向，利用现有的知识和物质，
-                在特定的环境中，本着理想化需要或为满足社会需求，而改进或创造新的事物、方法、元素、路径、
-                环境，并能获得一定有益效果的行为。">
+            <a class="tooltips" href="#" data-tooltip="利用现有的知识和物质，
+                在特定的环境中，改进或创造新的事物、方法、元素、路径、
+                环境，并能获得一定有益效果">
                 创新性
             </a>
             较强的是？
@@ -198,10 +199,10 @@
 <div id="div_next" class="container meter">
     继续
 </div>
-<div id="button_set" class="container">
-    <div id="div_next_1" class="meter double_btn">完成</div>
-    <div id="div_next_2" class="meter double_btn">再来一组</div>
-</div>
+<!--<div id="button_set" class="container">-->
+<!--    <div id="div_next_1" class="meter double_btn">完成</div>-->
+<!--    <div id="div_next_2" class="meter double_btn">再来一组</div>-->
+<!--</div>-->
 
 <script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
 </body>

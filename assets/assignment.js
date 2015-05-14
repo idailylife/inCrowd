@@ -6,7 +6,7 @@ function post_callback(data, ret_status){
     console.log('post_callback:' + ret_status);
     console.log(data);
     if(ret_status != 'success'){
-        console.log('post_callback: Connection failed.');
+        console.log('post_callback: 网络连接失败，请重试.');
     }
     var jsonval = jQuery.parseJSON(data);
     switch (jsonval.status){
@@ -14,7 +14,8 @@ function post_callback(data, ret_status){
             alert('err type 2');
             break;
         case 1:
-            window.location.href='finish';
+            //window.location.href='finish';
+            get_expand_status(jsonval.can_expand);
             break;
         case 0:
             refreshZoomImage($('#img_a'), jsonval.img_src1);
@@ -29,13 +30,9 @@ function post_callback(data, ret_status){
                 preload_counter++;
                 if(preload_counter < 2)
                     return;
+
                 on_img_load(jsonval.next_img_src1, jsonval.next_img_src2);
-                //start_time = new Date().getTime();
-                //console.log('perload started.');
-                //pre_load_image([
-                //    jsonval.next_img_src1,
-                //    jsonval.next_img_src2
-                //]);
+
             }).each(function() {
                 if(this.complete) $(this).load();
             });
@@ -49,12 +46,7 @@ function post_callback(data, ret_status){
                 if(preload_counter < 2)
                     return;
                 on_img_load(jsonval.next_img_src1, jsonval.next_img_src2);
-                //start_time = new Date().getTime();
-                //console.log('perload started.');
-                //pre_load_image([
-                //    jsonval.next_img_src1,
-                //    jsonval.next_img_src2
-                //]);
+
             }).each(function() {
                 if(this.complete) $(this).load();
             });
@@ -89,13 +81,13 @@ function post_callback(data, ret_status){
             start_time = new Date().getTime();
 
             //Set button status
-            var max_cmp_size = jsonval.max_size;
-            if((jsonval.prog_current == jsonval.prog_total)
-                && (jsonval.prog_total < max_cmp_size)){
-                switch_double_button(true);
-            } else {
-                switch_double_button(false);
-            }
+            //var max_cmp_size = jsonval.max_size;
+            //if((jsonval.prog_current == jsonval.prog_total)
+            //    && jsonval.can_expand){
+            //    switch_double_button(true);
+            //} else {
+            //  switch_double_button(false);
+            //}
 
             break;
         default :
@@ -105,6 +97,10 @@ function post_callback(data, ret_status){
 }
 
 function on_img_load(img1, img2){
+    if(!img1 ||
+        !img2){
+        return;
+    }
     start_time = new Date().getTime();
     console.log('perload started.');
     pre_load_image([
@@ -122,9 +118,13 @@ function pre_load_image(arrayOfImages){
 function show_hint(q_type){
     if(q_type == 0){
         $('#q_type_span').text("创新性");
+        $('#q_type_desc').text('创新性：利用现有的知识和物质，改进或创造新的事物、方法、元素、路径、环境，并能获得一定有益效果.');
     } else {
         $('#q_type_span').text("实用性");
+        $('#q_type_desc').text('实用性：该产品能够制造或者使用，并且能够产生积极效果.');
     }
+    $('#hint_container').show();
+    $('#finish_hint_container').hide();
     $('#hint_mask').show();
 }
 
@@ -147,12 +147,21 @@ function refreshZoomImage(img_obj, img_src){
 }
 
 function setZoomImage(img_obj, zoompos){
+    //var zoomConfig = {
+    //    scrollZoom : true,
+    //    zoomWindowPosition: zoompos,
+    //    zoomWindowWidth: 512,
+    //    zoomWindowHeight: 512
+    //};
     var zoomConfig = {
-        scrollZoom : true,
-        zoomWindowPosition: zoompos,
-        zoomWindowWidth: 512,
-        zoomWindowHeight: 512
-    };
+        zoomType	    : "lens",
+        lensSize        : 300,
+        scrollZoom      : true,
+        containLensZoom : true,
+        borderColour    : '#fff',
+        lensBorder      : 1 ,
+        lensShape   : 'round'
+    }
     img_obj.elevateZoom(zoomConfig);
 }
 
@@ -208,7 +217,7 @@ function switch_double_button(on){
     }
 }
 
-function post_to_server(id, expand){
+function post_to_server(id){
     if(!check_validity()){
         $(id).text('请填写完整后重试');
         return;
@@ -223,13 +232,28 @@ function post_to_server(id, expand){
         'usability': val_u,
         'duration' : duration
     };
-    if(expand){
-        postData['expand'] = true;
-    }
+
     window.console.log(postData);
     switchLoadImg('a', true);
     switchLoadImg('b', true);
     $.post("assignment", postData,
         post_callback
     );
+}
+
+function get_expand_status(can_expand){
+    //到最后一题时，点击“继续”按钮将先检查答题状态
+    $('#hint_container').hide();
+    $('#finish_hint_container').show();
+    $('#hint_mask').show();
+    if(can_expand){
+        $('#finish_hint').text('选择[再来一组]继续任务，或点击[完成]以填写支付信息.');
+        $('#div_next_1').show();
+        $('#div_next_2').show();
+    } else {
+        $('#finish_hint').text('请点击[完成]以填写支付信息.');
+        $('#div_next_1').show();
+        $('#div_next_2').hide();
+    }
+
 }

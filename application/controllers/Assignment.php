@@ -124,7 +124,7 @@ class Assignment extends CI_Controller {
             'prog_current'  => $hit_record->progress_count + 1,
             'prog_total'    => $hit_record->get_comparison_size(),
             'q_type'        => $cmp_record->q_type,
-            'max_size'      => MAX_COMPARISON_SIZE,
+            //'max_size'      => MAX_COMPARISON_SIZE,
             'next_img_src1' => IMAGE_BASE_URL,
             'next_img_src2' => IMAGE_BASE_URL
         );  //Array for view variables
@@ -138,12 +138,6 @@ class Assignment extends CI_Controller {
                 break;
             case CMP_TYPE_USERTEST:
                 $model = new User_eval_pic();
-//                $user_eval_model->get_by_id($cmp_record->comp_id1);
-//                $data['img_src1'] .= $user_eval_model->src;
-//                //$temp_path['img1'] .= $user_eval_model->src;
-//                $user_eval_model->get_by_id($cmp_record->comp_id2);
-//                $data['img_src2'] .= $user_eval_model->src;
-//                //$temp_path['img2'] .= $user_eval_model->src;
                 break;
         }
         $model->get_by_id($cmp_record->comp_id1);
@@ -171,6 +165,7 @@ class Assignment extends CI_Controller {
         } else {
             $data['next_img_src1'] = null;
             $data['next_img_src2'] = null;
+            $data['can_expand']    = $hit_record->can_expand();
         }
 
 
@@ -262,10 +257,25 @@ class Assignment extends CI_Controller {
         if(-1 == $hit_id){
             $ret_data['status'] = 2; //Error
             $ret_data['reason'] = 'HIT record not in the session';
-        } elseif(!isset($_POST['creativity'])
-            && !isset($_POST['usability'])){
-            $ret_data['status'] = 2; //Error
-            $ret_data['reason'] = 'POST data incomplete';
+        } elseif(isset($_POST['expand'])) {
+            //Expand hit comparison array and return the info of next cmp
+            $hit_record = new Hit_record();
+            $hit_record->get_by_id($hit_id);
+            if ($hit_record->can_expand()) {
+                $hit_record->create_comparison(); //TODO: Set a proper value
+                $hit_record->update_db(array('records'));
+
+                $ret_data = $this->get_comp_data($hit_record);
+                $ret_data['status'] = 0;
+            } else {
+                $ret_data['status'] = 2;
+                $ret_data['reason'] = 'Cannot expand comparison array: limitation reached.';
+            }
+        }
+        elseif(!isset($_POST['creativity'])
+                && !isset($_POST['usability'])){
+                $ret_data['status'] = 2; //Error
+                $ret_data['reason'] = 'POST data incomplete';
         } else {
             $hit_record = new Hit_record();
             $hit_record->get_by_id($hit_id);
@@ -301,18 +311,18 @@ class Assignment extends CI_Controller {
             $hit_record->progress_count = ++$progress;
             $hit_record->update_db(array('progress_count'));
 
-            if(isset($_POST['expand'])){
-                //Expand comparison array if possible
-                if($hit_record->can_expand()){
-                    $hit_record->create_comparison();
-                    $hit_record->update_db(array('records'));
-                }else{
-                    $ret_data['status'] = 2;
-                    $ret_data['reason'] = 'Cannot expand comparison array: limitation reached.';
-                    echo json_encode($ret_data);
-                    return;
-                }
-            }
+//            if(isset($_POST['expand'])){
+//                //Expand comparison array if possible
+//                if($hit_record->can_expand()){
+//                    $hit_record->create_comparison(10, 1); //TODO: Set a proper value
+//                    $hit_record->update_db(array('records'));
+//                }else{
+//                    $ret_data['status'] = 2;
+//                    $ret_data['reason'] = 'Cannot expand comparison array: limitation reached.';
+//                    echo json_encode($ret_data);
+//                    return;
+//                }
+//            }
 
             if($hit_record->progress_count < $hit_record->getCmpLength()){
                 //$current_comp_id = $hit_record->record_id_array[$progress];
@@ -322,8 +332,42 @@ class Assignment extends CI_Controller {
             } else {
                 //End of comparison stage
                 $ret_data['status'] = 1; //End of comparison
+                $ret_data['can_expand'] = $hit_record->can_expand();
             }
         }
         echo json_encode($ret_data);
+    }
+
+    /**
+     * 判断当前的HIT任务是否可以增长
+     * 返回状态：
+     *  -1 => 鉴权失败
+     *  -2 => 没有未完成的HIT
+     *  0  => 无法增长
+     *  1  => 可以增长
+     * @return string
+     */
+    public function can_expand(){
+        $retData = [];
+        if(!$this->check_authority() && !DEBUG_MODE){
+            //Authentication failed
+            $retData['status'] = -1;
+            $retData['msg'] = "Permission denied. Log in first.";
+
+        } else {
+            $hit_record = new Hit_record();
+            if($this->have_unfinished_hit()){
+                $hit_id = $_SESSION[KEY_HIT_RECORD];
+                $hit_record->get_by_id($hit_id);
+                $retData['status'] = 0;
+                if($hit_record->can_expand())
+                    $retData['status'] = 1;
+
+            } else {
+                $retData['status'] = -2;
+                $retData['msg'] = "No unfinished HIT record.";
+            }
+        }
+        echo json_encode($retData);
     }
 }
