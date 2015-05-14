@@ -118,8 +118,10 @@ function pre_load_image(arrayOfImages){
 function show_hint(q_type){
     if(q_type == 0){
         $('#q_type_span').text("创新性");
+        $('#q_type_desc').text('创新性：利用现有的知识和物质，改进或创造新的事物、方法、元素、路径、环境，并能获得一定有益效果.');
     } else {
         $('#q_type_span').text("实用性");
+        $('#q_type_desc').text('实用性：该产品能够制造或者使用，并且能够产生积极效果.');
     }
     $('#hint_container').show();
     $('#finish_hint_container').hide();
@@ -155,7 +157,7 @@ function setZoomImage(img_obj, zoompos){
         zoomType	    : "lens",
         lensSize        : 300,
         scrollZoom      : true,
-        //containLensZoom : true,
+        containLensZoom : true,
         borderColour    : '#fff',
         lensBorder      : 1 ,
         lensShape   : 'round'
@@ -254,44 +256,4 @@ function get_expand_status(can_expand){
         $('#div_next_2').hide();
     }
 
-    //if(!check_validity()){
-    //    $('#div_next').text('请填写完整后重试');
-    //    return;
-    //} else {
-    //    $('#div_next').text('继续');
-    //}
-    //$('#hint_container').hide();
-    //$('#finish_hint_container').show();
-    //$('#hint_mask').show();
-    //$('#finish_hint').text('请稍候...');
-    ////Get expand status from server
-    //$('#div_next_1').hide();
-    //$('#div_next_2').hide();
-    //$.get("assignment/can_expand", function(data, status){
-    //    console.log(data);
-    //    if(status != 'success'){
-    //        alert('连接失败，请刷新页面重试. -' + status);
-    //        return;
-    //    }
-    //    var jsonval = jQuery.parseJSON(data);
-    //    switch (jsonval.status){
-    //        case -2:
-    //        case -1:
-    //            alert(jsonval.msg);
-    //            break;
-    //        case 0:
-    //            //Cannot expand
-    //            $('#div_next_1').show();
-    //            $('#div_next_2').hide();
-    //            $('#finish_hint').text('请点击[完成]以填写支付信息.');
-    //            break;
-    //        case 1:
-    //            //Can expand
-    //            $('#div_next_1').show();
-    //            $('#div_next_2').show();
-    //            $('#finish_hint').text('选择[再来一组]继续任务，或点击[完成]以填写支付信息.');
-    //            break;
-    //        default : alert('wtf');
-    //    }
-    //});
 }

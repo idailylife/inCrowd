@@ -262,7 +262,7 @@ class Assignment extends CI_Controller {
             $hit_record = new Hit_record();
             $hit_record->get_by_id($hit_id);
             if ($hit_record->can_expand()) {
-                $hit_record->create_comparison(10, 1); //TODO: Set a proper value
+                $hit_record->create_comparison(); //TODO: Set a proper value
                 $hit_record->update_db(array('records'));
 
                 $ret_data = $this->get_comp_data($hit_record);

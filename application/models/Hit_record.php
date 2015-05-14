@@ -88,7 +88,7 @@ class Hit_record extends CI_Model {
         shuffle($tmp_ary[1]);
         //Randomly choose create one trap question//////
         $trap_i = rand(0,1); //Choose one trap type (CMP_TYPE_USERTEST or CMP_TYPE_GENERAL)
-        $trap_index = rand(0, count($tmp_ary[$trap_i]) -1);
+        $trap_index = rand(0, count($tmp_ary[$trap_i]) -2);
         $trap_cmp_src = $tmp_ary[$trap_i][$trap_index];
         $cmp = new Compare_record();
         $cmp->get_by_id($trap_cmp_src);

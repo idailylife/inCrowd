@@ -361,3 +361,8 @@ a.tooltips {
 #finish_hint_container{
     display: none;
 }
+
+#q_type_desc{
+    font-size: 13px;
+    font-weight: 200;
+}

@@ -39,7 +39,7 @@
                         html = '<span>无查询结果.</span>'
                     } else {
                         html = '<table>\n' +
-                            '<tr><th>时间</th><th>状态</th><th>支付金额</th></tr>';
+                            '<tr><th>任务时间</th><th>支付状态</th><th>实际支付</th></tr>';
                         var row;
                         for(var i=0; i<dataAry.length; i++){
                             html += '<tr><td>';
@@ -56,7 +56,7 @@
                                     ps = '任务未完成';
                                     break;
                                 case 0:
-                                    ps = '审核中';
+                                    ps = '任务完成-审核中';
                                     break;
                                 case 1:
                                     ps = '待支付';
