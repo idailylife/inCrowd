@@ -6,7 +6,7 @@ function post_callback(data, ret_status){
     console.log('post_callback:' + ret_status);
     console.log(data);
     if(ret_status != 'success'){
-        console.log('post_callback: Connection failed.');
+        console.log('post_callback: 网络连接失败，请重试.');
     }
     var jsonval = jQuery.parseJSON(data);
     switch (jsonval.status){
@@ -86,7 +86,7 @@ function post_callback(data, ret_status){
             //    && jsonval.can_expand){
             //    switch_double_button(true);
             //} else {
-                switch_double_button(false);
+            //  switch_double_button(false);
             //}
 
             break;
@@ -145,12 +145,21 @@ function refreshZoomImage(img_obj, img_src){
 }
 
 function setZoomImage(img_obj, zoompos){
+    //var zoomConfig = {
+    //    scrollZoom : true,
+    //    zoomWindowPosition: zoompos,
+    //    zoomWindowWidth: 512,
+    //    zoomWindowHeight: 512
+    //};
     var zoomConfig = {
-        scrollZoom : true,
-        zoomWindowPosition: zoompos,
-        zoomWindowWidth: 512,
-        zoomWindowHeight: 512
-    };
+        zoomType	    : "lens",
+        lensSize        : 300,
+        scrollZoom      : true,
+        //containLensZoom : true,
+        borderColour    : '#fff',
+        lensBorder      : 1 ,
+        lensShape   : 'round'
+    }
     img_obj.elevateZoom(zoomConfig);
 }
 
