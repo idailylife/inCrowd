@@ -91,7 +91,7 @@ class Finish extends CI_Controller {
 
             if(!empty($_POST['advice'])){
                 array_push($key_array, 'advice');
-                $advice = substr($this->input->post('advice', true), 0, 400); //最大400个字
+                $advice = substr($this->input->post('advice', true), 0, 10240); //最大字数限制
                 $hit_record->advice = $advice;
             }
 

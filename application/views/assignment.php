@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Assignment | Crowd Crowd Crowd | Test website</title>
+    <title>Assignment | Crowd Crowd Crowd</title>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/assignment.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/square/green.css">              <!--Radio button-->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery-1.11.2.min.js"></script>
@@ -13,12 +13,14 @@
     <script type="text/javascript">
         var start_time = null;
         var timer = null;
-        var progress = '<?php echo $prog_current/$prog_total*100 ?>%';
+        var progress = <?php echo $prog_current/$prog_total*100 ?>;
         var last_q_type = <?php echo $q_type;?>;
         var resize_timer_id;
         var preload_counter = 0;
 
         $(document).ready(function () {
+            var prog_fixed = new Number(progress).toFixed();
+            $('#curr_progress').text(prog_fixed + '%');
 
             $('input').iCheck({
                 checkboxClass: 'icheckbox_square-green',
@@ -56,7 +58,7 @@
                 $('#hint_mask').hide();
             });
             //Set progress bar
-            $('#meter_span').css('width', progress);
+            $('#meter_span').css('width', progress + '%');
             //Set start time
             start_time = new Date().getTime();
             //Hide unavailable thing
@@ -138,11 +140,12 @@
     <span id="meter_span" style="width: 25%"></span>
 </div>
 <div id="progress" class="container">
-        当前进度
-        <span id="curr_index"><?php echo $prog_current ?></span>
-        /
-        <span id="total_index"><?php echo $prog_total; ?></span>
-    <!--Time estimation-->
+        当前进度:
+        <span id="curr_progress"></span>
+<!--        <span id="curr_index">--><?php //echo $prog_current ?><!--</span>-->
+<!--        /-->
+<!--        <span id="total_index">--><?php //echo $prog_total; ?><!--</span>-->
+
 </div>
 <div id="img_framework" class="container">
     <!--Image container-->

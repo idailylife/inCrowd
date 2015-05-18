@@ -17,6 +17,10 @@ require_once('Model_helper.php');
  * user_ip: 用户提交时的ip地址
  * payment_info: 支付信息
  * expert_info: 预实验用的专业程度信息
+ * pay_status:   报酬支付状态： 0 任务完成,审核中；1 待支付；2 已支付；-1 任务尚未完成； -2 审核失败
+ * pay_amount:   报酬支付金额
+ * score: 当前积分
+ * score_rate: 当前得分折扣 如 0.95
  */
 class Hit_record extends CI_Model {
     const TABLE_NAME = 'hit_record';
@@ -39,6 +43,8 @@ class Hit_record extends CI_Model {
     public $advice;          //用户意见建议
     public $pay_status;     //报酬支付状态： 0 任务完成,审核中；1 待支付；2 已支付；-1 任务尚未完成； -2 审核失败
     public $pay_amount;     //报酬支付金额
+    public $score;
+    public $score_rate;
 
     private $model_generated;
 
@@ -48,6 +54,8 @@ class Hit_record extends CI_Model {
         $this->model_generated = false;
         $this->progress_count = 0;
         $this->pay_status = -1;
+        $this->score = 0;
+        $this->score_rate = 1.0;
     }
 
 
@@ -128,7 +136,9 @@ class Hit_record extends CI_Model {
         }
         $data = array(
             'records'    => json_encode($this->record_id_array),
-            'pay_status' => $this->pay_status
+            'pay_status' => $this->pay_status,
+            'score'      => $this->score,
+            'score_rate' => $this->score_rate
         );
         if(isset($this->start_time))
             $data['start_time'] = $this->start_time;
@@ -137,6 +147,7 @@ class Hit_record extends CI_Model {
         if(isset($this->token)){
             $data['token'] = $this->token;
         }
+
 
         $this->db->insert($this->db->dbprefix(Hit_record::TABLE_NAME), $data);
         //$db_helper = new Model_helper();
@@ -178,6 +189,10 @@ class Hit_record extends CI_Model {
                 $this->db->set('pay_status', $this->pay_status);
             elseif($item == 'pay_amount')
                 $this->db->set('pay_amount', $this->pay_amount);
+            elseif($item == 'score')
+                $this->db->set('score', $this->score);
+            elseif($item == 'score_rate')
+                $this->db->set('score_rate', $this->score_rate);
             else
                 log_message('error', 'Hit_record: Unrecognized key to update:'. $item);
         }
@@ -192,11 +207,11 @@ class Hit_record extends CI_Model {
         return $this->record_id_array[$index];
     }
 
-    public function get_comparison_size(){
-        if(isset($this->record_id_array))
-            return count($this->record_id_array);
-        return 0;
-    }
+//    public function get_comparison_size(){
+//        if(isset($this->record_id_array))
+//            return count($this->record_id_array);
+//        return 0;
+//    }
 
     public function get_by_id($id){
         $this->db->where('id', $id);
@@ -211,6 +226,8 @@ class Hit_record extends CI_Model {
             $this->expert_info = $row->expert_info;
             $this->user_ip = $row->user_ip;
             $this->payment_info = $row->payment_info;
+            $this->score = $row->score;
+            $this->score_rate = $row->score_rate;
             return $this;
         }
         else
@@ -285,5 +302,56 @@ class Hit_record extends CI_Model {
      */
     public function getHitRecordTotalSize(){
         return $this->db->count_all($this->db->dbprefix(Hit_record::TABLE_NAME));
+    }
+
+    /**
+     * @return int 当前等级
+     */
+    public function getHitLevel(){
+        return intval($this->progress_count /(COMPARISON_SIZE+1)) + 1;
+    }
+
+    public function getScorePerCmp($level){
+        //依照公式估算整数: y = 23.023ln(x) + 22.237
+        switch($level){
+            case 0:
+                $score = 0;
+                break;
+            case 1:
+                $score = 20;
+                break;
+            case 2:
+                $score = 40;
+                break;
+            case 3:
+                $score = 50;
+                break;
+            case 4:
+                $score = 55;
+                break;
+            case 5:
+                $score = 60;
+                break;
+            case 6:
+                $score = 63;
+                break;
+            case 7:
+                $score = 65;
+                break;
+            default:
+                $score = 65;
+        }
+        return $score;
+    }
+
+    /**
+     * @param bool $with_penalty 是否算入罚分
+     * @return int 当前的等级分
+     */
+    public function getCurrLevelScore($with_penalty = true){
+        $score = $this->getScorePerCmp($this->getHitLevel());
+        if($with_penalty)
+            $score = $score * $this->score_rate;
+        return $score;
     }
 }

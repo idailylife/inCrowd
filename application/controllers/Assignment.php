@@ -122,11 +122,13 @@ class Assignment extends CI_Controller {
             'img_src1'      => IMAGE_BASE_URL,
             'img_src2'      => IMAGE_BASE_URL,
             'prog_current'  => $hit_record->progress_count + 1,
-            'prog_total'    => $hit_record->get_comparison_size(),
+            'prog_total'    => $hit_record->getCmpLength(),
             'q_type'        => $cmp_record->q_type,
             //'max_size'      => MAX_COMPARISON_SIZE,
             'next_img_src1' => IMAGE_BASE_URL,
-            'next_img_src2' => IMAGE_BASE_URL
+            'next_img_src2' => IMAGE_BASE_URL,
+            'total_score'   => $hit_record->score,
+            'next_score'    => $hit_record->getCurrLevelScore()
         );  //Array for view variables
 //        $temp_path = array(
 //            'img1' => PATH_TO_RESOURCES,
@@ -275,7 +277,7 @@ class Assignment extends CI_Controller {
         elseif(!isset($_POST['creativity'])
                 && !isset($_POST['usability'])){
                 $ret_data['status'] = 2; //Error
-                $ret_data['reason'] = 'POST data incomplete';
+                $ret_data['reason'] = 'Insufficient POST data ';
         } else {
             $hit_record = new Hit_record();
             $hit_record->get_by_id($hit_id);
@@ -284,7 +286,7 @@ class Assignment extends CI_Controller {
             $cmp_record = new Compare_record();
             $cmp_record->get_by_id($current_comp_id);
 
-            $answer = 0;
+            $answer = 0;    //'B':0; 'A':1, 'not sure':2
             if($cmp_record->q_type == Compare_record::QTYPE_CREATIVITY){ //Question for creativity
                 if(strcmp($_POST['creativity'],'A') == 0)
                     $answer = 1;
@@ -298,31 +300,35 @@ class Assignment extends CI_Controller {
             }
             $cmp_record->answer = $answer;
 
-            $key = array('answer');
+            $hit_key_ary = ['progress_count', 'score'];
+            //Add score
+            $curr_score = $hit_record->getCurrLevelScore();
+            $hit_record->score += $curr_score;
+
+            /* Re-calculate penalty if it's a QoE question */
+            if($cmp_record->comp_type == CMP_TYPE_USERTEST){
+                $ground_truth = $cmp_record->get_ground_truth();
+                if($ground_truth != $answer){
+                    $hit_record->score_rate *= PENALTY_RATE;
+                    array_push($hit_key_ary, 'score_rate');
+                }
+            }
+            /* End of re-calculation */
+
+
+
+            $cmp_key_ary = array('answer');
             if(isset($_POST['duration'])){
                 $cmp_record->duration = $this->input->post('duration', true);
-                array_push($key, 'duration');
+                array_push($cmp_key_ary, 'duration');
             }
 
             //Update database
-            $cmp_record->update_db($key);
+            $cmp_record->update_db($cmp_key_ary);
 
             //Move to next comparison
             $hit_record->progress_count = ++$progress;
-            $hit_record->update_db(array('progress_count'));
-
-//            if(isset($_POST['expand'])){
-//                //Expand comparison array if possible
-//                if($hit_record->can_expand()){
-//                    $hit_record->create_comparison(10, 1); //TODO: Set a proper value
-//                    $hit_record->update_db(array('records'));
-//                }else{
-//                    $ret_data['status'] = 2;
-//                    $ret_data['reason'] = 'Cannot expand comparison array: limitation reached.';
-//                    echo json_encode($ret_data);
-//                    return;
-//                }
-//            }
+            $hit_record->update_db($hit_key_ary);
 
             if($hit_record->progress_count < $hit_record->getCmpLength()){
                 //$current_comp_id = $hit_record->record_id_array[$progress];
