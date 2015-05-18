@@ -278,4 +278,12 @@ class Hit_record extends CI_Model {
         }
         return $result_ary;
     }
+
+    /**
+     * 获得当前表长度(HIT任务个数)
+     * @return mixed
+     */
+    public function getHitRecordTotalSize(){
+        return $this->db->count_all($this->db->dbprefix(Hit_record::TABLE_NAME));
+    }
 }

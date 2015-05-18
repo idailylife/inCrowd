@@ -101,3 +101,7 @@ define('KEY_HIT_RECORD', 'current_hit_record');  //Session中的键
 define('KEY_HIT_COOKIE', 'hit_token');           //Cookie中的键
 define('KEY_PASS', 'pass');
 define('FONT_PATH', dirname(__FILE__).'/../fonts/courbd.ttf');
+
+//Traffic control
+define('NEED_INVITE', false);   //是否需要邀请码参与
+define('MAX_HIT_SIZE', 50);     //HIT任务总量控制

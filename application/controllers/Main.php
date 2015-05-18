@@ -6,6 +6,8 @@
  * Date: 2015/4/20
  * Time: 19:30
  */
+require_once(APPPATH . 'models/Hit_record.php');
+
 class Main extends CI_Controller {
 
     public function index(){
@@ -25,15 +27,29 @@ class Main extends CI_Controller {
     }
 
     function index_get() {
-        $continue_flag = false;
-        if(isset($_SESSION['pass'])){
-            $continue_flag = true;
+        $hit_record = new Hit_record();
+        $hitSize = $hit_record->getHitRecordTotalSize();
+        $continue_flag = 0;
+        if(isset($_SESSION[KEY_PASS])){
+            $continue_flag = 1;
         }
-        $data = array(
-            'cont_flag' => $continue_flag
-        );
-        $this->load->view('main', $data);
-    }
+        if(isset($_SESSION[KEY_HIT_COOKIE])){
+            $continue_flag = 2;
+        }
+        if($hitSize <= MAX_HIT_SIZE
+            || $continue_flag > 0){
 
+            $data = array(
+                'cont_flag' => $continue_flag
+            );
+            $this->load->view('main', $data);
+        } else {
+            $data = [
+                'heading' => '抱歉抱歉',
+                'message' => '当前任务数量超过系统限制，请过几天再访问啦'
+            ];
+            $this->load->view('traffic_control', $data);
+        }
+    }
 
 }
