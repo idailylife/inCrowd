@@ -50,7 +50,7 @@ div{
 }
 
 .meter{
-    max-width: 720px;
+    max-width: 500px;
     height: 20px;
     position: relative;
     background: #555;
@@ -135,11 +135,7 @@ a.tooltips {
     padding-left: 5px;
 }
 
-#timer{
-    float: left;
-    margin-left: 4.16%;
-    min-width: 5em;
-    max-width: 80px;
+.billboard{
     height: 20px;
     position: relative;
     background: orangered;
@@ -150,13 +146,41 @@ a.tooltips {
     z-index: -1;
     text-align: center;
     line-height: 20px;
+    color: #FFDAD8;
+}
+
+#timer{
+    float: left;
+    margin-left: 5%;
+    min-width: 5em;
+    max-width: 80px;
+    color: #fff;
 }
 
 #time{
     font-weight: 500;
     font-family: Consolas, Monaco, Courier New, Courier, monospace;
-    color: #ffffff;
     font-size: 16px;
+}
+
+#score_billboard{
+    float: right;
+    margin-right: 5%;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 14px;
+}
+
+#total_score{
+    font-size: 20px;
+    font-weight: 700;
+    font-family: Arial;
+    color: #fff;
+}
+
+#next_score{
+    font-family: Consolas, Monaco, Courier New, Courier, monospace;
+    color: #fff;
 }
 
 

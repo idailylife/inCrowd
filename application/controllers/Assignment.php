@@ -121,8 +121,9 @@ class Assignment extends CI_Controller {
         $data = array(
             'img_src1'      => IMAGE_BASE_URL,
             'img_src2'      => IMAGE_BASE_URL,
-            'prog_current'  => $hit_record->progress_count + 1,
-            'prog_total'    => $hit_record->getCmpLength(),
+            'prog_current'  => $hit_record->getLevelProgress() +1,//progress_count + 1,
+            'prog_total'    => COMPARISON_SIZE +1,//$hit_record->getCmpLength(),
+            'level'         => $hit_record->getHitLevel(),
             'q_type'        => $cmp_record->q_type,
             //'max_size'      => MAX_COMPARISON_SIZE,
             'next_img_src1' => IMAGE_BASE_URL,

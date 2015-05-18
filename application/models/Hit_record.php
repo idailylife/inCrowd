@@ -207,6 +207,7 @@ class Hit_record extends CI_Model {
         return $this->record_id_array[$index];
     }
 
+// /*Removed because of duplication*/
 //    public function get_comparison_size(){
 //        if(isset($this->record_id_array))
 //            return count($this->record_id_array);
@@ -353,5 +354,12 @@ class Hit_record extends CI_Model {
         if($with_penalty)
             $score = $score * $this->score_rate;
         return $score;
+    }
+
+    /**
+     * @return int 当前等级内的进度
+     */
+    public function getLevelProgress(){
+        return $this->progress_count % (COMPARISON_SIZE+1);
     }
 }

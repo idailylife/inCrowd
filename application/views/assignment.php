@@ -131,16 +131,23 @@
 
     </div>
 </div>
-<div id="timer" >
+<div id="timer" class="billboard">
     <span id="time"></span>
     <!--Show time here-->
+</div>
+<div id="score_billboard" class="billboard">
+    得分:
+    <span id="total_score"><?php echo $total_score?></span>
+    &nbsp;/&nbsp;本题分值:
+    <span id="next_score"><?php echo $next_score?></span>
 </div>
 <div id="meter_top" class="meter container">
     <!--Progress bar here-->
     <span id="meter_span" style="width: 25%"></span>
 </div>
 <div id="progress" class="container">
-        当前进度:
+        LEVEL <b><span id="level"><?php echo $level?></span></b>
+        &nbsp;
         <span id="curr_progress"></span>
 <!--        <span id="curr_index">--><?php //echo $prog_current ?><!--</span>-->
 <!--        /-->

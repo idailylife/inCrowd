@@ -74,6 +74,9 @@ function post_callback(data, ret_status){
             $('#meter_span').css('width', progress + '%');
             progress = new Number(progress).toFixed();
             $('#curr_progress').text(progress + '%');
+            $('#level').text(jsonval.level);
+            $('#total_score').text(jsonval.total_score);
+            $('#next_score').text(jsonval.next_score);
             //Clear radio button
             //$(".radio").each(function(){
             //    $(this).prop('checked', false);
