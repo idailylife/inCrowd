@@ -101,7 +101,8 @@ define('KEY_HIT_RECORD', 'current_hit_record');  //Session中的键
 define('KEY_HIT_COOKIE', 'hit_token');           //Cookie中的键
 define('KEY_PASS', 'pass');
 define('FONT_PATH', dirname(__FILE__).'/../fonts/courbd.ttf');
-define('PENALTY_RATE', 0.95); //QoE问题打错时得分乘以的倍率
+define('PENALTY_RATE_QOE', 0.95); //QoE问题答错时得分乘以的倍率
+define('PENALTY_RATE_TRAP', 0.6); //陷阱题答错时得分乘以的倍率
 
 //Traffic control
 define('NEED_INVITE', false);   //是否需要邀请码参与

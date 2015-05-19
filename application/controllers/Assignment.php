@@ -128,8 +128,8 @@ class Assignment extends CI_Controller {
             //'max_size'      => MAX_COMPARISON_SIZE,
             'next_img_src1' => IMAGE_BASE_URL,
             'next_img_src2' => IMAGE_BASE_URL,
-            'total_score'   => $hit_record->score,
-            'next_score'    => $hit_record->getCurrLevelScore()
+            'total_score'   => round($hit_record->score),
+            'next_score'    => round($hit_record->getCurrLevelScore())
         );  //Array for view variables
 //        $temp_path = array(
 //            'img1' => PATH_TO_RESOURCES,
@@ -230,19 +230,27 @@ class Assignment extends CI_Controller {
             $_SESSION[KEY_HIT_RECORD] = $hit_id;
         }
 
+
         //If this hit is already finished, jump to /finish
         if($hit_record->progress_count >= $hit_record->getCmpLength()){
-            header("Location: ". base_url("finish"));
-            return;
-        }
+            if(!empty($hit_record->end_time)){
+                header("Location: ". base_url("finish"));
+                return;
+            } else {
+                $hit_record->progress_count --;  // DO NOT WRITE TO DATABASE
+                $data = $this->get_comp_data($hit_record);
+                $data['semi_finish'] = true;
+                $data['total_score'] = round($hit_record->score);
+                $data['next_score'] = round($hit_record->getCurrLevelScore());
 
-        //Get next comparison id
-        //$next_cmp_id = $hit_record->get_comparison_id();
-        $data = $this->get_comp_data($hit_record);
-        //Things need to be load:
-        //2 image sources
-        //
+                //echo json_encode($data);
+            }
+        } else {
+            $data = $this->get_comp_data($hit_record);
+            $data['semi_finish'] = false;
+        }
         $this->load->view('assignment', $data);
+
     }
 
     /**
@@ -274,8 +282,7 @@ class Assignment extends CI_Controller {
                 $ret_data['status'] = 2;
                 $ret_data['reason'] = 'Cannot expand comparison array: limitation reached.';
             }
-        }
-        elseif(!isset($_POST['creativity'])
+        } elseif(!isset($_POST['creativity'])
                 && !isset($_POST['usability'])){
                 $ret_data['status'] = 2; //Error
                 $ret_data['reason'] = 'Insufficient POST data ';
@@ -296,7 +303,7 @@ class Assignment extends CI_Controller {
             } elseif($cmp_record->q_type == Compare_record::QTYPE_USABILITY){
                 if(strcmp($_POST['usability'], 'A') == 0)
                     $answer = 1;
-                elseif(strcmp($_POST['usability'], 'X'))
+                elseif(strcmp($_POST['usability'], 'X') == 0)
                     $answer = 2;
             }
             $cmp_record->answer = $answer;
@@ -310,7 +317,7 @@ class Assignment extends CI_Controller {
             if($cmp_record->comp_type == CMP_TYPE_USERTEST){
                 $ground_truth = $cmp_record->get_ground_truth();
                 if($ground_truth != $answer){
-                    $hit_record->score_rate *= PENALTY_RATE;
+                    $hit_record->score_rate *= PENALTY_RATE_QOE;
                     array_push($hit_key_ary, 'score_rate');
                 }
             }
@@ -340,6 +347,9 @@ class Assignment extends CI_Controller {
                 //End of comparison stage
                 $ret_data['status'] = 1; //End of comparison
                 $ret_data['can_expand'] = $hit_record->can_expand();
+                $ret_data['total_score'] = round($hit_record->score);
+                $ret_data['next_score'] = round($hit_record->getCurrLevelScore());
+
             }
         }
         echo json_encode($ret_data);

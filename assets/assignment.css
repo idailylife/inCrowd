@@ -79,29 +79,29 @@ div{
     overflow: hidden;
 }
 
-.meter > span:after {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background-image: linear-gradient(
-            -45deg,
-            rgba(255, 255, 255, .2) 25%,
-            transparent 25%,
-            transparent 50%,
-            rgba(255, 255, 255, .2) 50%,
-            rgba(255, 255, 255, .2) 75%,
-            transparent 75%,
-            transparent
-    );
-    z-index: 1;
-    background-size: 50px 50px;
-    animation: move 2s linear infinite;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    overflow: hidden;
-}
+/*.meter > span:after {*/
+    /*content: "";*/
+    /*position: absolute;*/
+    /*top: 0; left: 0; bottom: 0; right: 0;*/
+    /*background-image: linear-gradient(*/
+            /*-45deg,*/
+            /*rgba(255, 255, 255, .2) 25%,*/
+            /*transparent 25%,*/
+            /*transparent 50%,*/
+            /*rgba(255, 255, 255, .2) 50%,*/
+            /*rgba(255, 255, 255, .2) 75%,*/
+            /*transparent 75%,*/
+            /*transparent*/
+    /*);*/
+    /*z-index: 1;*/
+    /*background-size: 50px 50px;*/
+    /*animation: move 2s linear infinite;*/
+    /*border-top-right-radius: 8px;*/
+    /*border-bottom-right-radius: 8px;*/
+    /*border-top-left-radius: 20px;*/
+    /*border-bottom-left-radius: 20px;*/
+    /*overflow: hidden;*/
+/*}*/
 
 .double_btn{
     width: 48%;
@@ -133,12 +133,13 @@ a.tooltips {
     border:none;
     color: whitesmoke;
     padding-left: 5px;
+    font-weight: 600;
 }
 
 .billboard{
     height: 20px;
     position: relative;
-    background: orangered;
+    background: #0C4B33;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     padding: 5px;
@@ -146,12 +147,12 @@ a.tooltips {
     z-index: -1;
     text-align: center;
     line-height: 20px;
-    color: #FFDAD8;
+    color: #C9F0DD;
 }
 
 #timer{
-    float: left;
-    margin-left: 5%;
+    float: right;
+    margin-right: 5%;
     min-width: 5em;
     max-width: 80px;
     color: #fff;
@@ -164,8 +165,8 @@ a.tooltips {
 }
 
 #score_billboard{
-    float: right;
-    margin-right: 5%;
+    float: left;
+    margin-left: 5%;
     padding-left: 10px;
     padding-right: 10px;
     font-size: 14px;
@@ -185,8 +186,8 @@ a.tooltips {
 
 
 #progress{
-    font-size: 14px;
-    margin-top: -1.8em;
+    font-size: 16px;
+    margin-top: -1.7em;
     color: white;
     z-index: 2;
     text-shadow: 0px 0px 3px #555;
@@ -202,6 +203,8 @@ a.tooltips {
     cursor: pointer;
     margin-top: 5px;
     z-index: 0;
+    padding: 0;
+    border-radius: 20px
 }
 
 #div_next:hover{
@@ -389,4 +392,5 @@ a.tooltips {
 #q_type_desc{
     font-size: 13px;
     font-weight: 200;
+    min-height: 1em;
 }

@@ -28,7 +28,6 @@
                 increaseArea: '10%' // optional
             });
 
-            $('#hint_mask').hide();
             $('#img_a').on('load', function(){
                 switchLoadImg('a', false);
             });
@@ -71,7 +70,7 @@
             <?php else:?>
             alert('WTF');
             <?php endif;?>
-            init_zoom();
+            //init_zoom();
             //Set timer
             resetTimer();
             timer = setInterval("tick_and_show();", 1000);
@@ -104,6 +103,22 @@
             }).each(function() {
                 if(this.complete) $(this).load();
             });
+
+            <?php if($semi_finish):?>
+            $('#hint_container').hide();
+            $('#finish_hint_container').show();
+            $('#hint_mask').show();
+            $('#div_next_1').show();
+            /*Information*/
+            var txt = '当前得分:' + <?php echo $total_score?>;
+            <?php if($can_expand):?>
+            txt+= '</br>下一级基础分:' + <?php echo $next_score?> + '/题';
+            $('#div_next_2').show();
+            <?php endif;?>
+            txt += '</br>(15题/级，100分=1元)';
+            $('#finish_hint').html(txt);
+            <?php endif;?>
+
         });
         $(window).on('resize', function(){
             //Skip quick movement and wait till resize settles
@@ -119,15 +134,15 @@
     <div id="hint_container" class="hint_container">
         <p style="font-size: 18px">即将开始对<span id="q_type_span">创新性</span>的评价</p>
         <p id="q_type_desc"></p>
-        <p style="font-size: 14px; color: palegreen">鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>
+        <p style="font-size: 12px; color: #d3d3d3">鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>
         <div id="hint_button" class="hint_button">
             好的
         </div>
     </div>
     <div id="finish_hint_container" class="hint_container">
         <p id="finish_hint">请稍候...</p>
-        <div id="div_next_1" class="hint_button">完成</div>
-        <div id="div_next_2" class="hint_button">再来一组</div>
+        <div id="div_next_1" class="hint_button">结束任务</div>
+        <div id="div_next_2" class="hint_button">进入下一级</div>
 
     </div>
 </div>
@@ -177,13 +192,13 @@
 <div id="cmp_choices" class="container">
     <!-- Radio buttons here -->
     <div id="cmp_creativity" class="cmp_container">
-        两幅作品中，
-            <a class="tooltips" href="#" data-tooltip="利用现有的知识和物质，
+            <a style="background-color: #234462" class="tooltips" href="#" data-tooltip="利用现有的知识和物质，
                 在特定的环境中，改进或创造新的事物、方法、元素、路径、
                 环境，并能获得一定有益效果">
                 创新性
             </a>
             较强的是？
+        <br/>
         <input type="radio" name="creativity" class="radio" value="A" id="cr_a">
         <label for="cr_a" class="cmp_label"><b>左图</b></label>
         <input type="radio" name="creativity" class="radio" value="B" id="cr_b">
@@ -192,11 +207,11 @@
         <label for="cr_x" class="cmp_label">难以判断</label>
     </div>
     <div id="cmp_usability" class="cmp_container">
-        两幅作品中，
-            <a class="tooltips" href="#" data-tooltip="该产品能够制造或者使用，并且能够产生积极效果。">
+            <a style="background-color: #976C2F" class="tooltips" href="#" data-tooltip="该产品能够制造或者使用，并且能够产生积极效果。">
                 实用性
             </a>
             较强的是？
+        <br/>
         <input type="radio" name="usability" class="radio" value="A" id="us_a">
         <label for="us_a" class="cmp_label"><b>左图</b></label>
         <input type="radio" name="usability" class="radio" value="B" id="us_b">
@@ -209,10 +224,7 @@
 <div id="div_next" class="container meter">
     继续
 </div>
-<!--<div id="button_set" class="container">-->
-<!--    <div id="div_next_1" class="meter double_btn">完成</div>-->
-<!--    <div id="div_next_2" class="meter double_btn">再来一组</div>-->
-<!--</div>-->
+
 
 <script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
 </body>

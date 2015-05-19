@@ -270,8 +270,14 @@ class Hit_record extends CI_Model {
             $cmp_src = new Compare_record();
             $cmp_src->get_by_id($src_id);
             $src_answer = $cmp_src->answer;
-            if($src_answer != $cmp->answer)
-                return false; //如果之前有题目答错，那不允许再继续
+            if($src_answer != $cmp->answer){
+                //Penalty will be applied when trap question is wrongly answered
+                $this->score_rate *= 0.6;
+            }
+            if($this->score_rate < 0.5)
+                return false; //如果罚分到了一定程度，那不允许再继续
+            else
+                return true;
         }
 
         return $this->getCmpLength() < MAX_COMPARISON_SIZE;

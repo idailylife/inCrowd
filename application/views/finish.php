@@ -9,7 +9,7 @@
 <html lang="zh" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-    <title>Information Gathering | Crowd Crowd Crowd</title>
+    <title>支付信息填写 | Crowd Crowd Crowd</title>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/finish.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/square/green.css">              <!--Radio button-->
     <script type="text/javascript" src="<?php echo base_url();?>assets/jquery-1.11.2.min.js"></script>
@@ -111,10 +111,11 @@
 </head>
 <body>
     <div id="title">
-        <h1>YOU MADE IT!</h1>
+        <h1>MISSION COMPLETE</h1>
     </div>
     <div id="info_input" class="container">
-        <p>恭喜，任务已完成.</p>
+        <p>任务已完成! 共获得<?php echo $score?>积分，可兑换人民币<?php echo round($score/100,2)?>元</p>
+        <p>人工审核通过后，酬金将在10个工作日内发放到您的支付宝账户，届时请注意查收.</p>
         <p>您的支付宝账号(邮箱或手机号)<br/>
             <input type="text" id="payment" name="payment"/>
         </p>
