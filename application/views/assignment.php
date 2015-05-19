@@ -70,7 +70,7 @@
             <?php else:?>
             alert('WTF');
             <?php endif;?>
-            //init_zoom();
+            init_zoom();
             //Set timer
             resetTimer();
             timer = setInterval("tick_and_show();", 1000);
@@ -109,6 +109,7 @@
             $('#finish_hint_container').show();
             $('#hint_mask').show();
             $('#div_next_1').show();
+            $('#div_next_2').hide();
             /*Information*/
             var txt = '当前得分:' + <?php echo $total_score?>;
             <?php if($can_expand):?>

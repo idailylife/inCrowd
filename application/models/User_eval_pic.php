@@ -65,10 +65,11 @@ class User_eval_pic extends General_eval_pic {
     public function get_random_except($category){
         $this->db->where('category !=', $category);
         $query = $this->db->get($this->db->dbprefix(User_eval_pic::TABLE_NAME));
-        if($query->num_rows() > 0){
-            $ary_result = $query->result();
-            shuffle($ary_result);
-            $row = $query->row();
+        $num_rows = $query->num_rows();
+        if($num_rows > 0){
+            //$ary_result = $query->result();
+            //shuffle($ary_result);
+            $row = $query->row(rand(0,$num_rows));
             $this->id = $row->id;
             $this->src = $row->src;
             $this->category = $row->category;

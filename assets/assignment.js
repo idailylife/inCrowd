@@ -22,6 +22,7 @@ function post_callback(data, ret_status){
             $('#finish_hint_container').show();
             $('#hint_mask').show();
             $('#div_next_1').show();
+            $('#div_next_2').hide();
             /*Information*/
             var txt = '当前得分:' + jsonval.total_score;
             if(jsonval.can_expand){

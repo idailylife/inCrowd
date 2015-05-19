@@ -54,7 +54,7 @@
             })
 
             $('#detail_btn').click(function () {
-                $('#pay_desc_detail').toggle();
+                $('#pay_desc_detail').toggle("slow");
             });
         });
 
@@ -85,7 +85,7 @@
                 <div id="payment_description">
                     实验酬劳根据实验获得的总得分支付，100分=1元人民币.<br/>
                     完成一组(15题)实验后，系统根据参与度判断是否可进入下一组，分值比前一组多3%-100%!<br/>
-                    <b>预实验数据表明，通常情况下15分钟内可以获得10元报酬.</b>
+                    <b>预实验数据表明，通常情况下15分钟可以获得约10元报酬.</b>
                     <div id="detail_btn">...</div>
                     <div id="pay_desc_detail">
                         <b>积分获得：</b>回答问题获得积分，每道题的得分=等级基数×倍率，级别越高等级基数越大,初始倍率为100%<br/>
@@ -128,6 +128,12 @@
         <div class="div_center">
             <div class="submit_btn" id="chk_payment">报酬支付查询</div>
         </div>
+        <div class="div_center" style="font-size: 14px;color: #d3d3d3">
+            Product of <a href="http://in.zju.edu.cn" target="_blank">inLab@ZJU</a>
+            <br/>
+            b150519_b1
+        </div>
+
     </div>
     <script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
 </body>

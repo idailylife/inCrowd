@@ -276,8 +276,7 @@ class Hit_record extends CI_Model {
             }
             if($this->score_rate < 0.5)
                 return false; //如果罚分到了一定程度，那不允许再继续
-            else
-                return true;
+
         }
 
         return $this->getCmpLength() < MAX_COMPARISON_SIZE;

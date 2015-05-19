@@ -7,6 +7,10 @@ body {
     font-family: "微软雅黑 Light", "微软雅黑", "宋体";
 }
 
+a:link{
+    text-decoration: none;
+}
+
 div{
     display: block;
 }
