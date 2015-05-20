@@ -19,8 +19,8 @@
         var preload_counter = 0;
 
         $(document).ready(function () {
-            var prog_fixed = new Number(progress).toFixed();
-            $('#curr_progress').text(prog_fixed + '%');
+            //var prog_fixed = new Number(progress).toFixed();
+            //$('#curr_progress').text(prog_fixed + '%');
 
             $('input').iCheck({
                 checkboxClass: 'icheckbox_square-green',
@@ -164,10 +164,10 @@
 <div id="progress" class="container">
         LEVEL <b><span id="level"><?php echo $level?></span></b>
         &nbsp;
-        <span id="curr_progress"></span>
-<!--        <span id="curr_index">--><?php //echo $prog_current ?><!--</span>-->
-<!--        /-->
-<!--        <span id="total_index">--><?php //echo $prog_total; ?><!--</span>-->
+<!--        <span id="curr_progress"></span>-->
+        <span id="curr_index"><?php echo $prog_current ?></span>
+    /
+        <span id="total_index"><?php echo $prog_total; ?></span>
 
 </div>
 <div id="img_framework" class="container">

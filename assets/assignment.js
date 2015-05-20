@@ -83,12 +83,12 @@ function post_callback(data, ret_status){
             }
             last_q_type = q_type;
 
-            //$('#curr_index').text(jsonval.prog_current);
-            //$('#total_index').text(jsonval.prog_total);
+            $('#curr_index').text(jsonval.prog_current);
+            $('#total_index').text(jsonval.prog_total);
             var progress = jsonval.prog_current/jsonval.prog_total*100;
             $('#meter_span').css('width', progress + '%');
-            progress = new Number(progress).toFixed();
-            $('#curr_progress').text(progress + '%');
+            //progress = new Number(progress).toFixed();
+            //$('#curr_progress').text(progress + '%');
             $('#level').text(jsonval.level);
             $('#total_score').text(jsonval.total_score);
             $('#next_score').text(jsonval.next_score);
