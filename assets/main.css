@@ -4,6 +4,11 @@ body {
     line-height: 1.6;
     margin: 0;
     color: #0C3C26;
+    font-family: "微软雅黑 Light", "微软雅黑", "宋体";
+}
+
+a:link{
+    text-decoration: none;
 }
 
 div{
@@ -109,4 +114,33 @@ div{
 
 #pm_title{
     font-weight: 600;
+}
+
+#payment_description{
+    border: 1px solid #CFE3DC;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+#detail_btn{
+    padding: 3px;
+    margin-right: 5px;
+    border: 2px solid #44B78B;
+    /*background-color: #44B78B;*/
+    color: #44B78B;
+    border-radius: 5px;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+    line-height: 0.8em;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#detail_btn:hover{
+    border: 2px solid #45e5a9;
+}
+
+#pay_desc_detail{
+    display: none;
 }

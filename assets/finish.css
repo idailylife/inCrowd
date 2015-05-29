@@ -16,7 +16,8 @@ input[type=text]{
 textarea{
     border-radius: 3px;
     border: 2px solid #cfe3dc;
-    width: 200px;
+    width: 35em;
+    height: 5em;
 }
 
 [title=站长统计]{

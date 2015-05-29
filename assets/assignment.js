@@ -15,7 +15,22 @@ function post_callback(data, ret_status){
             break;
         case 1:
             //window.location.href='finish';
-            get_expand_status(jsonval.can_expand);
+            //get_expand_status(jsonval.can_expand);
+            //TODO: implementation
+
+            $('#hint_container').hide();
+            $('#finish_hint_container').show();
+            $('#hint_mask').show();
+            $('#div_next_1').show();
+            $('#div_next_2').hide();
+            /*Information*/
+            var txt = '当前得分:' + jsonval.total_score;
+            if(jsonval.can_expand){
+                txt+= '</br>下一级基础分:' + jsonval.next_score + '/题';
+                $('#div_next_2').show();
+            }
+            txt += '</br>(15题/级，100分=1元)';
+            $('#finish_hint').html(txt);
             break;
         case 0:
             refreshZoomImage($('#img_a'), jsonval.img_src1);
@@ -25,7 +40,7 @@ function post_callback(data, ret_status){
                 console.log('img1 loaded.');
                 switchLoadImg('a', false);
                 set_image_margin();
-                setZoomImage($(this), 1);
+                setZoomImage($(this));
 
                 preload_counter++;
                 if(preload_counter < 2)
@@ -41,7 +56,7 @@ function post_callback(data, ret_status){
                 console.log('img2 loaded.');
                 switchLoadImg('b', false);
                 set_image_margin();
-                setZoomImage($(this), 11);
+                setZoomImage($(this));
                 preload_counter++;
                 if(preload_counter < 2)
                     return;
@@ -70,12 +85,14 @@ function post_callback(data, ret_status){
 
             $('#curr_index').text(jsonval.prog_current);
             $('#total_index').text(jsonval.prog_total);
-            var progress = jsonval.prog_current/jsonval.prog_total*100 + "%";
-            $('#meter_span').css('width', progress);
+            var progress = jsonval.prog_current/jsonval.prog_total*100;
+            $('#meter_span').css('width', progress + '%');
+            //progress = new Number(progress).toFixed();
+            //$('#curr_progress').text(progress + '%');
+            $('#level').text(jsonval.level);
+            $('#total_score').text(jsonval.total_score);
+            $('#next_score').text(jsonval.next_score);
             //Clear radio button
-            //$(".radio").each(function(){
-            //    $(this).prop('checked', false);
-            //});
             $('input').iCheck('uncheck');
             
             start_time = new Date().getTime();
@@ -146,7 +163,7 @@ function refreshZoomImage(img_obj, img_src){
     //
 }
 
-function setZoomImage(img_obj, zoompos){
+function setZoomImage(img_obj){
     //var zoomConfig = {
     //    scrollZoom : true,
     //    zoomWindowPosition: zoompos,
@@ -204,18 +221,19 @@ function set_image_margin(){
     var container_h = $('.comp_image_container').height();
     $('.comp_image').each(function(){
         $(this).css('margin-top', (container_h - $(this).height())/2 + "px");
+
     });
 }
 
-function switch_double_button(on){
-    if(on){
-        $('#button_set').show();
-        $('#div_next').hide();
-    } else {
-        $('#button_set').hide();
-        $('#div_next').show();
-    }
-}
+//function switch_double_button(on){
+//    if(on){
+//        $('#button_set').show();
+//        $('#div_next').hide();
+//    } else {
+//        $('#button_set').hide();
+//        $('#div_next').show();
+//    }
+//}
 
 function post_to_server(id){
     if(!check_validity()){

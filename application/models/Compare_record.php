@@ -11,7 +11,7 @@
  * id
  * comp_id1
  * comp_id2
- * comp_type
+ * comp_type: 问题类型
  * answer:比较结果
  * q_type:提问种类 0-创新性，1-实用性
  * duration:完成比较的时间
@@ -163,4 +163,20 @@ class Compare_record extends CI_Model {
         return $this;
     }
 
+    /**
+     * 获得标准比较结果(ground_truth)
+     * @return int
+     */
+    public function get_ground_truth(){
+        if($this->comp_type = CMP_TYPE_GENERAL)
+            return -1;
+        $img1 = new User_eval_pic();
+        $img1->get_by_id($this->comp_id1);
+        $img_category = $img1->category;
+        if(strcmp($img_category,'IN') == 0){ //TODO: set a constant variable for 'IN'
+            return 1;  //'A' is better
+        } else {
+            return 0;  //'B' is better
+        }
+    }
 }
