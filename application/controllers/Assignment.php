@@ -318,8 +318,10 @@ class Assignment extends CI_Controller {
                 $ground_truth = $cmp_record->get_ground_truth();
                 if($ground_truth != $answer){
                     $hit_record->score_rate *= PENALTY_RATE_QOE;
-                    array_push($hit_key_ary, 'score_rate');
+                } else {
+                    $hit_record->score_rate *= BONUS_RATE_QOE;
                 }
+                array_push($hit_key_ary, 'score_rate');
             }
             /* End of re-calculation */
 

@@ -62,14 +62,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+// Read database configuration from json file
+$config_path = APPPATH . 'config/' . DB_CONFIG_FILEPATH;
+$config_file = fopen($config_path, 'r') or dir("Unable to open database configuration file!");
+$conf_json = json_decode(fread($config_file, filesize($config_path)));
+
+
+///
+
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '92032987',
-	'database' => 'incrowd',
+	'hostname' => $conf_json->hostname,//'localhost',
+	'username' => $conf_json->username,//'root',
+	'password' => $conf_json->password,//'92032987',
+	'database' => $conf_json->database,//'incrowd',
 	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
+	'dbprefix' => $conf_json->dbprefix,//'',
 	'pconnect' => FALSE,
 	'db_debug' => TRUE,
 	'cache_on' => FALSE,

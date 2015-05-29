@@ -33,7 +33,7 @@ class Main extends CI_Controller {
         if(isset($_SESSION[KEY_PASS])){
             $continue_flag = 1;
         }
-        if(isset($_SESSION[KEY_HIT_COOKIE])){
+        if(isset($_COOKIE[KEY_HIT_COOKIE])){
             $continue_flag = 2;
         }
         if($hitSize <= MAX_HIT_SIZE

@@ -101,9 +101,11 @@ define('KEY_HIT_RECORD', 'current_hit_record');  //Session中的键
 define('KEY_HIT_COOKIE', 'hit_token');           //Cookie中的键
 define('KEY_PASS', 'pass');
 define('FONT_PATH', dirname(__FILE__).'/../fonts/courbd.ttf');
+define('DB_CONFIG_FILEPATH', 'dbconfig.json');  //数据库配置文件
 define('PENALTY_RATE_QOE', 0.95); //QoE问题答错时得分乘以的倍率
 define('PENALTY_RATE_TRAP', 0.6); //陷阱题答错时得分乘以的倍率
+define('BONUS_RATE_QOE', 1.01);   //QoE问题答对时乘以的倍率
 
 //Traffic control
 define('NEED_INVITE', false);   //是否需要邀请码参与
-define('MAX_HIT_SIZE', 50);     //HIT任务总量控制
+define('MAX_HIT_SIZE', 100);     //HIT任务总量控制
