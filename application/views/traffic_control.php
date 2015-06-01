@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>Error</title>
+    <title>名额已满 | Crowd Crowd Crowd</title>
     <style type="text/css">
 
         ::selection { background-color: #E13300; color: white; }
@@ -53,6 +53,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             text-align: center;
         }
 
+        #payment_check a{
+            text-decoration: none;
+            color: whitesmoke;
+            background-color: #444;
+            padding: 3px;
+            border-radius: 3px;
+            border: 0px;
+        }
+
         p {
             margin: 12px 15px 12px 15px;
         }
@@ -62,7 +71,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="container">
     <h1><?php echo $heading; ?></h1>
     <p><?php echo $message; ?></p>
-
+    <p style="display: none">我有邀请码:
+        <input type="text" name="invite_code">
+        <a href="#">验证</a>
+    </p>
+    <p id="payment_check"><a href="/inCrowd/chkpayment">酬金支付查询</a></p>
 </div>
 </body>
 </html>

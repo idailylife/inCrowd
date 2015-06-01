@@ -40,7 +40,7 @@
             $('#chk_payment').click(function(){
                 window.open('/inCrowd/chkpayment', '_blank');
             });
-            <?php if($cont_flag):?>
+            <?php if($cont_flag > 0):?>
             $('#verification').css('display', 'none');
             $('#get_in').css('display', 'none');
             <?php else:?>
@@ -73,7 +73,7 @@
 
             <div id="terms_detail">
                 <p>真诚地感想您的参与!即将开始的实验类似于调查问卷,我们将会列出一些设计竞赛的作品(图),<b>您需要对作品进行两两比较,
-                评价出在创新性或可用性上较为优秀的一个</b>. 大部分问题的答案我们自己也不明确,所以尽力选择就好. </p>
+                评价出在创新性或实用性上较为优秀的一个</b>. 大部分问题的答案我们自己也不明确,所以尽力选择就好. </p>
 
                 <p><b>实验时间约5-15分钟/组，每组15个单选题</b>，我们会记录您的答题信息(包括您的点击信息及操作时间等数据), 任务完成后将会向您索取支付宝账号, 以便将报酬支付. </p>
 
@@ -131,7 +131,7 @@
         <div class="div_center" style="font-size: 14px;color: #d3d3d3">
             Product of <a href="http://in.zju.edu.cn" target="_blank">inLab@ZJU</a>
             <br/>
-            b150519_b1
+            b150529
         </div>
 
     </div>
