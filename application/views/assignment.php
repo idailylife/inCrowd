@@ -1,14 +1,15 @@
-<html lang="zh" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="utf-8">
-    <title>Assignment | Crowd Crowd Crowd</title>
+    <title>实验 | Crowd Crowd Crowd</title>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/assignment.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/square/green.css">              <!--Radio button-->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery.elevateZoom-3.0.8.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/assignment.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/icheck.min.js"></script> <!--Radio button-->
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/screenfull.min.js"></script>
 
     <script type="text/javascript">
         var start_time = null;
@@ -104,6 +105,12 @@
                 if(this.complete) $(this).load();
             });
 
+            $('#fullscreen').on('click', function(){
+                if (screenfull.enabled) {
+                    screenfull.toggle();
+                }
+            });
+
             <?php if($semi_finish):?>
             $('#hint_container').hide();
             $('#finish_hint_container').show();
@@ -124,7 +131,7 @@
         $(window).on('resize', function(){
             //Skip quick movement and wait till resize settles
             clearTimeout(resize_timer_id);
-            resize_timer_id = setTimeout(set_image_margin, 500);
+            resize_timer_id = setTimeout(set_image_margin, 250);
         });
         $(window).on('load', set_image_margin);
     </script>
@@ -160,16 +167,17 @@
 <div id="meter_top" class="meter container">
     <!--Progress bar here-->
     <span id="meter_span" style="width: 25%"></span>
-</div>
-<div id="progress" class="container">
+    <div id="progress" class="container">
         LEVEL <b><span id="level"><?php echo $level?></span></b>
         &nbsp;
-<!--        <span id="curr_progress"></span>-->
+        <!--        <span id="curr_progress"></span>-->
         <span id="curr_index"><?php echo $prog_current ?></span>
-    /
+        /
         <span id="total_index"><?php echo $prog_total; ?></span>
-
+    </div>
+    <div id="fullscreen" title="切换全屏"></div>
 </div>
+
 <div id="img_framework" class="container">
     <!--Image container-->
     <div id="img_container_a" class="comp_image_container">
@@ -227,6 +235,7 @@
 </div>
 
 
-<script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
+
 </body>
+<script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
 </html>
