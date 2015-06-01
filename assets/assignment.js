@@ -219,9 +219,10 @@ function tick_and_show(){
 function set_image_margin(){
     //such stupid solution...
     var container_h = $('.comp_image_container').height();
+    $('.zoomContainer').remove(); //Clear zoom image div
     $('.comp_image').each(function(){
         $(this).css('margin-top', (container_h - $(this).height())/2 + "px");
-
+        setZoomImage($(this)); //Reset zoom image
     });
 }
 
