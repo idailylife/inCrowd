@@ -1,6 +1,3 @@
-# phpStorm helper
-CI_phpStorm.php
-
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion
 
 *.iml
@@ -47,3 +44,6 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+
+# phpStorm helper
+/CI_phpStorm.php
