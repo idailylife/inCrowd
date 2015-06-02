@@ -37,8 +37,8 @@ class Main extends CI_Controller {
         if(isset($_COOKIE[KEY_HIT_COOKIE])){
             $continue_flag = 2;
         }
-        if(($hitSize <= MAX_HIT_SIZE || $continue_flag > 0)
-            & !NEED_INVITE){
+        if( ($hitSize <= MAX_HIT_SIZE & !NEED_INVITE)
+            || $continue_flag > 0 ){
 
             $data = array(
                 'cont_flag' => $continue_flag

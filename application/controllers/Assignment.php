@@ -41,7 +41,12 @@ class Assignment extends CI_Controller {
      * 返回值 true / false
      */
     function check_authority(){
-        if(!isset($_SESSION[KEY_PASS]))
+        if(!isset($_SESSION[KEY_PASS])){
+            if($this->have_unfinished_hit())
+                return true;
+            else
+                return false;
+        }
             return false;
         if($_SESSION[KEY_PASS] >= 1)
             return true;
