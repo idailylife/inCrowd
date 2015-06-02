@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 // Read database configuration from json file
 $config_path = APPPATH . 'config/' . DB_CONFIG_FILEPATH;
-$config_file = fopen($config_path, 'r') or dir("Unable to open database configuration file!");
+$config_file = fopen($config_path, 'r') or die("Unable to open database configuration file!");
 $conf_json = json_decode(fread($config_file, filesize($config_path)));
 
 

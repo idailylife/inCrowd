@@ -99,6 +99,7 @@ define('TEST_CMP_SIZE', 4); //其中每个用户的用户能力测试用的图�
 define('MAX_COMPARISON_SIZE', 105); //单个HIT的最大可用比较对数量
 define('KEY_HIT_RECORD', 'current_hit_record');  //Session中的键
 define('KEY_HIT_COOKIE', 'hit_token');           //Cookie中的键
+define('KEY_INVITE_PASS', 'invite_pass');
 define('KEY_PASS', 'pass');
 define('FONT_PATH', dirname(__FILE__).'/../fonts/courbd.ttf');
 define('DB_CONFIG_FILEPATH', 'dbconfig.json');  //数据库配置文件
@@ -107,5 +108,5 @@ define('PENALTY_RATE_TRAP', 0.6); //陷阱题答错时得分乘以的倍率
 define('BONUS_RATE_QOE', 1.01);   //QoE问题答对时乘以的倍率
 
 //Traffic control
-define('NEED_INVITE', false);   //是否需要邀请码参与
+define('NEED_INVITE', true);   //是否需要邀请码参与
 define('MAX_HIT_SIZE', 100);     //HIT任务总量控制

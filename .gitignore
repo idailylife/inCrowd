@@ -47,3 +47,4 @@ crashlytics-build.properties
 
 # phpStorm helper
 /CI_phpStorm.php
+/application/config/dbconfig.json

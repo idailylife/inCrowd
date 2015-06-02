@@ -26,6 +26,17 @@
                         if($('#keep_cookie').prop('checked')){
                             url = url + '?keep_cookie=1';
                         }
+                        <?php if (isset($invite_code)):?>
+                        var inv_code = '<?php echo $invite_code?>';
+                        var post_data = {invite_code:inv_code, use_invite:true};
+                        $.post('/inCrowd/invitation', post_data, function(status){
+                            window.console.log(status);
+                            if(status != '0'){
+                                alert("邀请码已失效");
+                                location.reload();
+                            }
+                        });
+                        <?php endif;?>
                         window.location.href= url;
                     } else {
                         reset_captcha();
@@ -95,7 +106,7 @@
                         <b>等级基数：</b>1-7级分别为20,40,50,55,60,63,65.
                     </div>
                 </div>
-
+                <p>酬金支付将采用支付宝转账的形式，正常情况下实验完成后7个工作日内可到账，支付到账记录可在本站查询.</p>
                 <p>使用相同的浏览器,实验进度在24小时内都可以恢复.
                 您在实验过程中填写的一切信息将完全保密,仅供研究使用.如有问题请邮件联系boweihe[at]zju.edu.cn</p>
             </div>
