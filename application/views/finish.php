@@ -48,6 +48,9 @@
             $('#btn_back').click(function () {
                 window.location.href = '/inCrowd';
             })
+            $('#btn_exit').click(function (){
+                window.close();
+            })
         });
         function show_submit_failure(){
             $('#submit_info').css('display', 'inline');
@@ -143,6 +146,7 @@
             <h4>提交成功！再次感谢您的参与！</h4>
         </p>
         <div id="btn_back" class="button">返回主页</div>
+        <div id="btn_exit" class="button">关闭页面</div>
     </div>
 </body>
 <script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>

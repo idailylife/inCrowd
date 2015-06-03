@@ -103,6 +103,7 @@ class Finish extends CI_Controller {
                 //Clear hit information in session & cookie
                 unset($_SESSION[KEY_HIT_RECORD]);
                 unset($_SESSION[KEY_PASS]);
+                unset($_SESSION[KEY_INVITE_PASS]);
                 //unset($_COOKIE[KEY_HIT_COOKIE]);
                 $this->load->helper('cookie');
                 delete_cookie(KEY_HIT_COOKIE);

@@ -41,21 +41,31 @@ class Assignment extends CI_Controller {
      * 返回值 0-无权，1-有权，2-任务已完成，需跳转
      */
     function check_authority(){
+        $ret_val = false;
         if(!isset($_SESSION[KEY_PASS])){
             if($this->have_unfinished_hit())
-                return true;
+                $ret_val =  true;
             else
-                return false;
+                $ret_val = false;
+        } elseif($_SESSION[KEY_PASS] >= 1){
+            if(NEED_INVITE){
+                if (isset($_SESSION[KEY_INVITE_PASS]) &&
+                    $_SESSION[KEY_INVITE_PASS]==1){
+                    $ret_val = true;
+                } else {
+                    $ret_val = false;
+                }
+            } else {
+                $ret_val = true;
+            }
         }
 
-        if($_SESSION[KEY_PASS] >= 1)
-            return true;
-        return false;
+
+        return $ret_val;
     }
 
 
     function have_unfinished_hit(){
-
         $hit_id = null;
         if (isset($_SESSION[KEY_HIT_RECORD])){
             $hit_id = $_SESSION[KEY_HIT_RECORD];
@@ -69,7 +79,7 @@ class Assignment extends CI_Controller {
         }
         $hit_record = new Hit_record();
         $hit_record->get_by_id($hit_id);
-        if($hit_id == -1 || is_null($hit_record)){
+        if($hit_id == -1 || is_null($hit_record->id)){
             return false;
         }
         //Judge if we have unfinished task
