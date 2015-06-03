@@ -47,7 +47,7 @@ class Assignment extends CI_Controller {
             else
                 return false;
         }
-            return false;
+        
         if($_SESSION[KEY_PASS] >= 1)
             return true;
         return false;
