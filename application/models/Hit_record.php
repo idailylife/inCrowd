@@ -279,7 +279,7 @@ class Hit_record extends CI_Model {
 
         }
 
-        return $this->getCmpLength() < MAX_COMPARISON_SIZE;
+        return $this->getCmpLength() < MAX_COMPARISON_SIZE - 1;
     }
 
     /**
@@ -297,6 +297,7 @@ class Hit_record extends CI_Model {
             $ary[0] = $row->start_time;
             $ary[1] = $row->pay_status;
             $ary[2] = $row->pay_amount;
+            $ary[3] = $row->score;
             array_push($result_ary, $ary);
         }
         return $result_ary;

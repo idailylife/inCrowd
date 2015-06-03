@@ -39,7 +39,7 @@
                         html = '<span>无查询结果.</span>'
                     } else {
                         html = '<table>\n' +
-                            '<tr><th>任务时间</th><th>支付状态</th><th>实际支付</th></tr>';
+                            '<tr><th>任务时间</th><th>支付状态</th><th>实际支付</th><th>得分</th></tr>';
                         var row;
                         for(var i=0; i<dataAry.length; i++){
                             html += '<tr><td>';
@@ -66,7 +66,8 @@
                                     break;
                             }
                             html += ps + '</td><td>';
-                            html += row[2] + '</td></tr>';
+                            html += row[2] + '</td><td>';
+                            html += row[3] + '</td></tr>';
                         }
                         html += '</table>';
                     }

@@ -39,7 +39,9 @@ class Invitation extends CI_Controller{
 
         if (strcmp($use_code, 'true') == 0){
             $inv_record->get_by_code($code_post);
-            $inv_record->increase_count();
+            if($inv_record->increase_count() != 0){
+                $status = -2; //Limit exceeded
+            }
         }
 
         if($status == 0){

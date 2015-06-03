@@ -70,10 +70,16 @@ class Invitation_record extends CI_Model {
     }
 
     public function increase_count(){
-        $this->count ++;
-        $this->db->set('count', $this->count);
-        $this->db->where('code', $this->code);
-        return $this->db->update($this->db->dbprefix(Invitation_record::TABLE_NAME));
+        if($this->count < $this->limit){
+            $this->count ++;
+            $this->db->set('count', $this->count);
+            $this->db->where('code', $this->code);
+            $this->db->update($this->db->dbprefix(Invitation_record::TABLE_NAME));
+            return 0;
+        } else {
+            return -1;
+        }
+
     }
 
 }

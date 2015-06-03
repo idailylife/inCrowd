@@ -31,11 +31,16 @@ class Main extends CI_Controller {
         $hit_record = new Hit_record();
         $hitSize = $hit_record->getHitRecordTotalSize();
         $continue_flag = 0;
-        if(isset($_SESSION[KEY_PASS])){
-            $continue_flag = 1;
-        }
+//        if(isset($_SESSION[KEY_PASS])){
+//            $continue_flag = 1;
+//        }
         if(isset($_COOKIE[KEY_HIT_COOKIE])){
-            $continue_flag = 2;
+            $hit_id = $hit_record->get_id_by_token($_COOKIE[KEY_HIT_COOKIE]);
+            if($hit_id != -1){
+                $hit_record->get_by_id($hit_id);
+                if(!is_null($hit_record) && empty($hit_record->end_time))
+                    $continue_flag = 2;
+            }
         }
         if( ($hitSize <= MAX_HIT_SIZE & !NEED_INVITE)
             || $continue_flag > 0 ){

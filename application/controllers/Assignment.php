@@ -38,7 +38,7 @@ class Assignment extends CI_Controller {
 
     /**
      * 检查用户是否有权限进入
-     * 返回值 true / false
+     * 返回值 0-无权，1-有权，2-任务已完成，需跳转
      */
     function check_authority(){
         if(!isset($_SESSION[KEY_PASS])){
@@ -47,7 +47,7 @@ class Assignment extends CI_Controller {
             else
                 return false;
         }
-        
+
         if($_SESSION[KEY_PASS] >= 1)
             return true;
         return false;
@@ -55,21 +55,49 @@ class Assignment extends CI_Controller {
 
 
     function have_unfinished_hit(){
+
+        $hit_id = null;
         if (isset($_SESSION[KEY_HIT_RECORD])){
-            return true;
+            $hit_id = $_SESSION[KEY_HIT_RECORD];
         } elseif (isset($_COOKIE[KEY_HIT_COOKIE])){
             $this->load->helper('cookie');
             $hit_record = new Hit_record();
             $hit_id = $hit_record->get_id_by_token(get_cookie(KEY_HIT_COOKIE, true));
-            if(-1 != $hit_id){
-                $_SESSION[KEY_HIT_RECORD] = $hit_id;
-                return true;
-            } else {
-                return false;
-            }
         } else {
+            //Nope
+            return 0;
+        }
+        $hit_record = new Hit_record();
+        $hit_record->get_by_id($hit_id);
+        if($hit_id == -1 || is_null($hit_record)){
             return false;
         }
+        //Judge if we have unfinished task
+        if(empty($hit_record->end_time)){
+            //Yes!
+            $_SESSION[KEY_HIT_RECORD] = $hit_id;
+            return true;
+        } else {
+            //Nope~
+            return false;
+        }
+
+//        if (isset($_SESSION[KEY_HIT_RECORD])){
+//            return true;
+//        } elseif (isset($_COOKIE[KEY_HIT_COOKIE])){
+//            $this->load->helper('cookie');
+//            $hit_record = new Hit_record();
+//            $hit_id = $hit_record->get_id_by_token(get_cookie(KEY_HIT_COOKIE, true));
+//            if(-1 != $hit_id){
+//                $_SESSION[KEY_HIT_RECORD] = $hit_id;
+//
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
     }
 
     function get_current_hit_id(){
@@ -219,7 +247,7 @@ class Assignment extends CI_Controller {
             //If the user allow cookie storage, create a token
             if(isset($_GET['keep_cookie']) &&
                 $_GET['keep_cookie'] == '1') {
-                $token = md5(''+time());
+                $token = md5(time() + rand());
                 $this->load->helper('cookie');
                 $cookie = array(
                     'name'  => KEY_HIT_COOKIE,
