@@ -332,7 +332,9 @@ class Assignment extends CI_Controller {
             $hit_record->score += $curr_score;
 
             /* Re-calculate penalty if it's a QoE question */
-            if($cmp_record->comp_type == CMP_TYPE_USERTEST){
+            $flag = 0;
+            if($cmp_record->comp_type == CMP_TYPE_USERTEST
+                    and $cmp_record->trap_id == -1){
                 $ground_truth = $cmp_record->get_ground_truth();
                 if($ground_truth != $answer){
                     $hit_record->score_rate *= PENALTY_RATE_QOE;
@@ -340,7 +342,25 @@ class Assignment extends CI_Controller {
                     $hit_record->score_rate *= BONUS_RATE_QOE;
                 }
                 array_push($hit_key_ary, 'score_rate');
+                $flag = 1;
             }
+            if($cmp_record->trap_id != -1){
+                $link_id = $cmp_record->trap_id;
+                $cmp_src = new Compare_record();
+                $cmp_src->get_by_id($link_id);
+                if(is_null($cmp_src->id)){
+                    show_error('Error: Unknown referred trap_comp id');
+                    return;
+                }
+                $src_answer = $cmp_src->answer;
+                if($src_answer != $cmp_record->answer){
+                    //Penalty will be applied when trap question is wrongly answered
+                    $hit_record->score_rate *= PENALTY_RATE_TRAP;
+                    if($flag == 0)
+                        array_push($hit_key_ary, 'score_rate');
+                }
+            }
+            unset($flag);
             /* End of re-calculation */
 
 

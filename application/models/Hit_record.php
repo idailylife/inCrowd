@@ -261,22 +261,25 @@ class Hit_record extends CI_Model {
     }
 
     public function can_expand(){
-        $cmp = new Compare_record();
-        foreach($this->record_id_array as $cmp_id){
-            $cmp->get_by_id($cmp_id);
-            if($cmp->trap_id == -1)
-                continue;
-            $src_id = $cmp->trap_id;
-            $cmp_src = new Compare_record();
-            $cmp_src->get_by_id($src_id);
-            $src_answer = $cmp_src->answer;
-            if($src_answer != $cmp->answer){
-                //Penalty will be applied when trap question is wrongly answered
-                $this->score_rate *= 0.6;
-            }
-            if($this->score_rate < 0.5)
-                return false; //如果罚分到了一定程度，那不允许再继续
-
+//        $cmp = new Compare_record();
+//        foreach($this->record_id_array as $cmp_id){
+//            $cmp->get_by_id($cmp_id);
+//            if($cmp->trap_id == -1)
+//                continue;
+//            $src_id = $cmp->trap_id;
+//            $cmp_src = new Compare_record();
+//            $cmp_src->get_by_id($src_id);
+//            $src_answer = $cmp_src->answer;
+//            if($src_answer != $cmp->answer){
+//                //Penalty will be applied when trap question is wrongly answered
+//                $this->score_rate *= PENALTY_RATE_TRAP;
+//            }
+//            if($this->score_rate < 0.7)
+//                return false; //如果罚分到了一定程度，那不允许再继续
+//
+//        }
+        if($this->score_rate < 0.7){
+            return false;       // Penalty over limit
         }
 
         return $this->getCmpLength() < MAX_COMPARISON_SIZE - 1;
