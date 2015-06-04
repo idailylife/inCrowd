@@ -31,7 +31,7 @@
                     alert("验证码错误，请重试");
                     break;
                 case -2:
-                    alert("意外错误");
+                    alert("意外错误，似乎什么也没有输入呢~");
                     break;
                 case 0:
                     var dataAry = jQuery.parseJSON(query_data.data);

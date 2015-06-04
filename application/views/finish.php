@@ -27,7 +27,7 @@
                 var validity = check_payment_info()
                     && check_form_blank();
                 if(validity){
-                    $.post("finish", {
+                    $.post("/inCrowd/finish", {
                         'payment_info': $('#payment').val(),
                         'expert_info': $("input[name='expertise']:checked").val(),
                         'advice': $('#advice').val()

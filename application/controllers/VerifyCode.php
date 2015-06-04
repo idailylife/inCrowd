@@ -44,7 +44,7 @@ class Verifycode extends CI_Controller {
      * 否则返回0, 并且删除session中的'captcha'项，使之需要强制刷新
      */
     public function index_post(){
-        unset($_SESSION['pass']);
+        unset($_SESSION[KEY_PASS]);
 
         if(!isset($_POST['captcha']) ||
             !isset($_SESSION['captcha'])){
@@ -55,7 +55,7 @@ class Verifycode extends CI_Controller {
         $code_session = $_SESSION['captcha'];
         if($code_session == $code_submit){
             echo '1';
-            $_SESSION['pass'] = '1';
+            $_SESSION[KEY_PASS] = '1';
             $_SESSION['captcha'] = '0';
         } else {
             echo '0';

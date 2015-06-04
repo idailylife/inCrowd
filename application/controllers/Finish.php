@@ -16,9 +16,9 @@ class Finish extends CI_Controller {
         }
 
         $this->load->library('session'); //Load session library
-
-        if(!$this->check_authority()){
-            header("Location: ". base_url());
+        $auth_state  = $this->check_authority();
+        if($auth_state != 0){
+            header("Location: ". base_url() . "?state=". $auth_state);
             return;
         }
 
@@ -31,32 +31,79 @@ class Finish extends CI_Controller {
         }
     }
 
+//    function check_authority(){
+//        if(DEBUG_MODE)
+//            return true;
+//        if(!isset($_SESSION[KEY_PASS]))
+//            return false;
+//        if($_SESSION[KEY_PASS] == '1' ||
+//            $_SESSION[KEY_PASS] == '2') {
+//            return true;
+//        }
+//        return false;
+//    }
+//    function check_authority(){
+//        $ret_val = -1;
+//        if(!isset($_SESSION[KEY_PASS]) or $_SESSION[KEY_PASS]<1) {
+//            if($this->have_unfinished_hit())
+//                $ret_val =  0;
+//            else
+//                $ret_val = -2;
+//        } elseif($_SESSION[KEY_PASS] >= 1){
+//            $ret_val = 0;
+//        }
+//
+//
+//        return $ret_val;
+//    }
+
     function check_authority(){
-        if(DEBUG_MODE)
-            return true;
-        if(!isset($_SESSION[KEY_PASS]))
-            return false;
-        if($_SESSION[KEY_PASS] == '1' |
-            $_SESSION[KEY_PASS] == '2') {
-            return true;
+        $ret_val = -1;
+        if($this->have_unfinished_hit()){
+            $ret_val = 0;
+        } elseif($_SESSION[KEY_PASS] >= 1){
+            if(NEED_INVITE){
+                if (isset($_SESSION[KEY_INVITE_PASS]) &&
+                    $_SESSION[KEY_INVITE_PASS]>=1){
+                    $ret_val = 0;
+                } else {
+                    unset($_SESSION[KEY_PASS]);
+                    $ret_val = -3;
+                }
+            } else {
+                $ret_val = 0;
+            }
         }
-        return false;
+        return $ret_val;
+
     }
 
     function have_unfinished_hit(){
+        $hit_id = null;
         if (isset($_SESSION[KEY_HIT_RECORD])){
-            return true;
+            $hit_id = $_SESSION[KEY_HIT_RECORD];
         } elseif (isset($_COOKIE[KEY_HIT_COOKIE])){
             $this->load->helper('cookie');
             $hit_record = new Hit_record();
             $hit_id = $hit_record->get_id_by_token(get_cookie(KEY_HIT_COOKIE, true));
-            if(-1 != $hit_id){
-                $_SESSION[KEY_HIT_RECORD] = $hit_id;
-                return true;
-            } else {
-                return false;
-            }
         } else {
+            //Nope
+            return false;
+        }
+        $hit_record = new Hit_record();
+        $hit_record->get_by_id($hit_id);
+        if($hit_id == -1 || is_null($hit_record->id)){
+            unset($_SESSION[KEY_HIT_RECORD]);
+            return false;
+        }
+        //Judge if we have unfinished task
+        if(empty($hit_record->payment_info)){
+            //Yes!
+            $_SESSION[KEY_HIT_RECORD] = $hit_id;
+            return true;
+        } else {
+            //Nope~
+
             return false;
         }
     }
@@ -68,7 +115,6 @@ class Finish extends CI_Controller {
     }
 
     private function index_post() {
-        //TODO: Remove hit id
         //Fetch post data
         $ret_data = array();
         $hit_id = $this->get_current_hit_id();
@@ -124,7 +170,7 @@ class Finish extends CI_Controller {
         }
         $hit_record = new Hit_record();
         $hit_record->get_by_id($hit_id);
-        if($hit_record->progress_count < COMPARISON_SIZE){
+        if($hit_record->progress_count < $hit_record->getCmpLength()){
             //Another error, unfinished assignment
             header("Location: ". base_url("assignment"));
             return;

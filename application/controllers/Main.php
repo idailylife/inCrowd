@@ -38,7 +38,7 @@ class Main extends CI_Controller {
             $hit_id = $hit_record->get_id_by_token($_COOKIE[KEY_HIT_COOKIE]);
             if($hit_id != -1){
                 $hit_record->get_by_id($hit_id);
-                if(!is_null($hit_record) && empty($hit_record->end_time))
+                if(!is_null($hit_record) && empty($hit_record->payment_info))
                     $continue_flag = 2;
             }
         }
