@@ -17,10 +17,18 @@ class General_eval_pic extends CI_Model {
 
     public $id;
     public $src;
+    public $id_limit;
 
     public function __construct() {
         parent::__construct();
         $this->load->database();
+
+        //Load config params
+        if(defined('GENERAL_PIC_START_ID') and defined('GENERAL_PIC_END_ID')){
+            $this->id_limit = [GENERAL_PIC_START_ID, GENERAL_PIC_END_ID];
+        } else {
+            $this->id_limit = [0, 1000];
+        }
     }
 
     /**
@@ -39,7 +47,8 @@ class General_eval_pic extends CI_Model {
      */
     public function get_random($except = null){
         //取表中的所有项目出来
-        //$this->db->select('id');
+        $this->db->where(['id >='=> $this->id_limit[0]
+            , 'id <=' => $this->id_limit[1]]);
         $query = $this->db->get($this->db->dbprefix(General_eval_pic::TABLE_NAME));  // SELECT id FROM general_eval_pic
         $ary_result = $query->result(); //Query results as array
         if(empty($ary_result)){

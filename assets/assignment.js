@@ -164,12 +164,7 @@ function refreshZoomImage(img_obj, img_src){
 }
 
 function setZoomImage(img_obj){
-    //var zoomConfig = {
-    //    scrollZoom : true,
-    //    zoomWindowPosition: zoompos,
-    //    zoomWindowWidth: 512,
-    //    zoomWindowHeight: 512
-    //};
+    $('.zoomContainer').remove();
     var zoomConfig = {
         zoomType	    : "lens",
         lensSize        : 300,
@@ -226,27 +221,6 @@ function set_image_margin(){
     });
 }
 
-function toggleFullScreen() {
-    if ((document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
-        (!document.mozFullScreen && !document.webkitIsFullScreen)) {               // current working methods
-        if (document.documentElement.requestFullScreen) {
-            document.documentElement.requestFullScreen();
-        } else if (document.documentElement.mozRequestFullScreen) {
-            document.documentElement.mozRequestFullScreen();
-        } else if (document.documentElement.webkitRequestFullScreen) {
-            document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-        }
-    } else {
-        if (document.cancelFullScreen) {
-            document.cancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-        }
-    }
-}
-
 
 function post_to_server(id){
     if(!check_validity()){
@@ -271,20 +245,20 @@ function post_to_server(id){
         post_callback
     );
 }
-
-function get_expand_status(can_expand){
-    //到最后一题时，点击“继续”按钮将先检查答题状态
-    $('#hint_container').hide();
-    $('#finish_hint_container').show();
-    $('#hint_mask').show();
-    if(can_expand){
-        $('#finish_hint').text('选择[再来一组]继续任务，或点击[完成]以填写支付信息.');
-        $('#div_next_1').show();
-        $('#div_next_2').show();
-    } else {
-        $('#finish_hint').text('请点击[完成]以填写支付信息.');
-        $('#div_next_1').show();
-        $('#div_next_2').hide();
-    }
-
-}
+//
+//function get_expand_status(can_expand){
+//    //到最后一题时，点击“继续”按钮将先检查答题状态
+//    $('#hint_container').hide();
+//    $('#finish_hint_container').show();
+//    $('#hint_mask').show();
+//    if(can_expand){
+//        $('#finish_hint').text('选择[再来一组]继续任务，或点击[完成]以填写支付信息.');
+//        $('#div_next_1').show();
+//        $('#div_next_2').show();
+//    } else {
+//        $('#finish_hint').text('请点击[完成]以填写支付信息.');
+//        $('#div_next_1').show();
+//        $('#div_next_2').hide();
+//    }
+//
+//}

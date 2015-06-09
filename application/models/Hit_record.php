@@ -94,20 +94,20 @@ class Hit_record extends CI_Model {
 
         shuffle($tmp_ary[0]);
         shuffle($tmp_ary[1]);
-        //Randomly choose create one trap question//////
-        $trap_i = rand(0,1); //Choose one trap type (CMP_TYPE_USERTEST or CMP_TYPE_GENERAL)
+        //Randomly create one trap question//////
+        $trap_i = rand(0,1); //Choose one trap type (q_type)
         $trap_index = rand(0, count($tmp_ary[$trap_i]) -2);
         $trap_cmp_src = $tmp_ary[$trap_i][$trap_index];
         $cmp = new Compare_record();
         $cmp->get_by_id($trap_cmp_src);
-        $cmp->set_model_generated();
+
         $cmp->trap_id = $trap_cmp_src;
         $cmp_id = $cmp->push_to_db();
         array_push($tmp_ary[$trap_i], $cmp_id);
         ////////////////////////////////////////////////
         $this->record_id_array = array_merge($this->record_id_array,
             $tmp_ary[0], $tmp_ary[1]);
-        $this->model_generated = true;
+        $cmp->set_model_generated();
     }
 
 
@@ -261,24 +261,7 @@ class Hit_record extends CI_Model {
     }
 
     public function can_expand(){
-//        $cmp = new Compare_record();
-//        foreach($this->record_id_array as $cmp_id){
-//            $cmp->get_by_id($cmp_id);
-//            if($cmp->trap_id == -1)
-//                continue;
-//            $src_id = $cmp->trap_id;
-//            $cmp_src = new Compare_record();
-//            $cmp_src->get_by_id($src_id);
-//            $src_answer = $cmp_src->answer;
-//            if($src_answer != $cmp->answer){
-//                //Penalty will be applied when trap question is wrongly answered
-//                $this->score_rate *= PENALTY_RATE_TRAP;
-//            }
-//            if($this->score_rate < 0.7)
-//                return false; //如果罚分到了一定程度，那不允许再继续
-//
-//        }
-        if($this->score_rate < 0.7){
+        if($this->score_rate < 0.69){
             return false;       // Penalty over limit
         }
 

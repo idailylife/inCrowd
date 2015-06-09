@@ -52,6 +52,7 @@ class Assignment extends CI_Controller {
                     $ret_val = 0;
                 } else {
                     unset($_SESSION[KEY_PASS]);
+                    unset($_SESSION[KEY_INVITE_PASS]);
                     $ret_val = -3;
                 }
             } else {
