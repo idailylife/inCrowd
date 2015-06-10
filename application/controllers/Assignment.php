@@ -23,7 +23,10 @@ class Assignment extends CI_Controller {
         $auth_state = $this->check_authority();
         if($auth_state!=0 and !DEBUG_MODE){
             //Authentication failed
-            header("Location: ". base_url() . '?state=auth_err_assignment' . $auth_state);
+            $header_txt = "Location: ". base_url() . '?state=auth_err_assignment' . $auth_state;
+            if (isset($_GET['invite_code']))
+                $header_txt .= ('&invite_code='. $_GET['invite_code']);
+            header($header_txt);
             return;
         }
 
@@ -429,15 +432,4 @@ class Assignment extends CI_Controller {
         echo json_encode($retData);
     }
 
-//    public function finish_task(){
-//        if(!$this->check_authority() && !DEBUG_MODE){
-//            //Authentication failed
-//            $retData = -1;
-//        } else {
-//            $_SESSION[KEY_PASS] = 2;
-//            $retData = 0;
-//        }
-//
-//        echo $retData;
-//    }
 }

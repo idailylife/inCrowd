@@ -22,6 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             color: #003399;
             background-color: transparent;
             font-weight: normal;
+            text-decoration: none;
         }
 
         h1 {
@@ -62,6 +63,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             border: 0px;
         }
 
+        #copyright{
+            text-align: center;
+            font-size: 12px;
+        }
+
         p {
             margin: 12px 15px 12px 15px;
         }
@@ -76,6 +82,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <a href="#">验证</a>
     </p>
     <p id="payment_check"><a href="/inCrowd/chkpayment">酬金支付查询</a></p>
+</div>
+<div id="copyright">
+    All rights reserved. 2015 <a href="http://in.zju.edu.cn" target="_blank">inLab@ZJU</a>
 </div>
 </body>
 </html>

@@ -14,10 +14,6 @@ function post_callback(data, ret_status){
             alert('err type 2');
             break;
         case 1:
-            //window.location.href='finish';
-            //get_expand_status(jsonval.can_expand);
-            //TODO: implementation
-
             $('#hint_container').hide();
             $('#finish_hint_container').show();
             $('#hint_mask').show();
@@ -97,15 +93,6 @@ function post_callback(data, ret_status){
             
             start_time = new Date().getTime();
 
-            //Set button status
-            //var max_cmp_size = jsonval.max_size;
-            //if((jsonval.prog_current == jsonval.prog_total)
-            //    && jsonval.can_expand){
-            //    switch_double_button(true);
-            //} else {
-            //  switch_double_button(false);
-            //}
-
             break;
         default :
             alert('wtf');
@@ -135,14 +122,26 @@ function pre_load_image(arrayOfImages){
 function show_hint(q_type){
     if(q_type == 0){
         $('#q_type_span').text("创新性");
-        $('#q_type_desc').text('创新性：利用现有的知识和物质，改进或创造新的事物、方法、元素、路径、环境，并能获得一定有益效果.');
+        $('#q_type_desc').text('该作品在材料、功能、结构、外观、产品概念等某些方面具有创造性，或与现有产品相比有较大改进.');
     } else {
         $('#q_type_span').text("实用性");
-        $('#q_type_desc').text('实用性：该产品能够制造或者使用，并且能够产生积极效果.');
+        $('#q_type_desc').text('该产品以现有技术能够制造并可使用，且能够产生一定的积极效果.');
     }
-    $('#hint_container').show();
     $('#finish_hint_container').hide();
+    $('#hint_button').text('请稍候...');
+    $('#hint_container').show();
     $('#hint_mask').show();
+
+    var t = 2;
+    var timer = setInterval(function(){
+        if(t > 0){
+            $('#hint_button').text('请仔细阅读..' + t);
+            t = t - 1;
+        } else {
+            $('#hint_button').text('好的');
+            clearInterval(timer);
+        }
+    }, 1000);
 }
 
 //检查表单填写完整性

@@ -396,9 +396,15 @@ a.tooltips {
     min-width: 720px;
 }
 
+#hint_button{
+    width: 10%;
+    height: 1.5em;
+    padding-top: 0;
+}
+
 .hint_button{
     background-color: #eee;
-    width: 25%;
+    width: 20%;
     min-width: 60px;
     margin: 5px auto;
     height: 2em;
@@ -421,7 +427,7 @@ a.tooltips {
 }
 
 #q_type_desc{
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 200;
     min-height: 1em;
 }

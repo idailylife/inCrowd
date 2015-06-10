@@ -100,14 +100,14 @@ class Hit_record extends CI_Model {
         $trap_cmp_src = $tmp_ary[$trap_i][$trap_index];
         $cmp = new Compare_record();
         $cmp->get_by_id($trap_cmp_src);
-
         $cmp->trap_id = $trap_cmp_src;
+        $cmp->set_model_generated();
         $cmp_id = $cmp->push_to_db();
         array_push($tmp_ary[$trap_i], $cmp_id);
         ////////////////////////////////////////////////
         $this->record_id_array = array_merge($this->record_id_array,
             $tmp_ary[0], $tmp_ary[1]);
-        $cmp->set_model_generated();
+        $this->model_generated = true;
     }
 
 

@@ -22,6 +22,16 @@
         $(document).ready(function () {
             //var prog_fixed = new Number(progress).toFixed();
             //$('#curr_progress').text(prog_fixed + '%');
+            //Hide unavailable thing
+            <?php if($q_type == 0):?>
+            $('#cmp_usability').css('display', 'none');
+            show_hint(0);
+            <?php elseif($q_type == 1): ?>
+            $('#cmp_creativity').css('display', 'none');
+            show_hint(1);
+            <?php else:?>
+            alert('WTF');
+            <?php endif;?>
 
             $('input').iCheck({
                 checkboxClass: 'icheckbox_square-green',
@@ -61,16 +71,6 @@
             $('#meter_span').css('width', progress + '%');
             //Set start time
             start_time = new Date().getTime();
-            //Hide unavailable thing
-            <?php if($q_type == 0):?>
-            $('#cmp_usability').css('display', 'none');
-            show_hint(0);
-            <?php elseif($q_type == 1): ?>
-            $('#cmp_creativity').css('display', 'none');
-            show_hint(1);
-            <?php else:?>
-            alert('WTF');
-            <?php endif;?>
             init_zoom();
             //Set timer
             resetTimer();
@@ -141,7 +141,7 @@
 <div id="hint_mask">
     <div id="hint_container" class="hint_container">
         <p style="font-size: 18px">即将开始对<span id="q_type_span">创新性</span>的评价</p>
-        <p id="q_type_desc"></p>
+        <p id="q_type_desc">&nbsp;</p>
         <p style="font-size: 12px; color: #d3d3d3">鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>
         <div id="hint_button" class="hint_button">
             好的
@@ -201,9 +201,7 @@
 <div id="cmp_choices" class="container">
     <!-- Radio buttons here -->
     <div id="cmp_creativity" class="cmp_container">
-            <a style="background-color: #234462" class="tooltips" href="#" data-tooltip="利用现有的知识和物质，
-                在特定的环境中，改进或创造新的事物、方法、元素、路径、
-                环境，并能获得一定有益效果">
+            <a style="background-color: #234462" class="tooltips" href="#" data-tooltip="该作品在材料、功能、结构、外观、产品概念等某些方面具有创造性，或与现有产品相比有较大改进">
                 创新性
             </a>
             较强的是？
@@ -216,7 +214,7 @@
         <label for="cr_x" class="cmp_label">难以判断</label>
     </div>
     <div id="cmp_usability" class="cmp_container">
-            <a style="background-color: #976C2F" class="tooltips" href="#" data-tooltip="该产品能够制造或者使用，并且能够产生积极效果。">
+            <a style="background-color: #976C2F" class="tooltips" href="#" data-tooltip="该产品以现有技术能够制造并可使用，且能够产生一定的积极效果">
                 实用性
             </a>
             较强的是？

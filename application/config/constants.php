@@ -112,7 +112,7 @@ define('NEED_INVITE', true);   //是否需要邀请码参与
 define('MAX_HIT_SIZE', 1000);     //HIT任务总量控制
 
 //Configuration for image id range
-define('GENERAL_PIC_START_ID', 0);
-define('GENERAL_PIC_END_ID', 1000);
-define('EVAL_PIC_START_ID', 0);
-define('EVAL_PIC_END_ID', 1000);
+define('GENERAL_PIC_START_ID', 183);
+define('GENERAL_PIC_END_ID', 349);
+define('EVAL_PIC_START_ID', 70);
+define('EVAL_PIC_END_ID', 119);
