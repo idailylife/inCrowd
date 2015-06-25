@@ -214,7 +214,7 @@
         <label for="cr_x" class="cmp_label">难以判断</label>
     </div>
     <div id="cmp_usability" class="cmp_container">
-            <a style="background-color: #976C2F" class="tooltips" href="#" data-tooltip="该产品以现有技术能够制造并可使用，且能够产生一定的积极效果">
+            <a style="background-color: #976C2F" class="tooltips" href="#" data-tooltip="该产品近几年内有望制造并可使用，且能够产生一定的积极效果">
                 实用性
             </a>
             较强的是？

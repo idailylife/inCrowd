@@ -125,7 +125,7 @@ function show_hint(q_type){
         $('#q_type_desc').text('该作品在材料、功能、结构、外观、产品概念等某些方面具有创造性，或与现有产品相比有较大改进.');
     } else {
         $('#q_type_span').text("实用性");
-        $('#q_type_desc').text('该产品以现有技术能够制造并可使用，且能够产生一定的积极效果.');
+        $('#q_type_desc').text('该产品近几年内有望制造并可使用，且能够产生一定的积极效果.');
     }
     $('#finish_hint_container').hide();
     $('#hint_button').text('请稍候...');

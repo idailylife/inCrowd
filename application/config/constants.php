@@ -106,6 +106,7 @@ define('DB_CONFIG_FILEPATH', 'dbconfig.json');  //数据库配置文件
 define('PENALTY_RATE_QOE', 0.95); //QoE问题答错时得分乘以的倍率
 define('PENALTY_RATE_TRAP', 0.8); //陷阱题答错时得分乘以的倍率 （0.8*0.8<0.7）
 define('BONUS_RATE_QOE', 1.01);   //QoE问题答对时乘以的倍率
+define('EXPAND_RATE_MIN', 0.69);  //可以继续下一组实验的最低限倍率
 
 //Traffic control
 define('NEED_INVITE', true);   //是否需要邀请码参与

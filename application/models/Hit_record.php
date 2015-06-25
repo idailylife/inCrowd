@@ -261,7 +261,7 @@ class Hit_record extends CI_Model {
     }
 
     public function can_expand(){
-        if($this->score_rate < 0.69){
+        if($this->score_rate < EXPAND_RATE_MIN){
             return false;       // Penalty over limit
         }
 

@@ -31,7 +31,7 @@ class Invitation extends CI_Controller{
         unset($_SESSION[KEY_INVITE_PASS]);
 
         $code_post = $this->input->post_get('invite_code', true);
-        $use_code = $this->input->post_get('use_invite', true);  //If we should use this code
+        $use_code = $this->input->post_get('use_invite', true);  //If we should use this invite code
 
         $inv_record = new Invitation_record();
 
