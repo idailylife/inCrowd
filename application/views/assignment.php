@@ -10,6 +10,7 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/assignment.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/icheck.min.js"></script> <!--Radio button-->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/screenfull.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery.cookie.js"></script>
 
     <script type="text/javascript">
         var start_time = null;
@@ -20,9 +21,10 @@
         var preload_counter = 0;
 
         $(document).ready(function () {
-            //var prog_fixed = new Number(progress).toFixed();
-            //$('#curr_progress').text(prog_fixed + '%');
-            //Hide unavailable thing
+            if (null != $.cookie('no-image-hint')){
+                //Remove image hint
+                $('#image_hint_container').hide();
+            }
             <?php if($q_type == 0):?>
             $('#cmp_usability').css('display', 'none');
             show_hint(0);
@@ -127,6 +129,12 @@
             $('#finish_hint').html(txt);
             <?php endif;?>
 
+            $('#image_hint_close').on('click', function(){
+                $('#image_hint_container').toggle('slow');
+                $.cookie('no-image-hint', true, {expires: 1});
+            });
+
+
         });
         $(window).on('resize', function(){
             //Skip quick movement and wait till resize settles
@@ -141,8 +149,8 @@
 <div id="hint_mask">
     <div id="hint_container" class="hint_container">
         <p style="font-size: 18px">即将开始对<span id="q_type_span">创新性</span>的评价</p>
-        <p id="q_type_desc">&nbsp;</p>
-        <p style="font-size: 12px; color: #d3d3d3">鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>
+        <p id="q_type_desc">该作品在材料、功能、结构、外观、产品概念等某些方面具有创造性，或与现有产品相比有较大改进.</p>
+<!--        <p style="font-size: 12px; color: #d3d3d3">鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>-->
         <div id="hint_button" class="hint_button">
             好的
         </div>
@@ -154,6 +162,11 @@
 
     </div>
 </div>
+<div id="image_hint_container">
+    <span id="image_hint">鼠标移到图片上放大，放大比例可用鼠标滚轮调节.</span>
+    <div id="image_hint_close">关闭提示</div>
+</div>
+
 <div id="timer" class="billboard">
     <span id="time"></span>
     <!--Show time here-->
@@ -167,7 +180,7 @@
 <div id="meter_top" class="meter container">
     <!--Progress bar here-->
     <span id="meter_span" style="width: 25%"></span>
-    <div id="progress" class="container">
+    <div id="progress" class="container progress">
         LEVEL <b><span id="level"><?php echo $level?></span></b>
         &nbsp;
         <!--        <span id="curr_progress"></span>-->
@@ -194,8 +207,7 @@
         </div>
         <img id="img_b" class="comp_image" src="<?php echo $img_src2 ?>" data-zoom-image="<?php echo $img_src2 ?>">
     </div>
-    </br>
-    <span id="hint_p">点击图片可放大</span>
+    <br/>
 </div>
 
 <div id="cmp_choices" class="container">

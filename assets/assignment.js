@@ -132,13 +132,15 @@ function show_hint(q_type){
     $('#hint_container').show();
     $('#hint_mask').show();
 
+    $('#hint_button').css('opacity', 0.5);
     var t = 2;
     var timer = setInterval(function(){
         if(t > 0){
-            $('#hint_button').text('请仔细阅读..' + t);
+            $('#hint_button').text('请稍候...');
             t = t - 1;
         } else {
             $('#hint_button').text('好的');
+            $('#hint_button').css('opacity', 1);
             clearInterval(timer);
         }
     }, 1000);
@@ -165,13 +167,16 @@ function refreshZoomImage(img_obj, img_src){
 function setZoomImage(img_obj){
     $('.zoomContainer').remove();
     var zoomConfig = {
-        zoomType	    : "lens",
+        zoomType	    : "inner",//"lens",
         lensSize        : 300,
         scrollZoom      : true,
         containLensZoom : true,
         borderColour    : '#fff',
-        lensBorder      : 1 ,
-        lensShape   : 'round'
+        cursor: "crosshair",
+        zoomWindowFadeIn: 2000,
+        zoomWindowFadeOut: 500
+        //lensBorder      : 1 ,
+        //lensShape   : 'round'
     }
     img_obj.elevateZoom(zoomConfig);
 }
