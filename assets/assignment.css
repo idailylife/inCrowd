@@ -1,4 +1,5 @@
 body{
+    min-width: 1024px;
     background: #f8f8f8;
     margin: 0;
     line-height: 1.6;
@@ -7,6 +8,19 @@ body{
 
 div{
     display: block;
+}
+
+div:-webkit-full-screen {
+    width: 100% !important;
+}
+div:-moz-full-screen {
+    width: 100% !important;
+}
+div:-ms-fullscreen {
+    width: 100% !important;
+}
+div:fullscreen {
+    width: 100% !important;
 }
 
 
@@ -49,6 +63,53 @@ div{
     border-bottom-right-radius: 10px;
 }
 
+#fullscreen{
+    position: absolute;
+    display: block;
+    top: 2.5px;
+    right: -3em;
+    width: 25px;
+    height: 25px;
+    background-image: url("images/fullscreen_btn.png");
+    background-size: cover;
+    border-radius: 5px;
+    border: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#image_hint_container{
+    width: 100%;
+    height: 1.6em;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+}
+
+#image_hint{
+    font-size: 15px;
+    color: greenyellow;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#image_hint_close{
+    background-color: greenyellow;
+    color: #111;
+    display: inline;
+    font-size: 12px;
+    font-weight: 600;
+    width: 18px;
+    height: 18px;
+    padding: 2px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+#fullscreen:hover{
+    opacity: 0.7;
+}
+
 .meter{
     max-width: 500px;
     height: 20px;
@@ -59,7 +120,6 @@ div{
     border-radius: 25px;
     padding: 5px;
     box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
-    z-index: -1;
 }
 
 .meter>span {
@@ -144,7 +204,6 @@ a.tooltips {
     border-bottom-left-radius: 10px;
     padding: 5px;
     box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
-    z-index: -1;
     text-align: center;
     line-height: 20px;
     color: #C9F0DD;
@@ -187,12 +246,15 @@ a.tooltips {
 
 #progress{
     font-size: 16px;
-    margin-top: -1.7em;
+}
+
+.progress{
+    margin-top: -1.4em;
     color: white;
-    z-index: 2;
+    z-index: 1;
     text-shadow: 0px 0px 3px #555;
-    float: left;
     width: 100%;
+    position: relative;
 }
 
 #div_next{
@@ -365,9 +427,15 @@ a.tooltips {
     min-width: 720px;
 }
 
+#hint_button{
+    width: 10%;
+    height: 1.5em;
+    padding-top: 0;
+}
+
 .hint_button{
     background-color: #eee;
-    width: 25%;
+    width: 20%;
     min-width: 60px;
     margin: 5px auto;
     height: 2em;
@@ -390,7 +458,7 @@ a.tooltips {
 }
 
 #q_type_desc{
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 200;
     min-height: 1em;
 }

@@ -1,14 +1,16 @@
-<html lang="zh" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="utf-8">
-    <title>Assignment | Crowd Crowd Crowd</title>
+    <title>实验 | Crowd Crowd Crowd</title>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/assignment.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/square/green.css">              <!--Radio button-->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery.elevateZoom-3.0.8.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/assignment.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/icheck.min.js"></script> <!--Radio button-->
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/screenfull.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery.cookie.js"></script>
 
     <script type="text/javascript">
         var start_time = null;
@@ -19,8 +21,19 @@
         var preload_counter = 0;
 
         $(document).ready(function () {
-            //var prog_fixed = new Number(progress).toFixed();
-            //$('#curr_progress').text(prog_fixed + '%');
+            if (null != $.cookie('no-image-hint')){
+                //Remove image hint
+                $('#image_hint_container').hide();
+            }
+            <?php if($q_type == 0):?>
+            $('#cmp_usability').css('display', 'none');
+            show_hint(0);
+            <?php elseif($q_type == 1): ?>
+            $('#cmp_creativity').css('display', 'none');
+            show_hint(1);
+            <?php else:?>
+            alert('WTF');
+            <?php endif;?>
 
             $('input').iCheck({
                 checkboxClass: 'icheckbox_square-green',
@@ -60,16 +73,6 @@
             $('#meter_span').css('width', progress + '%');
             //Set start time
             start_time = new Date().getTime();
-            //Hide unavailable thing
-            <?php if($q_type == 0):?>
-            $('#cmp_usability').css('display', 'none');
-            show_hint(0);
-            <?php elseif($q_type == 1): ?>
-            $('#cmp_creativity').css('display', 'none');
-            show_hint(1);
-            <?php else:?>
-            alert('WTF');
-            <?php endif;?>
             init_zoom();
             //Set timer
             resetTimer();
@@ -104,6 +107,12 @@
                 if(this.complete) $(this).load();
             });
 
+            $('#fullscreen').on('click', function(){
+                if (screenfull.enabled) {
+                    screenfull.toggle();
+                }
+            });
+
             <?php if($semi_finish):?>
             $('#hint_container').hide();
             $('#finish_hint_container').show();
@@ -120,11 +129,17 @@
             $('#finish_hint').html(txt);
             <?php endif;?>
 
+            $('#image_hint_close').on('click', function(){
+                $('#image_hint_container').toggle('slow');
+                $.cookie('no-image-hint', true, {expires: 1});
+            });
+
+
         });
         $(window).on('resize', function(){
             //Skip quick movement and wait till resize settles
             clearTimeout(resize_timer_id);
-            resize_timer_id = setTimeout(set_image_margin, 500);
+            resize_timer_id = setTimeout(set_image_margin, 250);
         });
         $(window).on('load', set_image_margin);
     </script>
@@ -134,8 +149,8 @@
 <div id="hint_mask">
     <div id="hint_container" class="hint_container">
         <p style="font-size: 18px">即将开始对<span id="q_type_span">创新性</span>的评价</p>
-        <p id="q_type_desc"></p>
-        <p style="font-size: 12px; color: #d3d3d3">鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>
+        <p id="q_type_desc">该作品在材料、功能、结构、外观、产品概念等某些方面具有创造性，或与现有产品相比有较大改进.</p>
+<!--        <p style="font-size: 12px; color: #d3d3d3">鼠标移到图片上可以放大，缩放比例用鼠标滚轮调节.</p>-->
         <div id="hint_button" class="hint_button">
             好的
         </div>
@@ -147,6 +162,11 @@
 
     </div>
 </div>
+<div id="image_hint_container">
+    <span id="image_hint">鼠标移到图片上放大，放大比例可用鼠标滚轮调节.</span>
+    <div id="image_hint_close">关闭提示</div>
+</div>
+
 <div id="timer" class="billboard">
     <span id="time"></span>
     <!--Show time here-->
@@ -160,16 +180,17 @@
 <div id="meter_top" class="meter container">
     <!--Progress bar here-->
     <span id="meter_span" style="width: 25%"></span>
-</div>
-<div id="progress" class="container">
+    <div id="progress" class="container progress">
         LEVEL <b><span id="level"><?php echo $level?></span></b>
         &nbsp;
-<!--        <span id="curr_progress"></span>-->
+        <!--        <span id="curr_progress"></span>-->
         <span id="curr_index"><?php echo $prog_current ?></span>
-    /
+        /
         <span id="total_index"><?php echo $prog_total; ?></span>
-
+    </div>
+    <div id="fullscreen" title="切换全屏"></div>
 </div>
+
 <div id="img_framework" class="container">
     <!--Image container-->
     <div id="img_container_a" class="comp_image_container">
@@ -186,16 +207,13 @@
         </div>
         <img id="img_b" class="comp_image" src="<?php echo $img_src2 ?>" data-zoom-image="<?php echo $img_src2 ?>">
     </div>
-    </br>
-    <span id="hint_p">点击图片可放大</span>
+    <br/>
 </div>
 
 <div id="cmp_choices" class="container">
     <!-- Radio buttons here -->
     <div id="cmp_creativity" class="cmp_container">
-            <a style="background-color: #234462" class="tooltips" href="#" data-tooltip="利用现有的知识和物质，
-                在特定的环境中，改进或创造新的事物、方法、元素、路径、
-                环境，并能获得一定有益效果">
+            <a style="background-color: #234462" class="tooltips" href="#" data-tooltip="该作品在材料、功能、结构、外观、产品概念等某些方面具有创造性，或与现有产品相比有较大改进">
                 创新性
             </a>
             较强的是？
@@ -208,7 +226,7 @@
         <label for="cr_x" class="cmp_label">难以判断</label>
     </div>
     <div id="cmp_usability" class="cmp_container">
-            <a style="background-color: #976C2F" class="tooltips" href="#" data-tooltip="该产品能够制造或者使用，并且能够产生积极效果。">
+            <a style="background-color: #976C2F" class="tooltips" href="#" data-tooltip="该产品近几年内有望制造并可使用，且能够产生一定的积极效果">
                 实用性
             </a>
             较强的是？
@@ -227,6 +245,7 @@
 </div>
 
 
-<script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
+
 </body>
+<script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
 </html>

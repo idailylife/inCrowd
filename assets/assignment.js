@@ -14,10 +14,6 @@ function post_callback(data, ret_status){
             alert('err type 2');
             break;
         case 1:
-            //window.location.href='finish';
-            //get_expand_status(jsonval.can_expand);
-            //TODO: implementation
-
             $('#hint_container').hide();
             $('#finish_hint_container').show();
             $('#hint_mask').show();
@@ -97,15 +93,6 @@ function post_callback(data, ret_status){
             
             start_time = new Date().getTime();
 
-            //Set button status
-            //var max_cmp_size = jsonval.max_size;
-            //if((jsonval.prog_current == jsonval.prog_total)
-            //    && jsonval.can_expand){
-            //    switch_double_button(true);
-            //} else {
-            //  switch_double_button(false);
-            //}
-
             break;
         default :
             alert('wtf');
@@ -135,14 +122,28 @@ function pre_load_image(arrayOfImages){
 function show_hint(q_type){
     if(q_type == 0){
         $('#q_type_span').text("创新性");
-        $('#q_type_desc').text('创新性：利用现有的知识和物质，改进或创造新的事物、方法、元素、路径、环境，并能获得一定有益效果.');
+        $('#q_type_desc').text('该作品在材料、功能、结构、外观、产品概念等某些方面具有创造性，或与现有产品相比有较大改进.');
     } else {
         $('#q_type_span').text("实用性");
-        $('#q_type_desc').text('实用性：该产品能够制造或者使用，并且能够产生积极效果.');
+        $('#q_type_desc').text('该产品近几年内有望制造并可使用，且能够产生一定的积极效果.');
     }
-    $('#hint_container').show();
     $('#finish_hint_container').hide();
+    $('#hint_button').text('请稍候...');
+    $('#hint_container').show();
     $('#hint_mask').show();
+
+    $('#hint_button').css('opacity', 0.5);
+    var t = 2;
+    var timer = setInterval(function(){
+        if(t > 0){
+            $('#hint_button').text('请稍候...');
+            t = t - 1;
+        } else {
+            $('#hint_button').text('好的');
+            $('#hint_button').css('opacity', 1);
+            clearInterval(timer);
+        }
+    }, 1000);
 }
 
 //检查表单填写完整性
@@ -164,20 +165,18 @@ function refreshZoomImage(img_obj, img_src){
 }
 
 function setZoomImage(img_obj){
-    //var zoomConfig = {
-    //    scrollZoom : true,
-    //    zoomWindowPosition: zoompos,
-    //    zoomWindowWidth: 512,
-    //    zoomWindowHeight: 512
-    //};
+    $('.zoomContainer').remove();
     var zoomConfig = {
-        zoomType	    : "lens",
+        zoomType	    : "inner",//"lens",
         lensSize        : 300,
         scrollZoom      : true,
         containLensZoom : true,
         borderColour    : '#fff',
-        lensBorder      : 1 ,
-        lensShape   : 'round'
+        cursor: "crosshair",
+        zoomWindowFadeIn: 2000,
+        zoomWindowFadeOut: 500
+        //lensBorder      : 1 ,
+        //lensShape   : 'round'
     }
     img_obj.elevateZoom(zoomConfig);
 }
@@ -219,21 +218,13 @@ function tick_and_show(){
 function set_image_margin(){
     //such stupid solution...
     var container_h = $('.comp_image_container').height();
+    $('.zoomContainer').remove(); //Clear zoom image div
     $('.comp_image').each(function(){
         $(this).css('margin-top', (container_h - $(this).height())/2 + "px");
-
+        setZoomImage($(this)); //Reset zoom image
     });
 }
 
-//function switch_double_button(on){
-//    if(on){
-//        $('#button_set').show();
-//        $('#div_next').hide();
-//    } else {
-//        $('#button_set').hide();
-//        $('#div_next').show();
-//    }
-//}
 
 function post_to_server(id){
     if(!check_validity()){
@@ -258,20 +249,20 @@ function post_to_server(id){
         post_callback
     );
 }
-
-function get_expand_status(can_expand){
-    //到最后一题时，点击“继续”按钮将先检查答题状态
-    $('#hint_container').hide();
-    $('#finish_hint_container').show();
-    $('#hint_mask').show();
-    if(can_expand){
-        $('#finish_hint').text('选择[再来一组]继续任务，或点击[完成]以填写支付信息.');
-        $('#div_next_1').show();
-        $('#div_next_2').show();
-    } else {
-        $('#finish_hint').text('请点击[完成]以填写支付信息.');
-        $('#div_next_1').show();
-        $('#div_next_2').hide();
-    }
-
-}
+//
+//function get_expand_status(can_expand){
+//    //到最后一题时，点击“继续”按钮将先检查答题状态
+//    $('#hint_container').hide();
+//    $('#finish_hint_container').show();
+//    $('#hint_mask').show();
+//    if(can_expand){
+//        $('#finish_hint').text('选择[再来一组]继续任务，或点击[完成]以填写支付信息.');
+//        $('#div_next_1').show();
+//        $('#div_next_2').show();
+//    } else {
+//        $('#finish_hint').text('请点击[完成]以填写支付信息.');
+//        $('#div_next_1').show();
+//        $('#div_next_2').hide();
+//    }
+//
+//}

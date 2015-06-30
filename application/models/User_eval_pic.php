@@ -23,11 +23,17 @@ class User_eval_pic extends General_eval_pic {
 //The properties above are inherited from father class
     public $category;
 
-//    public function __construct() {
-//        parent::__construct();
-//        $this->load->database();
-//    }
-//
+    public function __construct() {
+        parent::__construct();
+
+        //Load config params
+        if(defined('EVAL_PIC_START_ID') and defined('EVAL_PIC_END_ID')){
+            $this->id_limit = [EVAL_PIC_START_ID, EVAL_PIC_END_ID];
+        } else {
+            $this->id_limit = [0, 1000];
+        }
+    }
+
 
     /**
      * 随机选择一张图，更新对象，返回$this
@@ -37,6 +43,8 @@ class User_eval_pic extends General_eval_pic {
     public function get_random($except = null){
         //取表中的所有项目出来
         //$this->db->select('id');
+        $this->db->where(['id >='=> $this->id_limit[0]
+            , 'id <=' => $this->id_limit[1]]);
         $query = $this->db->get($this->db->dbprefix(User_eval_pic::TABLE_NAME));  // SELECT id FROM general_eval_pic
         $ary_result = $query->result(); //Query results as array
         if(empty($ary_result)){
@@ -64,6 +72,8 @@ class User_eval_pic extends General_eval_pic {
      */
     public function get_random_except($category){
         $this->db->where('category !=', $category);
+        $this->db->where(['id >='=> $this->id_limit[0]
+            , 'id <=' => $this->id_limit[1]]);
         $query = $this->db->get($this->db->dbprefix(User_eval_pic::TABLE_NAME));
         $num_rows = $query->num_rows();
         if($num_rows > 0){

@@ -20,9 +20,13 @@ class Assignment extends CI_Controller {
         }
 
         $this->load->library('session'); //Load session library
-        if(!$this->check_authority() && !DEBUG_MODE){
+        $auth_state = $this->check_authority();
+        if($auth_state!=0 and !DEBUG_MODE){
             //Authentication failed
-            header("Location: ". base_url());
+            $header_txt = "Location: ". base_url() . '?state=auth_err_assignment' . $auth_state;
+            if (isset($_GET['invite_code']))
+                $header_txt .= ('&invite_code='. $_GET['invite_code']);
+            header($header_txt);
             return;
         }
 
@@ -38,33 +42,61 @@ class Assignment extends CI_Controller {
 
     /**
      * 检查用户是否有权限进入
-     * 返回值 true / false
+     * 0为 正常值
      */
     function check_authority(){
-        if(!isset($_SESSION[KEY_PASS]))
-            return false;
-        if($_SESSION[KEY_PASS] >= 1)
-            return true;
-        return false;
+        $ret_val = -1;
+        if($this->have_unfinished_hit()){
+            $ret_val = 0;
+        } elseif($_SESSION[KEY_PASS] >= 1){
+            if(NEED_INVITE){
+                if (isset($_SESSION[KEY_INVITE_PASS]) &&
+                    $_SESSION[KEY_INVITE_PASS]>=1){
+                    $ret_val = 0;
+                } else {
+                    unset($_SESSION[KEY_PASS]);
+                    unset($_SESSION[KEY_INVITE_PASS]);
+                    $ret_val = -3;
+                }
+            } else {
+                $ret_val = 0;
+            }
+        }
+
+        return $ret_val;
+
     }
 
 
     function have_unfinished_hit(){
+        $hit_id = null;
         if (isset($_SESSION[KEY_HIT_RECORD])){
-            return true;
+            $hit_id = $_SESSION[KEY_HIT_RECORD];
         } elseif (isset($_COOKIE[KEY_HIT_COOKIE])){
             $this->load->helper('cookie');
             $hit_record = new Hit_record();
             $hit_id = $hit_record->get_id_by_token(get_cookie(KEY_HIT_COOKIE, true));
-            if(-1 != $hit_id){
-                $_SESSION[KEY_HIT_RECORD] = $hit_id;
-                return true;
-            } else {
-                return false;
-            }
         } else {
+            //Nope
             return false;
         }
+        $hit_record = new Hit_record();
+        $hit_record->get_by_id($hit_id);
+        if($hit_id == -1 || is_null($hit_record->id)){
+            unset($_SESSION[KEY_HIT_RECORD]);
+            return false;
+        }
+        //Judge if we have unfinished task
+        if(empty($hit_record->payment_info)){
+            //Yes!
+            $_SESSION[KEY_HIT_RECORD] = $hit_id;
+            return true;
+        } else {
+            //Nope~
+
+            return false;
+        }
+
     }
 
     function get_current_hit_id(){
@@ -171,16 +203,6 @@ class Assignment extends CI_Controller {
             $data['can_expand']    = $hit_record->can_expand();
         }
 
-
-        //Generate image thumbnail
-//        $i = 1;
-//        foreach($temp_path as $key => $value){
-//            $this->create_thumbnail($value);    //Create image thumbnail if needed
-//            $data['img_thumb'.$i] = $this->get_image_thumb_url(
-//                $data['img_src'.$i]
-//            );  //Set image thumbnail url(Not local path)
-//            $i++;
-//        }
         return $data;
     }
 
@@ -214,7 +236,7 @@ class Assignment extends CI_Controller {
             //If the user allow cookie storage, create a token
             if(isset($_GET['keep_cookie']) &&
                 $_GET['keep_cookie'] == '1') {
-                $token = md5(''+time());
+                $token = md5(time() + rand());
                 $this->load->helper('cookie');
                 $cookie = array(
                     'name'  => KEY_HIT_COOKIE,
@@ -234,7 +256,7 @@ class Assignment extends CI_Controller {
         //If this hit is already finished, jump to /finish
         if($hit_record->progress_count >= $hit_record->getCmpLength()){
             if(!empty($hit_record->end_time)){
-                header("Location: ". base_url("finish"));
+                header("Location: ". base_url("finish/?state=1"));
                 return;
             } else {
                 $hit_record->progress_count --;  // DO NOT WRITE TO DATABASE
@@ -314,13 +336,35 @@ class Assignment extends CI_Controller {
             $hit_record->score += $curr_score;
 
             /* Re-calculate penalty if it's a QoE question */
-            if($cmp_record->comp_type == CMP_TYPE_USERTEST){
+            $flag = 0;
+            if($cmp_record->comp_type == CMP_TYPE_USERTEST
+                    and $cmp_record->trap_id == -1){
                 $ground_truth = $cmp_record->get_ground_truth();
                 if($ground_truth != $answer){
                     $hit_record->score_rate *= PENALTY_RATE_QOE;
-                    array_push($hit_key_ary, 'score_rate');
+                } else {
+                    $hit_record->score_rate *= BONUS_RATE_QOE;
+                }
+                array_push($hit_key_ary, 'score_rate');
+                $flag = 1;
+            }
+            if($cmp_record->trap_id != -1){
+                $link_id = $cmp_record->trap_id;
+                $cmp_src = new Compare_record();
+                $cmp_src->get_by_id($link_id);
+                if(is_null($cmp_src->id)){
+                    show_error('Error: Unknown referred trap_comp id');
+                    return;
+                }
+                $src_answer = $cmp_src->answer;
+                if($src_answer != $cmp_record->answer){
+                    //Penalty will be applied when trap question is wrongly answered
+                    $hit_record->score_rate *= PENALTY_RATE_TRAP;
+                    if($flag == 0)
+                        array_push($hit_key_ary, 'score_rate');
                 }
             }
+            unset($flag);
             /* End of re-calculation */
 
 
@@ -366,7 +410,7 @@ class Assignment extends CI_Controller {
      */
     public function can_expand(){
         $retData = [];
-        if(!$this->check_authority() && !DEBUG_MODE){
+        if($this->check_authority()!=0 and !DEBUG_MODE){
             //Authentication failed
             $retData['status'] = -1;
             $retData['msg'] = "Permission denied. Log in first.";
@@ -387,4 +431,5 @@ class Assignment extends CI_Controller {
         }
         echo json_encode($retData);
     }
+
 }

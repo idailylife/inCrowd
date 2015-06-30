@@ -94,14 +94,14 @@ class Hit_record extends CI_Model {
 
         shuffle($tmp_ary[0]);
         shuffle($tmp_ary[1]);
-        //Randomly choose create one trap question//////
-        $trap_i = rand(0,1); //Choose one trap type (CMP_TYPE_USERTEST or CMP_TYPE_GENERAL)
+        //Randomly create one trap question//////
+        $trap_i = rand(0,1); //Choose one trap type (q_type)
         $trap_index = rand(0, count($tmp_ary[$trap_i]) -2);
         $trap_cmp_src = $tmp_ary[$trap_i][$trap_index];
         $cmp = new Compare_record();
         $cmp->get_by_id($trap_cmp_src);
-        $cmp->set_model_generated();
         $cmp->trap_id = $trap_cmp_src;
+        $cmp->set_model_generated();
         $cmp_id = $cmp->push_to_db();
         array_push($tmp_ary[$trap_i], $cmp_id);
         ////////////////////////////////////////////////
@@ -261,25 +261,11 @@ class Hit_record extends CI_Model {
     }
 
     public function can_expand(){
-        $cmp = new Compare_record();
-        foreach($this->record_id_array as $cmp_id){
-            $cmp->get_by_id($cmp_id);
-            if($cmp->trap_id == -1)
-                continue;
-            $src_id = $cmp->trap_id;
-            $cmp_src = new Compare_record();
-            $cmp_src->get_by_id($src_id);
-            $src_answer = $cmp_src->answer;
-            if($src_answer != $cmp->answer){
-                //Penalty will be applied when trap question is wrongly answered
-                $this->score_rate *= 0.6;
-            }
-            if($this->score_rate < 0.5)
-                return false; //如果罚分到了一定程度，那不允许再继续
-
+        if($this->score_rate < EXPAND_RATE_MIN){
+            return false;       // Penalty over limit
         }
 
-        return $this->getCmpLength() < MAX_COMPARISON_SIZE;
+        return $this->getCmpLength() < MAX_COMPARISON_SIZE - 1;
     }
 
     /**
@@ -297,6 +283,7 @@ class Hit_record extends CI_Model {
             $ary[0] = $row->start_time;
             $ary[1] = $row->pay_status;
             $ary[2] = $row->pay_amount;
+            $ary[3] = $row->score;
             array_push($result_ary, $ary);
         }
         return $result_ary;
