@@ -50,6 +50,10 @@ div{
     max-width: 1400px;
 }
 
+#continue{
+    display: none;
+}
+
 #terms-div{
     max-width: 1440px;
 }

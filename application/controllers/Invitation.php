@@ -28,6 +28,7 @@ class Invitation extends CI_Controller{
      * If succeed, make a session item
      */
     public function index_post(){
+        session_start();
         unset($_SESSION[KEY_INVITE_PASS]);
 
         $code_post = $this->input->post_get('invite_code', true);

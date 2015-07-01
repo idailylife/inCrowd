@@ -37,6 +37,9 @@
                             }
                         });
                         <?php endif;?>
+                        if(navigator.userAgent.indexOf("Firefox") > 0){
+                            alert('Firefox: 邀请码验证成功.');
+                        }
                         window.location.href= url;
                     } else {
                         reset_captcha();
@@ -52,10 +55,11 @@
                 window.open('/inCrowd/chkpayment', '_blank');
             });
             <?php if($cont_flag > 0):?>
-            $('#verification').css('display', 'none');
-            $('#get_in').css('display', 'none');
+            $('#verification').hide();
+            $('#get_in').hide();
+            $('#continue').show();
             <?php else:?>
-            $('#continue').css('display', 'none');
+            $('#continue').hide();
             <?php endif;?>
 
             $(document).keypress(function(e){
@@ -141,7 +145,7 @@
         <div class="div_center" style="font-size: 14px;color: #d3d3d3">
             Product of <a href="http://in.zju.edu.cn" target="_blank">inLab@ZJU</a>
             <br/>
-            b150610
+            b150630
         </div>
 
     </div>
