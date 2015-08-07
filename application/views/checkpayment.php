@@ -141,6 +141,9 @@
     <div id="query_result" class="div_center">
 
     </div>
+    <div id="copyright">
+        <p>All rights reserved. 2015 inlab@ZJU</p>
+    </div>
 </div>
 <script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
 </body>

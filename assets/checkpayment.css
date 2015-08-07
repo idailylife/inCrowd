@@ -107,3 +107,9 @@ td{
 #pm_title{
     font-weight: bold;
 }
+
+#copyright{
+    text-align: center;
+    font-size: 12px;
+    color: dimgray;
+}

@@ -157,9 +157,8 @@
     </div>
     <div id="finish_hint_container" class="hint_container">
         <p id="finish_hint">请稍候...</p>
+        <div id="div_next_2" class="hint_button">继续下一级</div>
         <div id="div_next_1" class="hint_button">结束任务</div>
-        <div id="div_next_2" class="hint_button">进入下一级</div>
-
     </div>
 </div>
 <div id="image_hint_container">

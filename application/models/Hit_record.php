@@ -305,31 +305,30 @@ class Hit_record extends CI_Model {
     }
 
     public function getScorePerCmp($level){
-        //依照公式估算整数: y = 23.023ln(x) + 22.237
         switch($level){
             case 0:
                 $score = 0;
                 break;
             case 1:
-                $score = 20;
+                $score = 25; //20
                 break;
             case 2:
-                $score = 40;
+                $score = 35; //40
                 break;
             case 3:
-                $score = 50;
+                $score = 43; //50
                 break;
             case 4:
-                $score = 55;
+                $score = 50; //55
                 break;
             case 5:
-                $score = 60;
+                $score = 55; //60
                 break;
             case 6:
-                $score = 63;
+                $score = 58; //63
                 break;
             case 7:
-                $score = 65;
+                $score = 60; //65
                 break;
             default:
                 $score = 65;
