@@ -162,7 +162,7 @@
     </div>
 </div>
 <div id="image_hint_container">
-    <span id="image_hint">鼠标移到图片上放大，放大比例可用鼠标滚轮调节.</span>
+    <span id="image_hint">鼠标移到图片上放大，放大比例可用鼠标滚轮调节.&nbsp;&nbsp;重复的题目请保持答案一致，不会反复扣分.</span>
     <div id="image_hint_close">关闭提示</div>
 </div>
 
@@ -225,7 +225,7 @@
         <label for="cr_x" class="cmp_label">难以判断</label>
     </div>
     <div id="cmp_usability" class="cmp_container">
-            <a style="background-color: #976C2F" class="tooltips" href="#" data-tooltip="该产品近几年内有望制造并可使用，且能够产生一定的积极效果">
+            <a style="background-color: #976C2F" class="tooltips" href="#" data-tooltip="该产品能够产生一定的积极效果（改善体验），并且有望在近几年内制造">
                 实用性
             </a>
             较强的是？

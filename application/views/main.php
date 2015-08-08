@@ -4,7 +4,7 @@
 <![endif]-->
 <head>
     <meta charset="utf-8">
-    <title>Crowd Crowd Crowd | Test website</title>
+    <title>Crowd Crowd Crowd | Powered by inLab@ZJU</title>
     <script type="text/javascript" src="<?php echo base_url();?>assets/jquery-1.11.2.min.js"></script>
     <link rel="stylesheet" href="<?php echo base_url()?>assets/main.css">
     <script type="text/javascript">
@@ -94,7 +94,7 @@
                 正常情况下实验完成后7个工作日内可到账，审核、支付记录可在本站查询.</p>
                 <p style="color: deeppink">请注意:<br/>1.实验中出现的设计作品, 其版权归原作者所有, 请勿下载或挪作商用. <br/>
                     2.请勿使用自动化方法、随意点击完成实验或违反其他实验约定,一经发现将取消或降低支付报酬.<br/>
-                    3.题目中将随机出现检测参与质量的问题，<b>重复出现的问题请务必保证您的回答一致</b>.<br/>
+                    3.题目中将随机出现检测参与质量的问题，<span style="font-weight: 900">重复出现的问题请务必保证您的回答一致</span>.<br/>
                     4.除非另加说明，同组实验一个支付宝账户(以账户对应的真实姓名为准)只可参与一次，同组实验多次参与按得分最高一次计酬.<br/>
                 </p>
 

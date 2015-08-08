@@ -49,6 +49,9 @@
                             html += d.toLocaleDateString() + '</td><td>';
                             var ps='意外错误';
                             switch (new Number(row[1]).valueOf()){
+                                case -3:
+                                    ps = '提供的支付宝账号有误'
+                                    break;
                                 case -2:
                                     ps = '审核失败';
                                     break;

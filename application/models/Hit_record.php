@@ -342,8 +342,13 @@ class Hit_record extends CI_Model {
      */
     public function getCurrLevelScore($with_penalty = true){
         $score = $this->getScorePerCmp($this->getHitLevel());
-        if($with_penalty)
-            $score = $score * $this->score_rate;
+        if($with_penalty){
+            if ($this->score_rate > PENALTY_RATE_MAX)
+                $score = $score * PENALTY_RATE_MAX;
+            else
+                $score = $score * $this->score_rate;
+        }
+
         return $score;
     }
 

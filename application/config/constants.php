@@ -103,10 +103,11 @@ define('KEY_INVITE_PASS', 'invite_pass');
 define('KEY_PASS', 'pass');
 define('FONT_PATH', dirname(__FILE__).'/../fonts/courbd.ttf');
 define('DB_CONFIG_FILEPATH', 'dbconfig.json');  //数据库配置文件
-define('PENALTY_RATE_QOE', 0.93); //QoE问题答错时得分乘以的倍率
-define('PENALTY_RATE_TRAP', 0.8); //陷阱题答错时得分乘以的倍率 （0.8*0.8<0.7）
-define('BONUS_RATE_QOE', 1.05);   //QoE问题答对时乘以的倍率
-define('EXPAND_RATE_MIN', 0.75);  //可以继续下一组实验的最低限倍率
+define('PENALTY_RATE_QOE', 0.90); //QoE问题答错时得分乘以的倍率
+define('PENALTY_RATE_TRAP', 0.85); //陷阱题答错时得分乘以的倍率
+define('PENALTY_RATE_MAX', 1.05);  //最大倍率
+define('BONUS_RATE_QOE', 1.02);   //QoE问题答对时乘以的倍率
+define('EXPAND_RATE_MIN', 0.80);  //可以继续下一组实验的最低限倍率
 
 //Traffic control
 define('NEED_INVITE', true);   //是否需要邀请码参与
