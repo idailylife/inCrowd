@@ -179,8 +179,11 @@ class Finish extends CI_Controller {
         $hit_record->mark_time(false);
         $hit_record->update_db(['end_time']);
 
-        $data = [];
-        $data['score'] = round($hit_record->score);
+        $data = [
+            'score'=>round($hit_record->score),
+            'task_id'=>$hit_id
+        ];
+        //$data['score'] = round($hit_record->score);
 
         $_SESSION[KEY_PASS] = 2;
         $this->load->view('finish', $data);

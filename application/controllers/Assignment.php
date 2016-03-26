@@ -375,28 +375,28 @@ class Assignment extends CI_Controller {
                 array_push($cmp_key_ary, 'duration');
             }
 
-            //Update database
-            $cmp_record->update_db($cmp_key_ary);
+    //Update database
+    $cmp_record->update_db($cmp_key_ary);
 
-            //Move to next comparison
-            $hit_record->progress_count = ++$progress;
-            $hit_record->update_db($hit_key_ary);
+    //Move to next comparison
+    $hit_record->progress_count = ++$progress;
+    $hit_record->update_db($hit_key_ary);
 
-            if($hit_record->progress_count < $hit_record->getCmpLength()){
-                //$current_comp_id = $hit_record->record_id_array[$progress];
-                $ret_data = $this->get_comp_data($hit_record);
-                //Return json array
-                $ret_data['status'] = 0;
-            } else {
-                //End of comparison stage
-                $ret_data['status'] = 1; //End of comparison
-                $ret_data['can_expand'] = $hit_record->can_expand();
-                $ret_data['total_score'] = round($hit_record->score);
-                $ret_data['next_score'] = round($hit_record->getCurrLevelScore());
+    if($hit_record->progress_count < $hit_record->getCmpLength()){
+    //$current_comp_id = $hit_record->record_id_array[$progress];
+    $ret_data = $this->get_comp_data($hit_record);
+    //Return json array
+    $ret_data['status'] = 0;
+    } else {
+    //End of comparison stage
+    $ret_data['status'] = 1; //End of comparison
+    $ret_data['can_expand'] = $hit_record->can_expand();
+    $ret_data['total_score'] = round($hit_record->score);
+    $ret_data['next_score'] = round($hit_record->getCurrLevelScore());
 
-            }
-        }
-        echo json_encode($ret_data);
+    }
+    }
+    echo json_encode($ret_data);
     }
 
     /**

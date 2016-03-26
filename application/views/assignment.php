@@ -246,5 +246,5 @@
 
 
 </body>
-<script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
+
 </html>

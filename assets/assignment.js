@@ -3,11 +3,11 @@
  */
 function post_callback(data, ret_status){
     preload_counter = 0;
-    console.log('post_callback:' + ret_status);
-    console.log(data);
-    if(ret_status != 'success'){
-        console.log('post_callback: 网络连接失败，请重试.');
-    }
+    //console.log('post_callback:' + ret_status);
+    //console.log(data);
+    //if(ret_status != 'success'){
+    //    console.log('post_callback: 网络连接失败，请重试.');
+    //}
     var jsonval = jQuery.parseJSON(data);
     switch (jsonval.status){
         case 2:
@@ -33,7 +33,7 @@ function post_callback(data, ret_status){
             refreshZoomImage($('#img_b'), jsonval.img_src2);
 
             $('#img_a').one('load', function(){
-                console.log('img1 loaded.');
+                //console.log('img1 loaded.');
                 switchLoadImg('a', false);
                 set_image_margin();
                 setZoomImage($(this));
@@ -49,7 +49,7 @@ function post_callback(data, ret_status){
             });
 
             $('#img_b').one('load', function(){
-                console.log('img2 loaded.');
+                //console.log('img2 loaded.');
                 switchLoadImg('b', false);
                 set_image_margin();
                 setZoomImage($(this));
@@ -74,7 +74,7 @@ function post_callback(data, ret_status){
             }
             if(q_type != last_q_type){
                 //Show hint when q_type changes
-                console.log('q_type changed.');
+                //console.log('q_type changed.');
                 show_hint(q_type);
             }
             last_q_type = q_type;
@@ -106,7 +106,7 @@ function on_img_load(img1, img2){
         return;
     }
     start_time = new Date().getTime();
-    console.log('perload started.');
+    //console.log('perload started.');
     pre_load_image([
         img1,
         img2
@@ -242,7 +242,7 @@ function post_to_server(id){
         'duration' : duration
     };
 
-    window.console.log(postData);
+    //window.console.log(postData);
     switchLoadImg('a', true);
     switchLoadImg('b', true);
     $.post("assignment", postData,
