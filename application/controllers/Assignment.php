@@ -149,17 +149,22 @@ class Assignment extends CI_Controller {
     private function get_comp_data($hit_record){
         $cmp_record = new Compare_record();
         $cmp_record->get_by_id($hit_record->get_comparison_id());
+        //Set image base url (qiniuyun cloud service support)
+        $img_base_url = IMAGE_BASE_URL;
+        if(USE_CLOUD_SRV and !empty(CLOUD_SRV_URL)) {
+            $img_base_url = CLOUD_SRV_URL;
+        }
         //Get image info
         $data = array(
-            'img_src1'      => IMAGE_BASE_URL,
-            'img_src2'      => IMAGE_BASE_URL,
+            'img_src1'      => $img_base_url,
+            'img_src2'      => $img_base_url,
             'prog_current'  => $hit_record->getLevelProgress() +1,//progress_count + 1,
             'prog_total'    => COMPARISON_SIZE +1,//$hit_record->getCmpLength(),
             'level'         => $hit_record->getHitLevel(),
             'q_type'        => $cmp_record->q_type,
             //'max_size'      => MAX_COMPARISON_SIZE,
-            'next_img_src1' => IMAGE_BASE_URL,
-            'next_img_src2' => IMAGE_BASE_URL,
+            'next_img_src1' => $img_base_url,
+            'next_img_src2' => $img_base_url,
             'total_score'   => round($hit_record->score),
             'next_score'    => round($hit_record->getCurrLevelScore())
         );  //Array for view variables

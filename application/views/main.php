@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<?php echo base_url()?>assets/main.css">
     <script type="text/javascript">
         function reset_captcha(){
-            $('#captcha_img').attr("src", "/inCrowd/verifycode?" + Math.random());
+            $('#captcha_img').attr("src", "/inCrowd/VerifyCode?" + Math.random());
         }
 
         $(document).ready(function(){
@@ -20,7 +20,7 @@
             $('#get_in')
                 .click(function(){
                 var code_num = $('#veri_code').val();
-                $.post("/inCrowd/verifycode", {captcha:code_num}, function(msg){
+                $.post("/inCrowd/VerifyCode", {captcha:code_num}, function(msg){
                     if(msg == '1'){
                         var url = '/inCrowd/assignment';
                         if($('#keep_cookie').prop('checked')){
@@ -80,29 +80,26 @@
 <body>
     <div id="headers">
         <!--Logo and headers-->
-        <p id="logo">基于众包的设计竞赛评价研究（B轮）</p>
+        <p id="logo">inCrowd:众包设计作品评价平台（Public）</p>
     </div>
     <div id="container">
         <div id="terms_div" class="div_center">
             <!--Terms and declaration here-->
 
             <div id="terms_detail">
-                <p>我们将会列出一些设计竞赛的作品(图),<b>您需要对作品进行两两比较,
+                <p>我们将会列出一些产品概念设计的作品(图),<b>您需要对作品进行两两比较,
                 评价出在创新性或实用性上较为优秀的一个</b>. 大部分问题的答案我们自己也不明确,所以尽力选择就好. </p>
 
-                <p><b>实验分组完成，约8-15分钟/组，每组15个单选题，每组完成后可选择是否继续</b>，我们会记录您的答题信息(包括您的点击信息、操作时间等), 任务完成后将会向您索取支付宝账号, 以便支付报酬.
-                正常情况下实验完成后7个工作日内可到账，审核、支付记录可在本站查询.</p>
+                <p><b>实验分组完成，约8-15分钟/组，每组15个单选题，每组完成后可选择是否继续</b>，我们会记录您的答题信息(包括您的点击信息、操作时间等).</p>
                 <p style="color: deeppink">请注意:<br/>1.实验中出现的设计作品, 其版权归原作者所有, 请勿下载或挪作商用. <br/>
-                    2.请勿使用自动化方法、随意点击完成实验或违反其他实验约定,一经发现将取消或降低支付报酬.<br/>
+                    2.请勿使用自动化方法、随意点击完成实验或违反其他实验约定.<br/>
                     3.题目中将随机出现检测参与质量的问题，<span style="font-weight: 900">重复出现的问题请务必保证您的回答一致</span>.<br/>
-                    4.除非另加说明，同组实验一个支付宝账户(以账户对应的真实姓名为准)只可参与一次，同组实验多次参与按第一次成绩计酬.<br/>
                 </p>
 
                 <div id="payment_description">
-                    实验酬劳根据实验获得的总得分支付，100分=1元人民币.<br/>
+                    此为公共测试，评价成绩以积分记录，不提供酬金.<br/>
                     完成一组(15题)实验后，系统根据参与度判断是否可进入下一组，分值比前一组多3%-100%!<br/>
-                    预实验数据表明，通常情况下15分钟可以获得约10元报酬.
-                    <div id="detail_btn">...</div>
+                    <div id="detail_btn">详细说明</div>
                     <div id="pay_desc_detail">
                         <b>积分获得：</b>回答问题获得积分，每道题的得分=等级基础分×参与度，级别越高等级基数越大,初始参与度为100%<br/>
                         <b>参与度：</b><br/>
@@ -129,7 +126,7 @@
             </div>
             <div id="verify">
                 <p>
-                    <img id="captcha_img" src="/inCrowd/verifycode?rnd=<?php echo rand(0,1000) ?>">
+                    <img id="captcha_img" src="/inCrowd/VerifyCode?rnd=<?php echo rand(0,1000) ?>">
                 </p>
                 <div id="cookie_div" style="display: none">
                     <label for="keep_cookie">存储答题状态，以便意外关闭时能恢复</label>
@@ -148,11 +145,9 @@
         </div>
         <div class="div_center" style="font-size: 14px;color: #d3d3d3">
             Product of <a href="http://in.zju.edu.cn" target="_blank">inLab@ZJU</a>
-            <br/>
-            b150630
+            
         </div>
 
     </div>
-    <script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
 </body>
 </html>

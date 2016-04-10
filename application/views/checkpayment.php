@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="<?php echo base_url()?>assets/checkpayment.css">
     <script type="text/javascript">
         function reset_captcha(){
-            $('#captcha_img').attr("src", "/inCrowd/verifycode?" + Math.random());
+            $('#captcha_img').attr("src", "/inCrowd/VerifyCode?" + Math.random());
             $('#veri_code').val("");
         }
 
@@ -91,7 +91,7 @@
             $('#chk_payment')
                 .click(function(){
                     var code_num = $('#veri_code').val();
-                    $.post("/inCrowd/verifycode", {captcha:code_num}, function(msg){
+                    $.post("/inCrowd/VerifyCode", {captcha:code_num}, function(msg){
                         if(msg == '1'){
                             check_payment();
                             $('#chk_payment').text('查询');
@@ -133,7 +133,7 @@
             验证码错误，请重试:(
         </div>
         <div id="verify">
-            <img id="captcha_img" src="/inCrowd/verifycode?rnd=<?php echo rand(0,1000) ?>">
+            <img id="captcha_img" src="/inCrowd/VerifyCode?rnd=<?php echo rand(0,1000) ?>">
         </div>
     </div>
 
