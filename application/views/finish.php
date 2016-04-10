@@ -51,6 +51,7 @@
         });
         function show_submit_failure(){
             $('#submit_info').css('display', 'inline');
+            alert('网络连接异常，请刷新页面重试.');
         }
 
         function submit_callback(data, status){
@@ -65,6 +66,7 @@
                     case 2:
                     case 1:
                         console.log('Remote error: ' + jsonval.message);
+                        alert('网络连接异常，请刷新页面重试.');
                         break;
                     case 0:
                         //success
@@ -72,7 +74,7 @@
                         $('#info_result').css('display', 'inline');
                         break;
                     default:
-                        alert('wtf');
+                        alert('页面异常，请刷新重试');
                 }
             }
         }
@@ -111,7 +113,7 @@
 </head>
 <body>
     <div id="title">
-        <h1>MISSION COMPLETE</h1>
+        <h1>任务完成</h1>
     </div>
     <div id="info_input" class="container">
         <p>任务已完成! 共获得<?php echo $score?>积分，可兑换人民币<?php echo round($score/100,2)?>元</p>
@@ -135,6 +137,7 @@
             <br/>
             <textarea id="advice" rows="3" placeholder=""></textarea>
         </p>
+        <p>请记下您的任务ID号: <?php echo $task_id?>. 如遇网络异常无法提交，请尝试刷新页面或联系管理员.</p>
         <div id="btn_submit" class="button">提交</div>
         <p id="submit_info">熬~连接失败，烦请再试一次。</p>
     </div>
@@ -145,5 +148,5 @@
         <div id="btn_back" class="button">返回主页</div>
     </div>
 </body>
-<script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>
+
 </html>

@@ -50,6 +50,10 @@ div{
     max-width: 1400px;
 }
 
+#continue{
+    display: none;
+}
+
 #terms-div{
     max-width: 1440px;
 }
@@ -64,7 +68,7 @@ div{
     min-height: 300px;
     max-width: 700px;
     margin: 5px auto;
-    font-family: "Simsun";
+    font-family: "微软雅黑 Light", "Simsun";
     text-align: left;
 }
 
@@ -128,7 +132,7 @@ div{
     /*background-color: #44B78B;*/
     color: #44B78B;
     border-radius: 5px;
-    width: 20px;
+    /*width: 20px;*/
     display: inline-block;
     text-align: center;
     line-height: 0.8em;

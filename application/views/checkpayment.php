@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="<?php echo base_url()?>assets/checkpayment.css">
     <script type="text/javascript">
         function reset_captcha(){
-            $('#captcha_img').attr("src", "/inCrowd/verifycode?" + Math.random());
+            $('#captcha_img').attr("src", "/inCrowd/VerifyCode?" + Math.random());
             $('#veri_code').val("");
         }
 
@@ -49,6 +49,9 @@
                             html += d.toLocaleDateString() + '</td><td>';
                             var ps='意外错误';
                             switch (new Number(row[1]).valueOf()){
+                                case -3:
+                                    ps = '提供的支付宝账号有误'
+                                    break;
                                 case -2:
                                     ps = '审核失败';
                                     break;
@@ -88,7 +91,7 @@
             $('#chk_payment')
                 .click(function(){
                     var code_num = $('#veri_code').val();
-                    $.post("/inCrowd/verifycode", {captcha:code_num}, function(msg){
+                    $.post("/inCrowd/VerifyCode", {captcha:code_num}, function(msg){
                         if(msg == '1'){
                             check_payment();
                             $('#chk_payment').text('查询');
@@ -130,7 +133,7 @@
             验证码错误，请重试:(
         </div>
         <div id="verify">
-            <img id="captcha_img" src="/inCrowd/verifycode?rnd=<?php echo rand(0,1000) ?>">
+            <img id="captcha_img" src="/inCrowd/VerifyCode?rnd=<?php echo rand(0,1000) ?>">
         </div>
     </div>
 
@@ -140,6 +143,9 @@
     </div>
     <div id="query_result" class="div_center">
 
+    </div>
+    <div id="copyright">
+        <p>All rights reserved. 2015 inlab@ZJU</p>
     </div>
 </div>
 <script src="http://s95.cnzz.com/z_stat.php?id=1254983938&web_id=1254983938" language="JavaScript"></script>

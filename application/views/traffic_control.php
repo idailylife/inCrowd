@@ -85,6 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <div id="copyright">
     All rights reserved. 2015 <a href="http://in.zju.edu.cn" target="_blank">inLab@ZJU</a>
+    <p>如有问题请邮件boweihe[at]zju.edu.cn</p>
 </div>
 </body>
 </html>

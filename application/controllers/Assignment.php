@@ -149,17 +149,22 @@ class Assignment extends CI_Controller {
     private function get_comp_data($hit_record){
         $cmp_record = new Compare_record();
         $cmp_record->get_by_id($hit_record->get_comparison_id());
+        //Set image base url (qiniuyun cloud service support)
+        $img_base_url = IMAGE_BASE_URL;
+        if(USE_CLOUD_SRV and !empty(CLOUD_SRV_URL)) {
+            $img_base_url = CLOUD_SRV_URL;
+        }
         //Get image info
         $data = array(
-            'img_src1'      => IMAGE_BASE_URL,
-            'img_src2'      => IMAGE_BASE_URL,
+            'img_src1'      => $img_base_url,
+            'img_src2'      => $img_base_url,
             'prog_current'  => $hit_record->getLevelProgress() +1,//progress_count + 1,
             'prog_total'    => COMPARISON_SIZE +1,//$hit_record->getCmpLength(),
             'level'         => $hit_record->getHitLevel(),
             'q_type'        => $cmp_record->q_type,
             //'max_size'      => MAX_COMPARISON_SIZE,
-            'next_img_src1' => IMAGE_BASE_URL,
-            'next_img_src2' => IMAGE_BASE_URL,
+            'next_img_src1' => $img_base_url,
+            'next_img_src2' => $img_base_url,
             'total_score'   => round($hit_record->score),
             'next_score'    => round($hit_record->getCurrLevelScore())
         );  //Array for view variables
@@ -375,28 +380,28 @@ class Assignment extends CI_Controller {
                 array_push($cmp_key_ary, 'duration');
             }
 
-            //Update database
-            $cmp_record->update_db($cmp_key_ary);
+    //Update database
+    $cmp_record->update_db($cmp_key_ary);
 
-            //Move to next comparison
-            $hit_record->progress_count = ++$progress;
-            $hit_record->update_db($hit_key_ary);
+    //Move to next comparison
+    $hit_record->progress_count = ++$progress;
+    $hit_record->update_db($hit_key_ary);
 
-            if($hit_record->progress_count < $hit_record->getCmpLength()){
-                //$current_comp_id = $hit_record->record_id_array[$progress];
-                $ret_data = $this->get_comp_data($hit_record);
-                //Return json array
-                $ret_data['status'] = 0;
-            } else {
-                //End of comparison stage
-                $ret_data['status'] = 1; //End of comparison
-                $ret_data['can_expand'] = $hit_record->can_expand();
-                $ret_data['total_score'] = round($hit_record->score);
-                $ret_data['next_score'] = round($hit_record->getCurrLevelScore());
+    if($hit_record->progress_count < $hit_record->getCmpLength()){
+    //$current_comp_id = $hit_record->record_id_array[$progress];
+    $ret_data = $this->get_comp_data($hit_record);
+    //Return json array
+    $ret_data['status'] = 0;
+    } else {
+    //End of comparison stage
+    $ret_data['status'] = 1; //End of comparison
+    $ret_data['can_expand'] = $hit_record->can_expand();
+    $ret_data['total_score'] = round($hit_record->score);
+    $ret_data['next_score'] = round($hit_record->getCurrLevelScore());
 
-            }
-        }
-        echo json_encode($ret_data);
+    }
+    }
+    echo json_encode($ret_data);
     }
 
     /**

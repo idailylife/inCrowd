@@ -72,8 +72,8 @@ class Main extends CI_Controller {
             }
         } else {
             $data = [
-                'heading' => '抱歉抱歉',
-                'message' => '当前任务数量超过系统限制，请过几天再访问, 或通过邀请链接访问.'
+                'heading' => '任务数量超限',
+                'message' => '抱歉抱歉，当前任务数量超过系统限制，请过几天再访问, 或通过邀请链接访问.'
             ];
             $this->load->view('traffic_control', $data);
         }
